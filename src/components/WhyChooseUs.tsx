@@ -1,11 +1,11 @@
-import { Tool, Clock, Smartphone, DollarSign } from "lucide-react";
+import { Wrench, Clock, Smartphone, DollarSign } from "lucide-react";
 
 export const WhyChooseUs = () => {
   const benefits = [
     {
       title: "Built for Tradies",
       description: "Websites designed specifically for tradies, by people who understand your business",
-      icon: Tool,
+      icon: Wrench,
     },
     {
       title: "Quick Setup",
