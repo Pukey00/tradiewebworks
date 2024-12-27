@@ -19,7 +19,7 @@ export const WhyChooseUs = () => {
     },
     {
       title: "Fair Prices",
-      description: "Honest pricing with no ongoing fees or hidden costs",
+      description: "Low affordable monthly fees to suit your business",
       icon: DollarSign,
     },
   ];
