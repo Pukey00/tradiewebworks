@@ -29,6 +29,7 @@ export type WizardData = {
     primary: string;
     accent: string;
   };
+  specialNotes?: string;
 };
 
 const initialData: WizardData = {
@@ -45,6 +46,7 @@ const initialData: WizardData = {
     primary: "#000000",
     accent: "#000000",
   },
+  specialNotes: "",
 };
 
 export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {

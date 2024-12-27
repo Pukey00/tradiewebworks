@@ -1,13 +1,42 @@
 import { WizardData } from "../WebsiteWizard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
 }
 
-export const PreviewStep = ({ data }: StepProps) => {
+export const PreviewStep = ({ data, setData }: StepProps) => {
+  const navigate = useNavigate();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handlePreview = () => {
+    // For now, we'll navigate to a specific example based on industry
+    // In a real implementation, this would generate a preview with the actual data
+    switch(data.industry.toLowerCase()) {
+      case "plumbing":
+        navigate("/plumbing-pro");
+        break;
+      case "electrical":
+        navigate("/electric-solutions");
+        break;
+      case "building":
+        navigate("/builders-portfolio");
+        break;
+      case "landscaping":
+        navigate("/landscape-design");
+        break;
+      default:
+        navigate("/plumbing-pro"); // Default preview
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -43,6 +72,26 @@ export const PreviewStep = ({ data }: StepProps) => {
             <p>{data.testimonials.length} testimonials added</p>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <Label htmlFor="specialNotes">Special Notes</Label>
+            <Textarea
+              id="specialNotes"
+              placeholder="Add any special requirements or notes for your website..."
+              value={data.specialNotes || ""}
+              onChange={(e) => setData({ ...data, specialNotes: e.target.value })}
+              className="mt-2"
+            />
+          </CardContent>
+        </Card>
+
+        <Button 
+          onClick={handlePreview}
+          className="w-full bg-tradie-orange hover:bg-orange-600 mb-6"
+        >
+          Preview Website
+        </Button>
 
         <div className="grid md:grid-cols-3 gap-4">
           <Card>
