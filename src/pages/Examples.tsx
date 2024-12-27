@@ -1,6 +1,8 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const ExampleWebsite = ({ title, description, imageUrl, link }: { 
   title: string; 
@@ -52,18 +54,15 @@ const Examples = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-tradie-navy py-6 px-6 shadow-lg">
+      <Header />
+      <main className="flex-grow bg-gradient-to-b from-gray-50 to-white py-16 px-6">
         <div className="max-w-7xl mx-auto">
           <Link to="/">
-            <Button variant="ghost" className="text-white hover:text-tradie-orange transition-colors">
+            <Button variant="ghost" className="text-tradie-navy hover:text-tradie-orange transition-colors mb-8">
               <ArrowLeft className="mr-2 h-5 w-5" /> Back to Home
             </Button>
           </Link>
-        </div>
-      </header>
-      
-      <main className="flex-grow bg-gradient-to-b from-gray-50 to-white py-16 px-6">
-        <div className="max-w-7xl mx-auto">
+          
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-tradie-navy mb-4">
               Website Examples
@@ -80,6 +79,7 @@ const Examples = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
