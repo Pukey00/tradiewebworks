@@ -2,14 +2,21 @@ import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-const ExampleWebsite = ({ title, description, imageUrl }: { title: string; description: string; imageUrl: string }) => (
-  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-    <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
-    <div className="p-6">
-      <h3 className="text-xl font-bold text-tradie-navy mb-2">{title}</h3>
-      <p className="text-tradie-gray">{description}</p>
+const ExampleWebsite = ({ title, description, imageUrl, link }: { 
+  title: string; 
+  description: string; 
+  imageUrl: string;
+  link?: string;
+}) => (
+  <Link to={link || "#"}>
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+      <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-tradie-navy mb-2">{title}</h3>
+        <p className="text-tradie-gray">{description}</p>
+      </div>
     </div>
-  </div>
+  </Link>
 );
 
 const Examples = () => {
@@ -17,7 +24,8 @@ const Examples = () => {
     {
       title: "Plumbing Pro",
       description: "A modern website for plumbers featuring service listings and emergency contact information.",
-      imageUrl: "/placeholder.svg"
+      imageUrl: "/placeholder.svg",
+      link: "/plumbing-pro"
     },
     {
       title: "Electric Solutions",
