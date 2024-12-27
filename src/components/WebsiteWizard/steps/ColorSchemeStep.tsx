@@ -1,6 +1,8 @@
 import { WizardData } from "../WebsiteWizard";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 interface StepProps {
   data: WizardData;
@@ -32,9 +34,34 @@ const colorSchemes = [
     primary: "#4C1D95",
     accent: "#8B5CF6",
   },
+  {
+    id: "custom",
+    name: "Custom Colors",
+    primary: "#000000",
+    accent: "#000000",
+  },
 ];
 
 export const ColorSchemeStep = ({ data, setData }: StepProps) => {
+  const [customPrimary, setCustomPrimary] = useState("#000000");
+  const [customAccent, setCustomAccent] = useState("#000000");
+
+  const handleColorChange = (colorType: 'primary' | 'accent', value: string) => {
+    setData({
+      ...data,
+      colorScheme: 'custom',
+      customColors: {
+        ...data.customColors,
+        [colorType]: value
+      }
+    });
+    if (colorType === 'primary') {
+      setCustomPrimary(value);
+    } else {
+      setCustomAccent(value);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -59,14 +86,33 @@ export const ColorSchemeStep = ({ data, setData }: StepProps) => {
               className="flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:border-tradie-orange peer-checked:border-tradie-orange peer-checked:bg-orange-50"
             >
               <div className="flex gap-2 mb-2">
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{ backgroundColor: scheme.primary }}
-                />
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{ backgroundColor: scheme.accent }}
-                />
+                {scheme.id === 'custom' ? (
+                  <>
+                    <Input
+                      type="color"
+                      value={customPrimary}
+                      onChange={(e) => handleColorChange('primary', e.target.value)}
+                      className="w-6 h-6 p-0 border-0"
+                    />
+                    <Input
+                      type="color"
+                      value={customAccent}
+                      onChange={(e) => handleColorChange('accent', e.target.value)}
+                      className="w-6 h-6 p-0 border-0"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className="w-6 h-6 rounded-full"
+                      style={{ backgroundColor: scheme.primary }}
+                    />
+                    <div
+                      className="w-6 h-6 rounded-full"
+                      style={{ backgroundColor: scheme.accent }}
+                    />
+                  </>
+                )}
               </div>
               <span className="font-medium">{scheme.name}</span>
             </Label>

@@ -25,6 +25,10 @@ export type WizardData = {
   }>;
   contactEmail: string;
   colorScheme: string;
+  customColors?: {
+    primary: string;
+    accent: string;
+  };
 };
 
 const initialData: WizardData = {
@@ -37,6 +41,10 @@ const initialData: WizardData = {
   testimonials: [],
   contactEmail: "",
   colorScheme: "default",
+  customColors: {
+    primary: "#000000",
+    accent: "#000000",
+  },
 };
 
 export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
