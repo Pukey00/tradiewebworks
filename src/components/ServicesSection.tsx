@@ -1,25 +1,35 @@
-import { Hammer, Globe, Phone } from "lucide-react";
+import { Server, Globe, Rocket } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const ServicesSection = () => {
   const services = [
     {
-      title: "Basic Builder",
-      price: "$997",
-      features: ["One-page website", "Mobile responsive", "Contact form", "Business hours", "Service area map"],
-      icon: Hammer,
+      title: "Basic Plan",
+      price: "$15/month",
+      features: ["Hosting only", "No updates or support"],
+      icon: Server,
     },
     {
-      title: "Professional Tradie",
-      price: "$1,497",
-      features: ["Everything in Basic", "Photo gallery", "Customer reviews", "Service list", "Social media links"],
+      title: "Standard Plan",
+      price: "$30/month",
+      features: [
+        "Hosting",
+        "1 content update/month",
+        "Basic SEO optimization",
+        "Email support"
+      ],
       icon: Globe,
     },
     {
-      title: "Master Craftsman",
-      price: "$1,997",
-      features: ["Everything in Professional", "Online quotes", "Project showcase", "Blog section", "SEO optimization"],
-      icon: Phone,
+      title: "Premium Plan",
+      price: "$50/month",
+      features: [
+        "Hosting",
+        "Unlimited content updates",
+        "Advanced SEO optimization",
+        "Priority email support"
+      ],
+      icon: Rocket,
     },
   ];
 
@@ -31,7 +41,7 @@ export const ServicesSection = () => {
             Simple Pricing, Quality Results
           </h2>
           <p className="mt-4 text-xl text-gray-600">
-            Choose the package that fits your business
+            Choose the plan that fits your needs
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
