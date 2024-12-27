@@ -29,25 +29,25 @@ const Examples = () => {
     {
       title: "Plumbing Pro",
       description: "Modern, professional website designed specifically for plumbers. Features emergency contact information and comprehensive service listings.",
-      imageUrl: "https://images.unsplash.com/photo-1504893524553-b855bce32c67",
+      imageUrl: "/lovable-uploads/7c46b808-9715-4ae8-b989-fb7531df1aec.png",
       link: "/plumbing-pro"
     },
     {
       title: "Electric Solutions",
       description: "Clean, professional design showcasing electrical services with a focus on safety and reliability.",
-      imageUrl: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
+      imageUrl: "/lovable-uploads/55ee6f53-2746-4a5c-81f0-d7d766942cda.png",
       link: "/electric-solutions"
     },
     {
       title: "Builder's Portfolio",
       description: "Stunning showcase of construction projects with detailed galleries and project timelines.",
-      imageUrl: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+      imageUrl: "/lovable-uploads/85338e0b-9539-4bba-bdfe-b2a0e4913a1b.png",
       link: "/builders-portfolio"
     },
     {
       title: "Landscape Design",
       description: "Beautiful, visual-focused website highlighting landscape transformation projects and garden designs.",
-      imageUrl: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86",
+      imageUrl: "/lovable-uploads/3419f505-4a5d-428a-9a9f-a1ac6c8fb07a.png",
       link: "/landscape-design"
     }
   ];
