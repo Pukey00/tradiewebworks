@@ -17,16 +17,16 @@ export const HeroSection = () => {
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg"
-              className="bg-tradie-orange hover:bg-orange-600 text-white"
+              className="bg-tradie-orange hover:bg-orange-600 text-white w-full sm:w-48"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Get Started <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Link to="/examples">
+            <Link to="/examples" className="w-full sm:w-48">
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white/10"
+                className="border-2 border-white text-white hover:bg-white/10 w-full"
               >
                 View Examples
               </Button>
