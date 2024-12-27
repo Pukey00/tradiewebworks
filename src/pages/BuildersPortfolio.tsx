@@ -1,4 +1,4 @@
-import { ArrowLeft, Building, Home, Tool, Phone } from "lucide-react";
+import { ArrowLeft, Building, Home, Wrench, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -56,7 +56,7 @@ const BuildersPortfolio = () => {
                 description: "Office buildings and retail spaces",
               },
               {
-                icon: Tool,
+                icon: Wrench,
                 title: "Renovations",
                 description: "Complete property transformations",
               },
