@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 export const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Mike Johnson",
-      business: "Johnson's Electrical",
-      quote: "Best investment I've made for my business. The website paid for itself in the first month with new jobs.",
+      name: "Yantse",
+      business: "Kinsey Concreting",
+      quote: "Yeah, it looks professional and looks easy to use.",
       image: "/placeholder.svg",
     },
     {
