@@ -30,6 +30,7 @@ export type WizardData = {
     accent: string;
   };
   specialNotes?: string;
+  selectedPlan?: string;
 };
 
 const initialData: WizardData = {
@@ -47,6 +48,7 @@ const initialData: WizardData = {
     accent: "#000000",
   },
   specialNotes: "",
+  selectedPlan: "premium", // Pre-selecting the premium plan
 };
 
 export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
