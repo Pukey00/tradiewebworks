@@ -3,6 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface StepProps {
   data: WizardData;
@@ -10,6 +13,9 @@ interface StepProps {
 }
 
 export const PlanSelectionStep = ({ data, setData }: StepProps) => {
+  const [showSummary, setShowSummary] = useState(false);
+  const { toast } = useToast();
+
   const plans = [
     {
       id: "basic",
@@ -40,6 +46,94 @@ export const PlanSelectionStep = ({ data, setData }: StepProps) => {
       ],
     },
   ];
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/api/submit-website-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Request Submitted Successfully",
+          description: "We'll review your information and send you a preview soon!",
+        });
+      } else {
+        throw new Error('Failed to submit request');
+      }
+    } catch (error) {
+      console.error('Error submitting request:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (showSummary) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-tradie-navy">Website Request Summary</h2>
+          <p className="text-gray-600">Please review your information before submission</p>
+        </div>
+
+        <div className="space-y-4">
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold">Business Information</h3>
+            <p>Business Name: {data.businessName}</p>
+            <p>Industry: {data.industry}</p>
+            <p>Location: {data.location}</p>
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold">Services</h3>
+            <ul className="list-disc list-inside">
+              {data.services.map((service, index) => (
+                <li key={index}>{service}</li>
+              ))}
+            </ul>
+          </div>
+
+          {data.testimonials.length > 0 && (
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-bold">Testimonials</h3>
+              {data.testimonials.map((testimonial, index) => (
+                <div key={index} className="mt-2">
+                  <p>"{testimonial.quote}"</p>
+                  <p className="text-sm">- {testimonial.name}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold">Contact Information</h3>
+            <p>Email: {data.contactEmail}</p>
+          </div>
+
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-bold">Selected Plan</h3>
+            <p>{plans.find(p => p.id === data.selectedPlan)?.title}</p>
+          </div>
+        </div>
+
+        <div className="flex gap-4">
+          <Button variant="outline" onClick={() => setShowSummary(false)} className="w-full">
+            Back
+          </Button>
+          <Button onClick={handleSubmit} className="w-full">
+            Submit Request
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -84,6 +178,13 @@ export const PlanSelectionStep = ({ data, setData }: StepProps) => {
           </div>
         ))}
       </RadioGroup>
+
+      <Button 
+        onClick={() => setShowSummary(true)} 
+        className="w-full mt-4"
+      >
+        Request Built Preview
+      </Button>
     </div>
   );
 };
