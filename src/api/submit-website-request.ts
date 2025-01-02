@@ -66,12 +66,12 @@ Thank you!
       `,
     };
 
-    // Send email using EmailJS
+    // Send email using EmailJS with your credentials
     await emailjs.send(
-      'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-      'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+      'service_f4ryypt',
+      'template_o4sramq',
       emailContent,
-      'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      'XdqQa2EHEymC9Qev8'
     );
     
     console.log('Website request received and email sent:', data);
