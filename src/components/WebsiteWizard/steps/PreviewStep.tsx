@@ -1,113 +1,142 @@
 import { WizardData } from "../WebsiteWizard";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Server, Globe, Rocket } from "lucide-react";
 
 interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
+  showPlanSelection: boolean;
 }
 
-export const PreviewStep = ({ data, setData }: StepProps) => {
-  const navigate = useNavigate();
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+const plans = [
+  {
+    title: "Basic Plan",
+    price: "$15/month",
+    features: ["Hosting only", "No updates or support"],
+    icon: Server,
+  },
+  {
+    title: "Standard Plan",
+    price: "$30/month",
+    features: [
+      "Hosting",
+      "1 content update/month",
+      "Basic SEO optimization",
+      "Email support"
+    ],
+    icon: Globe,
+  },
+  {
+    title: "Premium Plan",
+    price: "$50/month",
+    features: [
+      "Hosting",
+      "Unlimited content updates",
+      "Advanced SEO optimization",
+      "Priority email support"
+    ],
+    icon: Rocket,
+  },
+];
 
-  const handlePreview = () => {
-    switch(data.industry.toLowerCase()) {
-      case "plumbing":
-        navigate("/plumbing-pro");
-        break;
-      case "electrical":
-        navigate("/electric-solutions");
-        break;
-      case "building":
-        navigate("/builders-portfolio");
-        break;
-      case "landscaping":
-        navigate("/landscape-design");
-        break;
-      default:
-        navigate("/plumbing-pro");
-    }
-  };
+export const PreviewStep = ({ data, showPlanSelection }: StepProps) => {
+  if (showPlanSelection) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-tradie-navy">Choose Your Plan</h2>
+          <p className="text-gray-600">Select the plan that best fits your needs</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {plans.map((plan) => (
+            <Card key={plan.title} className="border-2 hover:border-tradie-orange transition-colors cursor-pointer">
+              <CardContent className="pt-6">
+                <plan.icon className="h-12 w-12 mb-4 text-tradie-orange mx-auto" />
+                <h3 className="text-xl font-bold text-center mb-2">{plan.title}</h3>
+                <p className="text-2xl font-bold text-center text-tradie-navy mb-4">{plan.price}</p>
+                <ul className="space-y-2">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center">
+                      <span className="text-green-500 mr-2">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full mt-4">Select Plan</Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-tradie-navy">Preview & Plans</h2>
-        <p className="text-gray-600">Review your website configuration</p>
+        <h2 className="text-2xl font-bold text-tradie-navy">Website Preview</h2>
+        <p className="text-gray-600">Here's how your website will look</p>
       </div>
 
-      <div className="grid gap-6">
-        <Card>
-          <CardContent className="pt-6">
-            <h3 className="font-semibold mb-4">Business Summary</h3>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="font-medium">Business Name:</span>
-                <span>{data.businessName}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-medium">Logo:</span>
-                <span>{data.logo ? "✓ Uploaded" : "Not uploaded"}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-medium">Industry:</span>
-                <span>{data.industry}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-medium">Service Area:</span>
-                <span>{data.location}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="border rounded-lg p-6 space-y-6">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-tradie-navy">{data.businessName}</h1>
+          <p className="text-xl text-gray-600 mt-2">{data.industry} Services in {data.location}</p>
+        </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <h3 className="font-semibold mb-2">Services ({data.services.length})</h3>
-            <ul className="list-disc pl-5">
+        <div className="grid gap-6">
+          <section>
+            <h2 className="text-2xl font-bold mb-4">Our Services</h2>
+            <ul className="grid grid-cols-2 gap-4">
               {data.services.map((service, index) => (
-                <li key={index}>{service}</li>
+                <li key={index} className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>
+                  {service}
+                </li>
               ))}
             </ul>
-          </CardContent>
-        </Card>
+          </section>
 
-        <Card>
-          <CardContent className="pt-6">
-            <h3 className="font-semibold mb-2">Additional Information</h3>
-            <p>{data.gallery.length} images uploaded</p>
-            <p>{data.testimonials.length} testimonials added</p>
-            <p>Contact Email: {data.contactEmail || "Not provided"}</p>
-            <p>Color Scheme: {data.colorScheme}</p>
-            <p>Selected Plan: {data.selectedPlan.charAt(0).toUpperCase() + data.selectedPlan.slice(1)}</p>
-          </CardContent>
-        </Card>
+          {data.gallery.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold mb-4">Our Work</h2>
+              <div className="grid grid-cols-3 gap-4">
+                {data.gallery.map((image, index) => (
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(image)}
+                    alt={`Gallery image ${index + 1}`}
+                    className="w-full h-32 object-cover rounded-lg"
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
-        <Card>
-          <CardContent className="pt-6">
-            <Label htmlFor="specialNotes">Special Notes</Label>
-            <Textarea
-              id="specialNotes"
-              placeholder="Add any special requirements or notes for your website..."
-              value={data.specialNotes || ""}
-              onChange={(e) => setData({ ...data, specialNotes: e.target.value })}
-              className="mt-2"
-            />
-          </CardContent>
-        </Card>
+          {data.testimonials.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold mb-4">What Our Clients Say</h2>
+              <div className="grid gap-4">
+                {data.testimonials.map((testimonial, index) => (
+                  <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                    <p className="italic">"{testimonial.quote}"</p>
+                    <p className="font-medium mt-2">
+                      - {testimonial.name}
+                      {testimonial.business && `, ${testimonial.business}`}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
-        <Button 
-          onClick={handlePreview}
-          className="w-full bg-tradie-orange hover:bg-orange-600 mb-6"
-        >
-          Preview Website
-        </Button>
+          <section>
+            <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+            <p>Email: {data.contactEmail}</p>
+            <p>Service Area: {data.location}</p>
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -9,7 +9,6 @@ import { GalleryStep } from "./steps/GalleryStep";
 import { TestimonialsStep } from "./steps/TestimonialsStep";
 import { ContactStep } from "./steps/ContactStep";
 import { ColorSchemeStep } from "./steps/ColorSchemeStep";
-import { PlanSelectionStep } from "./steps/PlanSelectionStep";
 import { PreviewStep } from "./steps/PreviewStep";
 
 export type WizardData = {
@@ -31,7 +30,6 @@ export type WizardData = {
     accent: string;
   };
   specialNotes?: string;
-  selectedPlan: string;
 };
 
 const initialData: WizardData = {
@@ -49,12 +47,12 @@ const initialData: WizardData = {
     accent: "#000000",
   },
   specialNotes: "",
-  selectedPlan: "premium", // Preselect the premium plan
 };
 
 export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<WizardData>(initialData);
+  const [showPlanSelection, setShowPlanSelection] = useState(false);
   const { toast } = useToast();
 
   const steps = [
@@ -65,7 +63,6 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
     TestimonialsStep,
     ContactStep,
     ColorSchemeStep,
-    PlanSelectionStep,
     PreviewStep,
   ];
 
@@ -118,13 +115,15 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Final data:", data);
-    toast({
-      title: "Website configuration saved!",
-      description: "Your website will be created with your specifications.",
-    });
-    onClose();
+  const handleComplete = () => {
+    // Show preview for 5 seconds then show plan selection
+    setTimeout(() => {
+      setShowPlanSelection(true);
+      toast({
+        title: "Choose Your Plan",
+        description: "Select a plan to continue with your website creation",
+      });
+    }, 5000);
   };
 
   const CurrentStep = steps[step];
@@ -134,7 +133,11 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <Progress value={progress} className="mb-4" />
-        <CurrentStep data={data} setData={setData} />
+        <CurrentStep 
+          data={data} 
+          setData={setData} 
+          showPlanSelection={showPlanSelection}
+        />
         <div className="flex justify-between mt-6">
           {step > 0 && (
             <Button variant="outline" onClick={handleBack}>
@@ -146,7 +149,7 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
               Next
             </Button>
           ) : (
-            <Button className="ml-auto" onClick={handleSubmit}>
+            <Button className="ml-auto" onClick={handleComplete}>
               Complete
             </Button>
           )}
