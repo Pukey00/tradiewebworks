@@ -17,8 +17,6 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handlePreview = () => {
-    // For now, we'll navigate to a specific example based on industry
-    // In a real implementation, this would generate a preview with the actual data
     switch(data.industry.toLowerCase()) {
       case "plumbing":
         navigate("/plumbing-pro");
@@ -33,7 +31,7 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
         navigate("/landscape-design");
         break;
       default:
-        navigate("/plumbing-pro"); // Default preview
+        navigate("/plumbing-pro");
     }
   };
 
@@ -47,10 +45,25 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
       <div className="grid gap-6">
         <Card>
           <CardContent className="pt-6">
-            <h3 className="font-semibold mb-2">Business Information</h3>
-            <p>Business Name: {data.businessName}</p>
-            <p>Industry: {data.industry}</p>
-            <p>Location: {data.location}</p>
+            <h3 className="font-semibold mb-4">Business Summary</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="font-medium">Business Name:</span>
+                <span>{data.businessName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Logo:</span>
+                <span>{data.logo ? "✓ Uploaded" : "Not uploaded"}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Industry:</span>
+                <span>{data.industry}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Service Area:</span>
+                <span>{data.location}</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -67,9 +80,11 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
 
         <Card>
           <CardContent className="pt-6">
-            <h3 className="font-semibold mb-2">Gallery & Testimonials</h3>
+            <h3 className="font-semibold mb-2">Additional Information</h3>
             <p>{data.gallery.length} images uploaded</p>
             <p>{data.testimonials.length} testimonials added</p>
+            <p>Contact Email: {data.contactEmail || "Not provided"}</p>
+            <p>Color Scheme: {data.colorScheme}</p>
           </CardContent>
         </Card>
 

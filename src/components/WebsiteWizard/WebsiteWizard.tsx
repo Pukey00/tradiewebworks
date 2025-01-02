@@ -68,7 +68,44 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
   const CurrentStep = steps[step];
   const progress = ((step + 1) / steps.length) * 100;
 
+  const validateStep = () => {
+    switch (step) {
+      case 0: // BusinessInfoStep
+        if (!data.businessName) {
+          toast({
+            title: "Required Field Missing",
+            description: "Please enter your business name",
+            variant: "destructive",
+          });
+          return false;
+        }
+        break;
+      case 1: // IndustryLocationStep
+        if (!data.industry || !data.location) {
+          toast({
+            title: "Required Fields Missing",
+            description: "Please enter both industry and service area",
+            variant: "destructive",
+          });
+          return false;
+        }
+        break;
+      case 2: // ServicesStep
+        if (data.services.length === 0) {
+          toast({
+            title: "Required Field Missing",
+            description: "Please add at least one service",
+            variant: "destructive",
+          });
+          return false;
+        }
+        break;
+    }
+    return true;
+  };
+
   const handleNext = () => {
+    if (!validateStep()) return;
     if (step < steps.length - 1) {
       setStep(step + 1);
     }
