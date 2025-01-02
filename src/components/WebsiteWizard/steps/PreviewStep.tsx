@@ -3,10 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Server, Globe, Rocket } from "lucide-react";
 
-interface StepProps {
+export interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
-  showPlanSelection: boolean;
+  showPlanSelection?: boolean;
 }
 
 const plans = [
