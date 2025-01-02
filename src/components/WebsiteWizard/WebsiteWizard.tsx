@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -48,13 +48,12 @@ const initialData: WizardData = {
     accent: "#000000",
   },
   specialNotes: "",
-  selectedPlan: "premium", // Pre-selecting the premium plan
+  selectedPlan: "premium",
 };
 
 export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState<WizardData>(initialData);
-  const [showPlanSelection, setShowPlanSelection] = useState(false);
   const { toast } = useToast();
 
   const steps = [
@@ -118,14 +117,10 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleComplete = () => {
-    // Show preview for 5 seconds then show plan selection
-    setTimeout(() => {
-      setShowPlanSelection(true);
-      toast({
-        title: "Choose Your Plan",
-        description: "Select a plan to continue with your website creation",
-      });
-    }, 5000);
+    toast({
+      title: "Choose Your Plan",
+      description: "Select a plan to continue with your website creation",
+    });
   };
 
   const CurrentStep = steps[step];
@@ -138,7 +133,6 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
         <CurrentStep 
           data={data} 
           setData={setData} 
-          showPlanSelection={showPlanSelection}
         />
         <div className="flex justify-between mt-6">
           {step > 0 && (
