@@ -23,6 +23,7 @@ export type WizardData = {
     business: string;
     quote: string;
   }>;
+  contactName: string;
   contactEmail: string;
   colorScheme: string;
   customColors?: {
@@ -41,6 +42,7 @@ const initialData: WizardData = {
   services: [],
   gallery: [],
   testimonials: [],
+  contactName: "",
   contactEmail: "",
   colorScheme: "default",
   customColors: {
