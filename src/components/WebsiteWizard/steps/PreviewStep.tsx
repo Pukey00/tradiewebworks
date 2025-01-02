@@ -1,160 +1,118 @@
 import { WizardData } from "../WebsiteWizard";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Server, Globe, Rocket } from "lucide-react";
-import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
-  showPlanSelection?: boolean;
 }
 
-const plans = [
-  {
-    title: "Basic Plan",
-    price: "$15/month",
-    features: ["Hosting only", "No updates or support"],
-    icon: Server,
-  },
-  {
-    title: "Standard Plan",
-    price: "$30/month",
-    features: [
-      "Hosting",
-      "1 content update/month",
-      "Basic SEO optimization",
-      "Email support"
-    ],
-    icon: Globe,
-  },
-  {
-    title: "Premium Plan",
-    price: "$50/month",
-    features: [
-      "Hosting",
-      "Unlimited content updates",
-      "Advanced SEO optimization",
-      "Priority email support"
-    ],
-    icon: Rocket,
-  },
-];
-
-export const PreviewStep = ({ data, setData }: StepProps) => {
-  const [showPreview, setShowPreview] = useState(false);
-
-  if (showPreview) {
-    return (
-      <div className="space-y-6">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-tradie-navy">Website Preview</h2>
-          <p className="text-gray-600">Here's how your website will look</p>
-        </div>
-
-        <div className="border rounded-lg p-6 space-y-6">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-tradie-navy">{data.businessName}</h1>
-            <p className="text-xl text-gray-600 mt-2">{data.industry} Services in {data.location}</p>
-          </div>
-
-          <div className="grid gap-6">
-            <section>
-              <h2 className="text-2xl font-bold mb-4">Our Services</h2>
-              <ul className="grid grid-cols-2 gap-4">
-                {data.services.map((service, index) => (
-                  <li key={index} className="flex items-center">
-                    <span className="text-green-500 mr-2">✓</span>
-                    {service}
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            {data.gallery.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4">Our Work</h2>
-                <div className="grid grid-cols-3 gap-4">
-                  {data.gallery.map((image, index) => (
-                    <img
-                      key={index}
-                      src={URL.createObjectURL(image)}
-                      alt={`Gallery image ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {data.testimonials.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-bold mb-4">What Our Clients Say</h2>
-                <div className="grid gap-4">
-                  {data.testimonials.map((testimonial, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                      <p className="italic">"{testimonial.quote}"</p>
-                      <p className="font-medium mt-2">
-                        - {testimonial.name}
-                        {testimonial.business && `, ${testimonial.business}`}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            <section>
-              <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
-              <p>Email: {data.contactEmail}</p>
-              <p>Service Area: {data.location}</p>
-            </section>
-          </div>
-        </div>
-
-        <Button 
-          onClick={() => setShowPreview(false)} 
-          className="w-full mt-4"
-        >
-          Back to Plans
-        </Button>
-      </div>
-    );
-  }
-
+export const PreviewStep = ({ data }: StepProps) => {
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-tradie-navy">Choose Your Plan</h2>
-        <p className="text-gray-600">Select the plan that best fits your needs</p>
+        <h2 className="text-2xl font-bold text-tradie-navy">Website Information Summary</h2>
+        <p className="text-gray-600">Please review your information before submission</p>
       </div>
-      <div className="grid md:grid-cols-3 gap-4">
-        {plans.map((plan) => (
-          <Card key={plan.title} className="border-2 hover:border-tradie-orange transition-colors cursor-pointer">
-            <CardContent className="pt-6">
-              <plan.icon className="h-12 w-12 mb-4 text-tradie-orange mx-auto" />
-              <h3 className="text-xl font-bold text-center mb-2">{plan.title}</h3>
-              <p className="text-2xl font-bold text-center text-tradie-navy mb-4">{plan.price}</p>
-              <ul className="space-y-2">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center">
-                    <span className="text-green-500 mr-2">✓</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <Button className="w-full mt-4">Select Plan</Button>
-            </CardContent>
+
+      <ScrollArea className="h-[400px] rounded-md border p-4">
+        <div className="space-y-6">
+          <Card className="p-4">
+            <h3 className="font-bold mb-2">Business Information</h3>
+            <div className="space-y-2">
+              <p><span className="font-medium">Business Name:</span> {data.businessName}</p>
+              <p><span className="font-medium">Industry:</span> {data.industry}</p>
+              <p><span className="font-medium">Location:</span> {data.location}</p>
+            </div>
           </Card>
-        ))}
+
+          <Card className="p-4">
+            <h3 className="font-bold mb-2">Services</h3>
+            <ul className="list-disc list-inside space-y-1">
+              {data.services.map((service, index) => (
+                <li key={index}>{service}</li>
+              ))}
+            </ul>
+          </Card>
+
+          {data.gallery.length > 0 && (
+            <Card className="p-4">
+              <h3 className="font-bold mb-2">Gallery Images</h3>
+              <div className="grid grid-cols-3 gap-2">
+                {data.gallery.map((image, index) => (
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(image)}
+                    alt={`Gallery image ${index + 1}`}
+                    className="w-full h-24 object-cover rounded"
+                  />
+                ))}
+              </div>
+            </Card>
+          )}
+
+          {data.testimonials.length > 0 && (
+            <Card className="p-4">
+              <h3 className="font-bold mb-2">Testimonials</h3>
+              <div className="space-y-3">
+                {data.testimonials.map((testimonial, index) => (
+                  <div key={index} className="bg-gray-50 p-3 rounded">
+                    <p className="italic">"{testimonial.quote}"</p>
+                    <p className="text-sm font-medium mt-1">
+                      - {testimonial.name}
+                      {testimonial.business && `, ${testimonial.business}`}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+
+          <Card className="p-4">
+            <h3 className="font-bold mb-2">Design Preferences</h3>
+            <div className="space-y-2">
+              <p><span className="font-medium">Color Scheme:</span> {data.colorScheme}</p>
+              {data.colorScheme === 'custom' && data.customColors && (
+                <div className="flex gap-4">
+                  <div className="flex items-center gap-2">
+                    <span>Primary:</span>
+                    <div
+                      className="w-6 h-6 rounded-full border"
+                      style={{ backgroundColor: data.customColors.primary }}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span>Accent:</span>
+                    <div
+                      className="w-6 h-6 rounded-full border"
+                      style={{ backgroundColor: data.customColors.accent }}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+
+          <Card className="p-4">
+            <h3 className="font-bold mb-2">Contact Information</h3>
+            <p><span className="font-medium">Email:</span> {data.contactEmail}</p>
+          </Card>
+
+          {data.specialNotes && (
+            <Card className="p-4">
+              <h3 className="font-bold mb-2">Additional Notes</h3>
+              <p>{data.specialNotes}</p>
+            </Card>
+          )}
+        </div>
+      </ScrollArea>
+
+      <div className="flex justify-center mt-6">
+        <Button size="lg" className="w-full max-w-md">
+          Request Website Review
+        </Button>
       </div>
-      <Button 
-        onClick={() => setShowPreview(true)} 
-        variant="outline" 
-        className="w-full mt-4"
-      >
-        Preview Website
-      </Button>
     </div>
   );
 };
