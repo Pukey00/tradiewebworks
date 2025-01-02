@@ -85,6 +85,7 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
             <p>{data.testimonials.length} testimonials added</p>
             <p>Contact Email: {data.contactEmail || "Not provided"}</p>
             <p>Color Scheme: {data.colorScheme}</p>
+            <p>Selected Plan: {data.selectedPlan.charAt(0).toUpperCase() + data.selectedPlan.slice(1)}</p>
           </CardContent>
         </Card>
 
@@ -107,75 +108,6 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
         >
           Preview Website
         </Button>
-
-        <div className="grid md:grid-cols-3 gap-4">
-          <Card>
-            <CardContent className="pt-6">
-              <h3 className="text-xl font-bold mb-4">Basic Plan</h3>
-              <p className="text-3xl font-bold mb-4">$15/month</p>
-              <ul className="space-y-2">
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Hosting only
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  No updates or support
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-tradie-orange">
-            <CardContent className="pt-6">
-              <h3 className="text-xl font-bold mb-4">Standard Plan</h3>
-              <p className="text-3xl font-bold mb-4">$30/month</p>
-              <ul className="space-y-2">
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Hosting
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  1 content update/month
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Basic SEO optimization
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Email support
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <h3 className="text-xl font-bold mb-4">Premium Plan</h3>
-              <p className="text-3xl font-bold mb-4">$50/month</p>
-              <ul className="space-y-2">
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Hosting
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Unlimited content updates
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Advanced SEO optimization
-                </li>
-                <li className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-2" />
-                  Priority email support
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );

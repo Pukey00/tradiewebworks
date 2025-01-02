@@ -9,6 +9,7 @@ import { GalleryStep } from "./steps/GalleryStep";
 import { TestimonialsStep } from "./steps/TestimonialsStep";
 import { ContactStep } from "./steps/ContactStep";
 import { ColorSchemeStep } from "./steps/ColorSchemeStep";
+import { PlanSelectionStep } from "./steps/PlanSelectionStep";
 import { PreviewStep } from "./steps/PreviewStep";
 
 export type WizardData = {
@@ -30,6 +31,7 @@ export type WizardData = {
     accent: string;
   };
   specialNotes?: string;
+  selectedPlan: string;
 };
 
 const initialData: WizardData = {
@@ -47,6 +49,7 @@ const initialData: WizardData = {
     accent: "#000000",
   },
   specialNotes: "",
+  selectedPlan: "premium", // Preselect the premium plan
 };
 
 export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
@@ -62,11 +65,9 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
     TestimonialsStep,
     ContactStep,
     ColorSchemeStep,
+    PlanSelectionStep,
     PreviewStep,
   ];
-
-  const CurrentStep = steps[step];
-  const progress = ((step + 1) / steps.length) * 100;
 
   const validateStep = () => {
     switch (step) {
@@ -125,6 +126,9 @@ export const WebsiteWizard = ({ onClose }: { onClose: () => void }) => {
     });
     onClose();
   };
+
+  const CurrentStep = steps[step];
+  const progress = ((step + 1) / steps.length) * 100;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
