@@ -2,6 +2,8 @@ import { WizardData } from "../WebsiteWizard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/components/ui/use-toast";
+import emailjs from '@emailjs/browser';
 
 export interface StepProps {
   data: WizardData;
@@ -9,6 +11,86 @@ export interface StepProps {
 }
 
 export const PreviewStep = ({ data }: StepProps) => {
+  const { toast } = useToast();
+
+  const handleSubmit = async () => {
+    try {
+      // Format testimonials
+      const formattedTestimonials = data.testimonials
+        .map(t => `- ${t.name} (${t.business}): "${t.quote}"`)
+        .join("\n");
+
+      // Format gallery images
+      const formattedGallery = data.gallery
+        .map((_, index) => `- Image ${index + 1}: [Project Image ${index + 1}]`)
+        .join("\n");
+
+      // Format the email content
+      const emailContent = {
+        to_email: data.contactEmail,
+        subject: `Website Preview Request - ${data.businessName}`,
+        content: `
+Business Information:
+-------------------
+Business Name: ${data.businessName}
+Industry: ${data.industry}
+Service Area: ${data.location}
+
+Services Offered:
+---------------
+${data.services.map(service => `- ${service}`).join("\n")}
+
+Testimonials:
+-----------
+${formattedTestimonials}
+
+Design Preferences:
+----------------
+Color Scheme: ${data.colorScheme}
+${data.customColors ? `Custom Colors:
+- Primary: ${data.customColors.primary}
+- Accent: ${data.customColors.accent}` : ''}
+
+Project Images:
+-------------
+${formattedGallery}
+${data.logo ? "Logo: [Business Logo]" : "No logo provided"}
+
+Contact Information:
+-----------------
+Email: ${data.contactEmail}
+
+Selected Plan: ${data.selectedPlan}
+
+Additional Notes:
+--------------
+${data.specialNotes || "None provided"}
+        `,
+      };
+
+      // Send email using EmailJS
+      await emailjs.send(
+        'service_f4ryypt',
+        'template_o4sramq',
+        emailContent,
+        'XdqQa2EHEymC9Qev8'
+      );
+
+      toast({
+        title: "Request Sent Successfully!",
+        description: "We'll review your information and get back to you soon.",
+      });
+
+    } catch (error) {
+      console.error('Error sending email:', error);
+      toast({
+        title: "Error Sending Request",
+        description: "There was a problem sending your request. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -109,8 +191,12 @@ export const PreviewStep = ({ data }: StepProps) => {
       </ScrollArea>
 
       <div className="flex justify-center mt-6">
-        <Button size="lg" className="w-full max-w-md">
-          Request Website Review
+        <Button 
+          size="lg" 
+          className="w-full max-w-md"
+          onClick={handleSubmit}
+        >
+          Request FREE Website Preview
         </Button>
       </div>
     </div>
