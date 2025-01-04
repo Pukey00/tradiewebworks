@@ -14,7 +14,7 @@ export const HeroSection = () => {
           <p className="text-tradie-orange font-bold text-lg flex items-center gap-2">
             <span className="animate-bounce">🎉</span>
             Limited Time Offer: Free Setup
-            <span className="text-sm font-normal opacity-75">(Save up to $999)</span>
+            <span className="text-sm font-normal opacity-75">(Save up to $500)</span>
             <span className="text-sm font-normal opacity-75">(Ends 01/05/2025)</span>
           </p>
         </div>
