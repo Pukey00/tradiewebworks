@@ -82,7 +82,7 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
         <>
           <Button 
             variant="outline" 
-            className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange"
+            className="text-tradie-navy hover:text-tradie-orange border-white hover:border-tradie-orange"
             onClick={() => navigate('/login')}
           >
             Log In
