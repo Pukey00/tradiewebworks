@@ -56,8 +56,10 @@ export const WebsitesList = () => {
         <Card key={website.id} className="p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-medium text-lg">{website.businessName || "Untitled Website"}</h3>
-            <Badge variant={website.status === "pending" ? "secondary" : "default"}>
-              {website.status || "pending"}
+            <Badge 
+              variant={website.status === "pending" ? "pending" : "default"}
+            >
+              {website.status === "pending" ? "PENDING" : website.status || "PENDING"}
             </Badge>
           </div>
           
