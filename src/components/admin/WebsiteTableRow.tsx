@@ -1,13 +1,25 @@
 import { TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, ExternalLink } from "lucide-react";
+import { Loader2, ExternalLink, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { 
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip";
+import { useWebsiteMutations } from "./websiteMutations";
 
 interface Website {
   id: string;
@@ -35,6 +47,13 @@ export const WebsiteTableRow = ({
   onUrlUpdate,
   onUrlChange
 }: WebsiteTableRowProps) => {
+  const { deleteWebsiteMutation } = useWebsiteMutations();
+
+  const handleDelete = async () => {
+    console.log("Deleting website:", website.id);
+    await deleteWebsiteMutation.mutateAsync(website.id);
+  };
+
   return (
     <TableRow key={website.id}>
       <TableCell className="font-medium">{website.businessName}</TableCell>
@@ -111,6 +130,34 @@ export const WebsiteTableRow = ({
           >
             {editingUrl?.id === website.id ? 'Save URL' : 'Edit URL'}
           </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-red-600 hover:text-red-800"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Website</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete {website.businessName}'s website? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </TableCell>
     </TableRow>
