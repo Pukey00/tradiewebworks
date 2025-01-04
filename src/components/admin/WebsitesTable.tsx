@@ -1,4 +1,4 @@
-import { Table, TableHeader, TableBody, TableRow, TableHead } from "@/components/ui/table";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { useState } from "react";
 import { WebsiteTableRow } from "./WebsiteTableRow";
 import { useWebsiteMutations } from "./websiteMutations";
