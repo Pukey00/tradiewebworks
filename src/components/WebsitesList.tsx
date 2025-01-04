@@ -257,3 +257,6 @@ export const WebsitesList = () => {
       </Dialog>
     </>
   );
+};
+
+export default WebsitesList;
