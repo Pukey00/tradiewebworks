@@ -4,16 +4,39 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
+import { auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login attempted with:", { email, password });
-    // TODO: Implement actual login logic
+    
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Successfully logged in user:", userCredential.user.email);
+      
+      toast({
+        title: "Success",
+        description: "Successfully logged in!",
+      });
+      
+      navigate("/"); // Redirect to home page after successful login
+    } catch (error: any) {
+      console.error("Login error:", error);
+      
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to login. Please try again.",
+      });
+    }
   };
 
   return (
