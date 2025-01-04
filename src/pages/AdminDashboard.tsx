@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -19,6 +19,8 @@ interface Website {
   createdAt: Date;
 }
 
+const ADMIN_EMAIL = "lhollins0@gmail.com";
+
 const AdminDashboard = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -33,20 +35,27 @@ const AdminDashboard = () => {
         return;
       }
       
-      // Here you might want to check if the user has admin role
-      // For now, we'll just check if they're authenticated
+      if (user.email !== ADMIN_EMAIL) {
+        console.log("User is not admin, redirecting to dashboard");
+        navigate("/dashboard");
+        toast({
+          variant: "destructive",
+          title: "Access Denied",
+          description: "You don't have permission to access the admin dashboard"
+        });
+        return;
+      }
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, [navigate, toast]);
 
   const { data: websites, isLoading, error } = useQuery({
-    queryKey: ['websites'],
+    queryKey: ['admin-websites'],
     queryFn: async () => {
       console.log("Starting to fetch websites from Firestore");
       try {
         const websitesRef = collection(db, "websites");
-        // Remove any where clauses to get all websites
         const websitesQuery = query(websitesRef);
         const querySnapshot = await getDocs(websitesQuery);
         
@@ -72,7 +81,8 @@ const AdminDashboard = () => {
         throw err;
       }
     },
-    retry: false
+    retry: false,
+    enabled: auth.currentUser?.email === ADMIN_EMAIL
   });
 
   if (error) {
@@ -83,7 +93,7 @@ const AdminDashboard = () => {
         <main className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center text-red-500">
-              Error loading websites. Please make sure you have the correct permissions.
+              Error loading websites. Please try refreshing the page.
             </div>
           </div>
         </main>
