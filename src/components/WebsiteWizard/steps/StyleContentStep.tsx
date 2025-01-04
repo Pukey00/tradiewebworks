@@ -1,11 +1,12 @@
 import { WizardData } from "../WebsiteWizard";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ImagePlus, X } from "lucide-react";
 import { useState } from "react";
+import { StyleSelector } from "./components/StyleSelector";
+import { WebsiteStyle, WebsiteStyleOption } from "./types/websiteTypes";
 
 interface StepProps {
   data: WizardData;
@@ -14,7 +15,7 @@ interface StepProps {
   onBack: () => void;
 }
 
-const websiteStyles = [
+const websiteStyles: WebsiteStyleOption[] = [
   {
     id: "modern",
     name: "Modern",
@@ -88,6 +89,10 @@ export const StyleContentStep = ({ data, setData, onNext, onBack }: StepProps) =
     onNext();
   };
 
+  const handleStyleChange = (style: WebsiteStyle) => {
+    setData({ ...data, websiteStyle: style });
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
@@ -96,41 +101,11 @@ export const StyleContentStep = ({ data, setData, onNext, onBack }: StepProps) =
       </div>
 
       <div className="space-y-6">
-        <div>
-          <Label>Website Style</Label>
-          <RadioGroup
-            value={data.websiteStyle || "modern"}
-            onValueChange={(value) => setData({ ...data, websiteStyle: value })}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2"
-          >
-            {websiteStyles.map((style) => (
-              <div key={style.id} className="relative">
-                <RadioGroupItem
-                  value={style.id}
-                  id={style.id}
-                  className="peer sr-only"
-                />
-                <Label
-                  htmlFor={style.id}
-                  className="flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:border-tradie-orange peer-checked:border-tradie-orange peer-checked:bg-orange-50"
-                >
-                  <div className="flex gap-2 mb-2">
-                    <div
-                      className="w-6 h-6 rounded-full"
-                      style={{ backgroundColor: style.colors.primary }}
-                    />
-                    <div
-                      className="w-6 h-6 rounded-full"
-                      style={{ backgroundColor: style.colors.accent }}
-                    />
-                  </div>
-                  <span className="font-medium">{style.name}</span>
-                  <span className="text-sm text-gray-500">{style.description}</span>
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </div>
+        <StyleSelector 
+          value={data.websiteStyle || "modern"}
+          onChange={handleStyleChange}
+          websiteStyles={websiteStyles}
+        />
 
         <div>
           <Label htmlFor="homePageText">Home Page Text</Label>
