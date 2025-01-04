@@ -6,10 +6,11 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { PlanCard } from "./PlanCard";
+import { collection, addDoc } from "firebase/firestore";
+import { POST } from "@/api/submit-website-request";
+import { validateRequiredFields } from "./validation";
+import { PlanCards } from "./PlanCards";
 import { DemoRequestSection } from "./DemoRequestSection";
-import { plans } from "./planData";
 
 interface StepProps {
   data: WizardData;
@@ -24,24 +25,9 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const validateRequiredFields = () => {
-    const requiredFields = {
-      businessName: "Business Name",
-      email: "Email Address",
-      industry: "Industry/Trade",
-      location: "Service Area"
-    };
-
-    const missingFields = Object.entries(requiredFields)
-      .filter(([key]) => !data[key as keyof WizardData])
-      .map(([_, label]) => label);
-
-    return missingFields;
-  };
-
   const handleSubmit = async () => {
     console.log("Validating required fields before submission...");
-    const missingFields = validateRequiredFields();
+    const missingFields = validateRequiredFields(data);
     
     if (missingFields.length > 0) {
       console.log("Missing required fields:", missingFields);
@@ -57,26 +43,24 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
     try {
       const user = auth.currentUser;
       if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please sign in to submit your website request.",
-          variant: "destructive",
-        });
-        return;
+        throw new Error("User not authenticated");
       }
 
-      console.log("Attempting to save website data for user:", user.uid);
-
+      console.log("Saving website data for user:", user.uid);
       const websiteData = {
         ...data,
         userId: user.uid,
-        userEmail: user.email,
         status: "pending",
-        createdAt: serverTimestamp(),
+        createdAt: new Date(),
+        userEmail: user.email,
       };
 
-      const docRef = await addDoc(collection(db, "websites"), websiteData);
-      console.log("Website data saved successfully with ID:", docRef.id);
+      await addDoc(collection(db, "websites"), websiteData);
+
+      await POST(new Request("", { 
+        method: "POST",
+        body: JSON.stringify(data)
+      }));
 
       toast({
         title: "Success!",
@@ -88,7 +72,6 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
 
     } catch (error) {
       console.error("Error submitting website request:", error);
-      
       toast({
         title: "Error",
         description: "Failed to submit your website request. Please try again.",
@@ -111,21 +94,8 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
 
       <ScrollArea className="flex-1">
         <div className="space-y-8 pr-4">
-          <div className="grid md:grid-cols-3 gap-6">
-            {plans.map((plan) => (
-              <PlanCard
-                key={plan.id}
-                plan={plan}
-                selectedPlan={data.selectedPlan}
-                onSelect={(planId) => setData({ ...data, selectedPlan: planId })}
-              />
-            ))}
-          </div>
-
-          <DemoRequestSection 
-            isSubmitting={isSubmitting} 
-            onSubmit={handleSubmit} 
-          />
+          <PlanCards data={data} setData={setData} />
+          <DemoRequestSection isSubmitting={isSubmitting} onSubmit={handleSubmit} />
 
           <div className="flex justify-between pt-4">
             <Button variant="outline" onClick={onBack}>
