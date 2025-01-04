@@ -72,7 +72,10 @@ export const PlanSelectionStep = ({ data, setData, onNext, onBack }: StepProps) 
                   <h3 className="text-xl font-bold mb-2">{plan.title}</h3>
                   <div className="space-y-2 mb-4">
                     <p className="text-lg font-semibold">{plan.setupPrice} setup</p>
-                    <p className="text-sm text-gray-500">Free setup if you subscribe to the monthly plan now.</p>
+                    <p className="text-sm">
+                      <span className="text-tradie-orange font-bold text-base">FREE SETUP</span>
+                      <span className="block text-gray-500">if you subscribe to the monthly plan now!</span>
+                    </p>
                     <p className="text-xl font-bold text-tradie-navy">{plan.monthlyFee}</p>
                   </div>
                   <div className="space-y-2 mb-6">
