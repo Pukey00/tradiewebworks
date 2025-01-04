@@ -24,6 +24,58 @@ const predefinedServices = [
   "Other"
 ];
 
+const suggestedSubServices: Record<string, string[]> = {
+  Plumbing: [
+    "Leak Repair",
+    "Pipe Installation",
+    "Water Heater Services",
+    "Drain Cleaning",
+    "Fixture Installation"
+  ],
+  Electrical: [
+    "Wiring Installation",
+    "Lighting Installation",
+    "Circuit Breaker Service",
+    "Electrical Repairs",
+    "Safety Inspections"
+  ],
+  Landscaping: [
+    "Lawn Maintenance",
+    "Garden Design",
+    "Tree Services",
+    "Irrigation Systems",
+    "Hardscaping"
+  ],
+  Carpentry: [
+    "Custom Cabinets",
+    "Deck Building",
+    "Furniture Making",
+    "Door Installation",
+    "Trim Work"
+  ],
+  Tiling: [
+    "Floor Tiling",
+    "Wall Tiling",
+    "Bathroom Tiling",
+    "Kitchen Backsplash",
+    "Tile Repair"
+  ],
+  Roofing: [
+    "Roof Installation",
+    "Roof Repair",
+    "Gutter Installation",
+    "Roof Inspection",
+    "Shingle Replacement"
+  ],
+  Painting: [
+    "Interior Painting",
+    "Exterior Painting",
+    "Cabinet Painting",
+    "Deck Staining",
+    "Wallpaper Installation"
+  ]
+};
+
 export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProps) => {
   const [newService, setNewService] = useState("");
   const [showCustomField, setShowCustomField] = useState(false);
@@ -76,15 +128,29 @@ export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProp
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             {predefinedServices.map((service) => (
-              <div key={service} className="flex items-center space-x-2">
-                <Checkbox
-                  id={service}
-                  checked={data.services.includes(service)}
-                  onCheckedChange={() => toggleService(service)}
-                />
-                <Label htmlFor={service} className="cursor-pointer">
-                  {service}
-                </Label>
+              <div key={service} className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id={service}
+                    checked={data.services.includes(service)}
+                    onCheckedChange={() => toggleService(service)}
+                  />
+                  <Label htmlFor={service} className="cursor-pointer">
+                    {service}
+                  </Label>
+                </div>
+                {data.services.includes(service) && suggestedSubServices[service] && (
+                  <div className="ml-6 pl-2 border-l-2 border-gray-200">
+                    <p className="text-sm text-gray-600 mb-2">Suggested services:</p>
+                    <ul className="text-sm space-y-1">
+                      {suggestedSubServices[service].map((subService) => (
+                        <li key={subService} className="text-gray-700">
+                          • {subService}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             ))}
           </div>
