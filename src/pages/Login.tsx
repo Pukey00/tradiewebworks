@@ -64,7 +64,7 @@ const Login = () => {
             <div className="space-y-4">
               <Button
                 type="submit"
-                className="w-full bg-tradie-orange hover:bg-orange-600 text-[#0EA5E9]"
+                className="w-full bg-tradie-orange hover:bg-orange-600 text-white"
               >
                 Sign in
               </Button>
