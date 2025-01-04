@@ -70,6 +70,7 @@ export const WebsitesList = () => {
       await submitUpdateRequest({
         businessName: selectedWebsite.businessName,
         updateRequest: updateRequest,
+        websiteId: selectedWebsite.id  // Add the websiteId parameter here
       });
 
       toast({
