@@ -4,17 +4,56 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
+import { auth } from "@/lib/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useToast } from "@/components/ui/use-toast";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Sign up attempted with:", { email, password, confirmPassword });
-    // TODO: Implement actual signup logic
+
+    if (password !== confirmPassword) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Passwords do not match",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("Successfully created user:", userCredential.user);
+      
+      toast({
+        title: "Account created successfully!",
+        description: "Welcome to Tradie Web Works",
+      });
+      
+      navigate("/dashboard");
+    } catch (error: any) {
+      console.error("Error creating user:", error);
+      toast({
+        variant: "destructive",
+        title: "Error creating account",
+        description: error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,6 +83,7 @@ const SignUp = () => {
                   required
                   className="mt-1"
                   placeholder="Enter your email"
+                  disabled={isLoading}
                 />
               </div>
               <div>
@@ -58,6 +98,7 @@ const SignUp = () => {
                   required
                   className="mt-1"
                   placeholder="Create a password"
+                  disabled={isLoading}
                 />
               </div>
               <div>
@@ -72,6 +113,7 @@ const SignUp = () => {
                   required
                   className="mt-1"
                   placeholder="Confirm your password"
+                  disabled={isLoading}
                 />
               </div>
             </div>
@@ -80,8 +122,9 @@ const SignUp = () => {
               <Button
                 type="submit"
                 className="w-full bg-tradie-orange hover:bg-orange-600 text-white"
+                disabled={isLoading}
               >
-                Sign up
+                {isLoading ? "Creating account..." : "Sign up"}
               </Button>
               
               <div className="text-center">
@@ -91,6 +134,7 @@ const SignUp = () => {
                     variant="link" 
                     className="text-tradie-orange hover:text-orange-600 p-0"
                     onClick={() => navigate('/login')}
+                    disabled={isLoading}
                   >
                     Sign in
                   </Button>
