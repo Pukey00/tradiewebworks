@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Input } from "@/components/ui/input";
 
 interface Website {
   id: string;
@@ -13,11 +14,13 @@ interface Website {
   status: string;
   userEmail: string;
   createdAt: Date;
+  websiteUrl?: string;
 }
 
 export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
   const { toast } = useToast();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [editingUrl, setEditingUrl] = useState<{ id: string; url: string } | null>(null);
   const queryClient = useQueryClient();
 
   const updateStatusMutation = useMutation({
@@ -31,7 +34,6 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
     },
     onSuccess: ({ websiteId, newStatus }) => {
       console.log(`Successfully updated status to ${newStatus}`);
-      // Update the cache with the new status
       queryClient.setQueryData(['admin-websites'], (oldData: Website[] | undefined) => {
         if (!oldData) return oldData;
         return oldData.map(website => 
@@ -59,10 +61,57 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
     }
   });
 
+  const updateUrlMutation = useMutation({
+    mutationFn: async ({ websiteId, newUrl }: { websiteId: string; newUrl: string }) => {
+      console.log(`Updating URL for website ${websiteId} to ${newUrl}`);
+      const websiteRef = doc(db, "websites", websiteId);
+      await updateDoc(websiteRef, {
+        websiteUrl: newUrl
+      });
+      return { websiteId, newUrl };
+    },
+    onSuccess: ({ websiteId, newUrl }) => {
+      console.log(`Successfully updated URL to ${newUrl}`);
+      queryClient.setQueryData(['admin-websites'], (oldData: Website[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData.map(website => 
+          website.id === websiteId 
+            ? { ...website, websiteUrl: newUrl }
+            : website
+        );
+      });
+
+      toast({
+        title: "URL Updated",
+        description: "Website URL has been updated successfully",
+      });
+      setEditingUrl(null);
+    },
+    onError: (error) => {
+      console.error("Error updating URL:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update website URL",
+      });
+    }
+  });
+
   const handleStatusUpdate = async (websiteId: string, currentStatus: string) => {
     setUpdatingId(websiteId);
     const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
     updateStatusMutation.mutate({ websiteId, newStatus });
+  };
+
+  const handleUrlUpdate = (websiteId: string, currentUrl: string = '') => {
+    if (editingUrl?.id === websiteId) {
+      updateUrlMutation.mutate({ 
+        websiteId, 
+        newUrl: editingUrl.url 
+      });
+    } else {
+      setEditingUrl({ id: websiteId, url: currentUrl });
+    }
   };
 
   return (
@@ -73,6 +122,7 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
           <TableHead>User Email</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Created At</TableHead>
+          <TableHead>Website URL</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -94,25 +144,64 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
               <TableCell>
                 {website.createdAt.toLocaleDateString()}
               </TableCell>
+              <TableCell className="max-w-xs">
+                {editingUrl?.id === website.id ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={editingUrl.url}
+                      onChange={(e) => setEditingUrl({ id: website.id, url: e.target.value })}
+                      placeholder="Enter website URL"
+                      className="text-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    {website.websiteUrl ? (
+                      <a
+                        href={website.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 underline flex items-center gap-1"
+                      >
+                        {website.websiteUrl.length > 30 
+                          ? website.websiteUrl.substring(0, 30) + '...' 
+                          : website.websiteUrl}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    ) : (
+                      <span className="text-gray-500 italic">Not set</span>
+                    )}
+                  </div>
+                )}
+              </TableCell>
               <TableCell>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleStatusUpdate(website.id, website.status)}
-                  disabled={updatingId === website.id}
-                >
-                  {updatingId === website.id ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    website.status === 'pending' ? 'Approve' : 'Revert to Pending'
-                  )}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleStatusUpdate(website.id, website.status)}
+                    disabled={updatingId === website.id}
+                  >
+                    {updatingId === website.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      website.status === 'pending' ? 'Approve' : 'Revert to Pending'
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleUrlUpdate(website.id, website.websiteUrl)}
+                  >
+                    {editingUrl?.id === website.id ? 'Save URL' : 'Edit URL'}
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))
         ) : (
           <TableRow>
-            <TableCell colSpan={5} className="text-center">
+            <TableCell colSpan={6} className="text-center">
               No websites found
             </TableCell>
           </TableRow>
