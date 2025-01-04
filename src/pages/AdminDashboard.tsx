@@ -55,6 +55,11 @@ const AdminDashboard = () => {
     queryFn: async () => {
       console.log("Starting to fetch websites from Firestore");
       try {
+        if (!auth.currentUser) {
+          console.log("No authenticated user found");
+          throw new Error("Authentication required");
+        }
+
         const websitesRef = collection(db, "websites");
         const querySnapshot = await getDocs(websitesRef);
         
@@ -81,7 +86,7 @@ const AdminDashboard = () => {
       }
     },
     retry: 1,
-    enabled: auth.currentUser?.email === ADMIN_EMAIL,
+    enabled: !!auth.currentUser && auth.currentUser.email === ADMIN_EMAIL,
     meta: {
       onError: (error: Error) => {
         console.error("Query error:", error);
