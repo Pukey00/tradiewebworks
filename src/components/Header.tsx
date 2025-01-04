@@ -4,7 +4,8 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useToast } from "./ui/use-toast";
 import { useEffect, useState } from "react";
-import { LogOut } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 interface HeaderProps {
   userEmail?: string;
@@ -16,15 +17,14 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Set up auth state listener
     const unsubscribe = auth.onAuthStateChanged((user) => {
       console.log("Auth state changed:", user?.email);
       setCurrentUser(user?.email || null);
     });
 
-    // Cleanup subscription
     return () => unsubscribe();
   }, []);
 
@@ -46,49 +46,71 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
     }
   };
 
+  const NavItems = () => (
+    <>
+      <button 
+        onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+        className="text-white hover:text-tradie-orange transition-colors"
+      >
+        Contact Us
+      </button>
+      {currentUser ? (
+        <>
+          <span className="text-white">{currentUser}</span>
+          <Button 
+            variant="outline" 
+            className="text-red-500 hover:text-red-600 border-red-500 hover:border-red-600 flex items-center gap-2"
+            onClick={handleSignOut}
+          >
+            <LogOut className="h-4 w-4" />
+            Sign Out
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button 
+            variant="outline" 
+            className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange"
+            onClick={() => navigate('/login')}
+          >
+            Log In
+          </Button>
+          <Button 
+            className="bg-tradie-orange hover:bg-orange-600 text-white"
+            onClick={() => navigate('/signup')}
+          >
+            Sign Up
+          </Button>
+        </>
+      )}
+    </>
+  );
+
   return (
     <header className="bg-tradie-navy py-4 px-6 shadow-lg">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-white">
           <span className="text-tradie-orange">Tradie</span> Web Works
         </Link>
-        <nav className="flex items-center gap-6">
-          <button 
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="text-white hover:text-tradie-orange transition-colors"
-          >
-            Contact Us
-          </button>
-          {currentUser ? (
-            <>
-              <span className="text-white">{currentUser}</span>
-              <Button 
-                variant="outline" 
-                className="text-red-500 hover:text-red-600 border-red-500 hover:border-red-600 flex items-center gap-2"
-                onClick={handleSignOut}
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button 
-                variant="outline" 
-                className="text-tradie-navy hover:text-tradie-orange border-white hover:border-tradie-orange"
-                onClick={() => navigate('/login')}
-              >
-                Log In
-              </Button>
-              <Button 
-                className="bg-tradie-orange hover:bg-orange-600 text-white"
-                onClick={() => navigate('/signup')}
-              >
-                Sign Up
-              </Button>
-            </>
-          )}
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6">
+          <NavItems />
         </nav>
+
+        {/* Mobile Navigation */}
+        <Sheet>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="icon" className="text-white">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="bg-tradie-navy w-[300px] p-6">
+            <nav className="flex flex-col gap-6 mt-6">
+              <NavItems />
+            </nav>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   );
