@@ -10,6 +10,11 @@ export const HeroSection = () => {
   return (
     <div className="relative bg-tradie-navy text-white py-20 px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+        <div className="mb-8 bg-tradie-orange/10 border border-tradie-orange rounded-lg py-2 px-4 max-w-fit mx-auto">
+          <p className="text-tradie-orange font-semibold">
+            🎉 Limited Time Offer: Free Setup (Ends 01/05/2025)
+          </p>
+        </div>
         <div className="text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Websites Built
