@@ -65,13 +65,13 @@ export const StyleContentStep = ({ data, setData, onNext, onBack }: StepProps) =
   };
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col h-full">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-tradie-navy">Step 3 of 4 - Website Style & Content</h2>
         <p className="text-gray-600">Choose a style for your website and provide any additional content you want to showcase.</p>
       </div>
 
-      <ScrollArea className="h-[60vh] pr-4">
+      <ScrollArea className="flex-1 pr-4">
         <div className="space-y-6">
           <StyleSelector 
             value={data.websiteStyle || "modern"}
@@ -97,7 +97,7 @@ export const StyleContentStep = ({ data, setData, onNext, onBack }: StepProps) =
         </div>
       </ScrollArea>
 
-      <div className="flex justify-between pt-6">
+      <div className="flex justify-between pt-6 mt-6 border-t">
         <Button
           variant="outline"
           onClick={onBack}
