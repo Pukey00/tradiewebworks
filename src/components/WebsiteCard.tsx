@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip } from "@/components/ui/tooltip";
 
 interface WebsiteCardProps {
   website: any;
@@ -9,6 +10,8 @@ interface WebsiteCardProps {
 }
 
 export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
+  const websiteUrl = website.websiteUrl || website.url;
+
   return (
     <Card className="p-6">
       <div className="flex items-center justify-between mb-4">
@@ -29,6 +32,23 @@ export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
           <p className="text-sm text-gray-600">Service Area: {website.location}</p>
         )}
         <p className="text-sm text-gray-600">Plan: {website.selectedPlan || "Not selected"}</p>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Website:</span>
+          {websiteUrl ? (
+            <Tooltip content="Open website">
+              <a
+                href={websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center gap-1"
+              >
+                Visit site <ExternalLink className="h-3 w-3" />
+              </a>
+            </Tooltip>
+          ) : (
+            <span className="text-sm text-gray-500 italic">Not available yet</span>
+          )}
+        </div>
       </div>
 
       <Button 
