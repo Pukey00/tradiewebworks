@@ -19,6 +19,13 @@ const industries = [
   "HVAC",
 ];
 
+const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+  <div className="flex items-center gap-1">
+    {children}
+    <span className="text-red-500">*</span>
+  </div>
+);
+
 export const IndustryLocationStep = ({ data, setData }: StepProps) => {
   return (
     <div className="space-y-6">
@@ -29,10 +36,13 @@ export const IndustryLocationStep = ({ data, setData }: StepProps) => {
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="industry">Industry/Trade</Label>
+          <RequiredLabel>
+            <Label htmlFor="industry">Industry/Trade</Label>
+          </RequiredLabel>
           <Select
             value={data.industry}
             onValueChange={(value) => setData({ ...data, industry: value })}
+            required
           >
             <SelectTrigger>
               <SelectValue placeholder="Select your industry" />
@@ -48,12 +58,15 @@ export const IndustryLocationStep = ({ data, setData }: StepProps) => {
         </div>
 
         <div>
-          <Label htmlFor="location">Service Area</Label>
+          <RequiredLabel>
+            <Label htmlFor="location">Service Area</Label>
+          </RequiredLabel>
           <Input
             id="location"
             value={data.location}
             onChange={(e) => setData({ ...data, location: e.target.value })}
             placeholder="e.g., Sydney Metro Area"
+            required
           />
         </div>
       </div>

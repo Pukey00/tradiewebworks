@@ -8,7 +8,7 @@ interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
   onNext: () => void;
-  onBack: () => void;  // Added this line to fix the TypeScript error
+  onBack: () => void;
 }
 
 export const BusinessDetailsStep = ({ data, setData, onNext, onBack }: StepProps) => {
@@ -22,6 +22,13 @@ export const BusinessDetailsStep = ({ data, setData, onNext, onBack }: StepProps
     return data.businessName && data.email;
   };
 
+  const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+    <div className="flex items-center gap-1">
+      {children}
+      <span className="text-red-500">*</span>
+    </div>
+  );
+
   return (
     <div className="flex flex-col h-[calc(100vh-200px)] max-h-[600px]">
       <div className="text-center mb-6">
@@ -32,7 +39,9 @@ export const BusinessDetailsStep = ({ data, setData, onNext, onBack }: StepProps
       <ScrollArea className="flex-1">
         <div className="space-y-6 pr-4">
           <div>
-            <Label htmlFor="businessName">Business Name *</Label>
+            <RequiredLabel>
+              <Label htmlFor="businessName">Business Name</Label>
+            </RequiredLabel>
             <Input
               id="businessName"
               value={data.businessName}
@@ -54,7 +63,9 @@ export const BusinessDetailsStep = ({ data, setData, onNext, onBack }: StepProps
           </div>
 
           <div>
-            <Label htmlFor="email">Email Address *</Label>
+            <RequiredLabel>
+              <Label htmlFor="email">Email Address</Label>
+            </RequiredLabel>
             <Input
               id="email"
               value={data.email}
@@ -91,7 +102,7 @@ export const BusinessDetailsStep = ({ data, setData, onNext, onBack }: StepProps
         <Button
           variant="outline"
           onClick={onBack}
-          disabled={true}  // Disabled since this is the first step
+          disabled={true}
         >
           Back
         </Button>

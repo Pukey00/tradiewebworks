@@ -24,7 +24,35 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const validateRequiredFields = () => {
+    const requiredFields = {
+      businessName: "Business Name",
+      email: "Email Address",
+      industry: "Industry/Trade",
+      location: "Service Area"
+    };
+
+    const missingFields = Object.entries(requiredFields)
+      .filter(([key]) => !data[key as keyof WizardData])
+      .map(([_, label]) => label);
+
+    return missingFields;
+  };
+
   const handleSubmit = async () => {
+    console.log("Validating required fields before submission...");
+    const missingFields = validateRequiredFields();
+    
+    if (missingFields.length > 0) {
+      console.log("Missing required fields:", missingFields);
+      toast({
+        title: "Missing Required Information",
+        description: `Please fill in the following required fields: ${missingFields.join(", ")}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const user = auth.currentUser;
@@ -39,7 +67,6 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
 
       console.log("Attempting to save website data for user:", user.uid);
 
-      // Save to Firestore with status and timestamp
       const websiteData = {
         ...data,
         userId: user.uid,
@@ -47,11 +74,6 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         status: "pending",
         createdAt: serverTimestamp(),
       };
-
-      // Add validation for required fields
-      if (!websiteData.businessName || !websiteData.industry) {
-        throw new Error("Missing required business information");
-      }
 
       const docRef = await addDoc(collection(db, "websites"), websiteData);
       console.log("Website data saved successfully with ID:", docRef.id);
@@ -61,26 +83,15 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         description: "Your website request has been submitted successfully.",
       });
 
-      // Close the wizard and navigate back to dashboard
       onOpenChange(false);
       navigate("/dashboard");
 
     } catch (error) {
       console.error("Error submitting website request:", error);
       
-      // More specific error messages based on error type
-      let errorMessage = "Failed to submit your website request. Please try again.";
-      if (error instanceof Error) {
-        if (error.message.includes("permission-denied")) {
-          errorMessage = "You don't have permission to submit website requests. Please contact support.";
-        } else if (error.message.includes("Missing required")) {
-          errorMessage = error.message;
-        }
-      }
-      
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "Failed to submit your website request. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -92,7 +103,7 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
     <div className="flex flex-col h-[calc(100vh-200px)] max-h-[600px]">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-tradie-navy">Step 4 of 4 - Select Your Plan</h2>
-        <p className="text-gray-600">Choose the plan that best fits your business needs. You can always upgrade or change your plan later.</p>
+        <p className="text-gray-600">Choose the plan that best fits your business needs.</p>
         <p className="mt-2 text-tradie-orange font-semibold">
           Limited Time Offer - Free Setup (Ends 01/05/2025)
         </p>
