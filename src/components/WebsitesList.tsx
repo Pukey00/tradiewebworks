@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { submitUpdateRequest } from "@/api/submit-update-request";
 
 export const WebsitesList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<any>(null);
@@ -64,20 +65,10 @@ export const WebsitesList = () => {
     console.log("Update request content:", updateRequest);
 
     try {
-      const response = await fetch('/api/submit-update-request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          businessName: selectedWebsite.businessName,
-          updateRequest: updateRequest,
-        }),
+      await submitUpdateRequest({
+        businessName: selectedWebsite.businessName,
+        updateRequest: updateRequest,
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to send update request');
-      }
 
       toast({
         title: "Update Request Sent",
@@ -266,4 +257,3 @@ export const WebsitesList = () => {
       </Dialog>
     </>
   );
-};
