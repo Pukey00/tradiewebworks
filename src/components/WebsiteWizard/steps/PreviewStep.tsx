@@ -1,18 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useToast } from "@/components/ui/use-toast";
-import emailjs from '@emailjs/browser';
+import { useToast } from "@/hooks/use-toast";
 import { WizardData } from "../WebsiteWizard";
 import { ContactFields } from "./PreviewStep/ContactFields";
 import { SummarySections } from "./PreviewStep/SummarySections";
+import { db, auth } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import emailjs from '@emailjs/browser';
 
 export interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export const PreviewStep = ({ data, setData }: StepProps) => {
+export const PreviewStep = ({ data, setData, onOpenChange }: StepProps) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!data.contactName || !data.contactEmail) {
@@ -25,25 +30,39 @@ export const PreviewStep = ({ data, setData }: StepProps) => {
     }
 
     try {
-      // Format testimonials
+      const user = auth.currentUser;
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to submit your website request",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Save to Firestore
+      const websiteData = {
+        ...data,
+        userId: user.uid,
+        userEmail: user.email,
+        createdAt: new Date(),
+        status: 'pending'
+      };
+
+      const docRef = await addDoc(collection(db, "websites"), websiteData);
+
+      // Format testimonials and gallery for email
       const formattedTestimonials = data.testimonials
         .map(t => `- ${t.name} (${t.business}): "${t.quote}"`)
         .join("\n");
 
-      // Format gallery images
       const formattedGallery = data.gallery
         .map((_, index) => `- Image ${index + 1}: [Project Image ${index + 1}]`)
         .join("\n");
 
-      // Create form data for attachments
-      const formData = new FormData();
-      if (data.logo) {
-        formData.append('logo', data.logo);
-      }
-
-      // Format the email content
+      // Send email notification
       const emailContent = {
-        to_email: data.contactEmail,
+        to_email: "your-email@example.com",
         from_name: data.contactName,
         subject: `Website Preview Request - ${data.businessName}`,
         content: `
@@ -71,7 +90,7 @@ ${data.customColors ? `Custom Colors:
 Project Images:
 -------------
 ${formattedGallery}
-${data.logo ? "Logo: [Business Logo Attached]" : "No logo provided"}
+${data.logo ? "Logo: [Business Logo]" : "No logo provided"}
 
 Contact Information:
 -----------------
@@ -84,10 +103,8 @@ Additional Notes:
 --------------
 ${data.specialNotes || "None provided"}
         `,
-        logo: data.logo,
       };
 
-      // Send email using EmailJS
       await emailjs.send(
         'service_f4ryypt',
         'template_o4sramq',
@@ -96,15 +113,22 @@ ${data.specialNotes || "None provided"}
       );
 
       toast({
-        title: "Request Sent Successfully!",
-        description: "We'll review your information and get back to you soon.",
+        title: "Success!",
+        description: "Your website request has been submitted successfully.",
       });
 
+      if (onOpenChange) {
+        onOpenChange(false);
+      }
+
+      // Refresh the dashboard
+      navigate('/dashboard');
+
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Error submitting website request:', error);
       toast({
-        title: "Error Sending Request",
-        description: "There was a problem sending your request. Please try again.",
+        title: "Error",
+        description: "There was a problem submitting your request. Please try again.",
         variant: "destructive",
       });
     }
