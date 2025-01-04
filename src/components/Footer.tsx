@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <footer className="bg-tradie-navy text-white py-8 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -89,6 +89,32 @@ export const Footer = () => {
                   <ExternalLink className="w-4 h-4 mr-2" />
                   LinkedIn
                 </a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Policies</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/privacy-policy" className="hover:text-tradie-orange transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms-of-service" className="hover:text-tradie-orange transition-colors">
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link to="/cookie-policy" className="hover:text-tradie-orange transition-colors">
+                  Cookie Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/refund-policy" className="hover:text-tradie-orange transition-colors">
+                  Refund Policy
+                </Link>
               </li>
             </ul>
           </div>
