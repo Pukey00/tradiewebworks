@@ -28,16 +28,6 @@ export const StyleSelector = ({ value, onChange, websiteStyles }: StyleSelectorP
               htmlFor={style.id}
               className="flex flex-col items-center justify-center p-4 border-2 rounded-lg cursor-pointer hover:border-tradie-orange peer-checked:border-tradie-orange peer-checked:bg-orange-50"
             >
-              <div className="flex gap-2 mb-2">
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{ backgroundColor: style.colors.primary }}
-                />
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{ backgroundColor: style.colors.accent }}
-                />
-              </div>
               <span className="font-medium">{style.name}</span>
               <span className="text-sm text-gray-500">{style.description}</span>
             </Label>
