@@ -5,6 +5,7 @@ import { db } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Website {
   id: string;
@@ -17,38 +18,51 @@ interface Website {
 export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
   const { toast } = useToast();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const handleStatusUpdate = async (websiteId: string, currentStatus: string) => {
-    console.log(`Updating status for website ${websiteId}`);
-    setUpdatingId(websiteId);
-    
-    try {
-      const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
+  const updateStatusMutation = useMutation({
+    mutationFn: async ({ websiteId, newStatus }: { websiteId: string; newStatus: string }) => {
+      console.log(`Updating status for website ${websiteId} to ${newStatus}`);
       const websiteRef = doc(db, "websites", websiteId);
-      
       await updateDoc(websiteRef, {
         status: newStatus
       });
-      
+      return { websiteId, newStatus };
+    },
+    onSuccess: ({ websiteId, newStatus }) => {
       console.log(`Successfully updated status to ${newStatus}`);
-      
+      // Update the cache with the new status
+      queryClient.setQueryData(['admin-websites'], (oldData: Website[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData.map(website => 
+          website.id === websiteId 
+            ? { ...website, status: newStatus }
+            : website
+        );
+      });
+
       toast({
         title: "Status Updated",
         description: `Website status has been updated to ${newStatus}`,
       });
-      
-      // Refresh the page to show updated data
-      window.location.reload();
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error("Error updating status:", error);
       toast({
         variant: "destructive",
         title: "Error",
         description: "Failed to update website status",
       });
-    } finally {
+    },
+    onSettled: () => {
       setUpdatingId(null);
     }
+  });
+
+  const handleStatusUpdate = async (websiteId: string, currentStatus: string) => {
+    setUpdatingId(websiteId);
+    const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
+    updateStatusMutation.mutate({ websiteId, newStatus });
   };
 
   return (
