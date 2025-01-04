@@ -25,7 +25,11 @@ export type WizardData = {
   
   // Website Style & Content
   websiteStyle?: "modern" | "classic" | "bold";
-  homePageText?: string;
+  homePageText?: {
+    headline?: string;
+    description?: string;
+    additionalInfo?: string;
+  };
   businessHours?: string;
   socialMedia?: {
     facebook?: string;

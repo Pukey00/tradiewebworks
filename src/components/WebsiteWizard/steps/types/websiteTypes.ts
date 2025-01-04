@@ -4,8 +4,4 @@ export type WebsiteStyleOption = {
   id: WebsiteStyle;
   name: string;
   description: string;
-  colors: {
-    primary: string;
-    accent: string;
-  };
 };
