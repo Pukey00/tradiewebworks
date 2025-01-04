@@ -1,5 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
+import { useToast } from "./ui/use-toast";
+import { useEffect, useState } from "react";
 
 interface HeaderProps {
   userEmail?: string;
@@ -9,6 +13,37 @@ interface HeaderProps {
 
 export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Set up auth state listener
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      console.log("Auth state changed:", user?.email);
+      setCurrentUser(user?.email || null);
+    });
+
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+      toast({
+        title: "Signed out successfully",
+      });
+      navigate('/');
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast({
+        variant: "destructive",
+        title: "Error signing out",
+        description: "Please try again",
+      });
+    }
+  };
 
   return (
     <header className="bg-tradie-navy py-4 px-6 shadow-lg">
@@ -23,13 +58,13 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
           >
             Contact Us
           </button>
-          {isLoggedIn ? (
+          {currentUser ? (
             <>
-              <span className="text-white">{userEmail}</span>
+              <span className="text-white">{currentUser}</span>
               <Button 
                 variant="outline" 
                 className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange"
-                onClick={onSignOut}
+                onClick={handleSignOut}
               >
                 Sign Out
               </Button>
