@@ -72,9 +72,9 @@ export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenCha
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] p-6">
-        <div className="space-y-4">
-          <Progress value={(step / totalSteps) * 100} className="mb-4" />
+      <DialogContent className="max-w-4xl max-h-[90vh] p-8">
+        <div className="space-y-6">
+          <Progress value={(step / totalSteps) * 100} className="mb-6" />
           <BusinessDetailsStep 
             data={data} 
             setData={setData}

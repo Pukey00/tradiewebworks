@@ -28,33 +28,35 @@ export const BusinessDetailsStep = ({ data, setData, onNext }: StepProps) => {
 
   return (
     <div className="overflow-y-auto max-h-[calc(80vh-100px)]">
-      <div className="space-y-6">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-bold">Step 1 of 4 - Business Details</h2>
-          <p className="text-gray-600 mt-1 text-sm">
+      <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold">Step 1 of 4 - Business Details</h2>
+          <p className="text-gray-600 mt-2">
             Tell us a bit about your business to get started. We'll use this information to create your website.
           </p>
         </div>
 
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="businessName">Business Name *</Label>
-            <Input
-              id="businessName"
-              placeholder="e.g., John's Plumbing Services"
-              value={data.businessName}
-              onChange={(e) => setData({ ...data, businessName: e.target.value })}
-            />
-          </div>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <Label htmlFor="businessName">Business Name *</Label>
+              <Input
+                id="businessName"
+                placeholder="e.g., John's Plumbing Services"
+                value={data.businessName}
+                onChange={(e) => setData({ ...data, businessName: e.target.value })}
+              />
+            </div>
 
-          <div>
-            <Label htmlFor="phoneNumber">Phone Number *</Label>
-            <Input
-              id="phoneNumber"
-              placeholder="e.g., 0400 123 456"
-              value={data.phoneNumber}
-              onChange={(e) => setData({ ...data, phoneNumber: e.target.value })}
-            />
+            <div>
+              <Label htmlFor="phoneNumber">Phone Number *</Label>
+              <Input
+                id="phoneNumber"
+                placeholder="e.g., 0400 123 456"
+                value={data.phoneNumber}
+                onChange={(e) => setData({ ...data, phoneNumber: e.target.value })}
+              />
+            </div>
           </div>
 
           <div>
@@ -109,7 +111,7 @@ export const BusinessDetailsStep = ({ data, setData, onNext }: StepProps) => {
           </div>
         </div>
 
-        <div className="flex justify-between pt-4">
+        <div className="flex justify-between pt-6">
           <Button variant="outline" disabled>
             Back
           </Button>
