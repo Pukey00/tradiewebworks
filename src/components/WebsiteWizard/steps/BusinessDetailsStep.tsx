@@ -27,7 +27,7 @@ export const BusinessDetailsStep = ({ data, setData, onNext }: StepProps) => {
   const isValid = data.businessName && data.phoneNumber && data.email;
 
   return (
-    <div className="overflow-y-auto max-h-[calc(80vh-100px)]">
+    <div className="overflow-y-auto max-h-[calc(80vh-100px)] px-6">
       <div className="space-y-8">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold">Step 1 of 4 - Business Details</h2>
