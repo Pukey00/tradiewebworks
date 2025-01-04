@@ -62,7 +62,7 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
           {isAdmin && (
             <Button 
               variant="outline" 
-              className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange flex items-center gap-2"
+              className="text-tradie-navy hover:text-tradie-orange border-white hover:border-tradie-orange flex items-center gap-2"
               onClick={() => navigate('/admin')}
             >
               <Shield className="h-4 w-4" />
