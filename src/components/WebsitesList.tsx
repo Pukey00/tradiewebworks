@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +16,7 @@ import { useState } from "react";
 
 export const WebsitesList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<any>(null);
+  const { toast } = useToast();
 
   const { data: websites, isLoading } = useQuery({
     queryKey: ['websites'],
@@ -37,6 +39,14 @@ export const WebsitesList = () => {
     },
     enabled: !!auth.currentUser
   });
+
+  const handleUpdateRequest = () => {
+    console.log("Update requested for website:", selectedWebsite?.id);
+    toast({
+      title: "Update Request Sent",
+      description: "We've received your website update request. Our team will contact you soon.",
+    });
+  };
 
   if (isLoading) {
     return (
@@ -68,6 +78,7 @@ export const WebsitesList = () => {
               <h3 className="font-medium text-lg">{website.businessName || "Untitled Website"}</h3>
               <Badge 
                 variant={website.status === "pending" ? "pending" : "default"}
+                className="uppercase"
               >
                 {website.status === "pending" ? "PENDING" : website.status || "PENDING"}
               </Badge>
@@ -134,6 +145,15 @@ export const WebsitesList = () => {
                     <p className="mt-1 text-sm">{selectedWebsite.tagline}</p>
                   </div>
                 )}
+
+                <div className="pt-4">
+                  <Button 
+                    onClick={handleUpdateRequest}
+                    className="w-full bg-tradie-orange hover:bg-orange-600"
+                  >
+                    Request Website Update
+                  </Button>
+                </div>
               </div>
             </div>
           )}
