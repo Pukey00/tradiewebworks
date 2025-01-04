@@ -1,37 +1,48 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { submitUpdateRequest } from "@/api/submit-update-request";
 import { WebsiteCard } from "./WebsiteCard";
 import { WebsiteDetailsDialog } from "./WebsiteDetailsDialog";
 import { UpdateRequestDialog } from "./UpdateRequestDialog";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const WebsitesList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<any>(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateRequest, setUpdateRequest] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Listen for auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed:", user?.uid);
+      setUserId(user?.uid || null);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const { data: websites, isLoading, error } = useQuery({
-    queryKey: ['websites'],
+    queryKey: ['websites', userId],
     queryFn: async () => {
-      console.log("Starting to fetch websites");
-      console.log("Current user ID:", auth.currentUser?.uid);
+      console.log("Starting to fetch websites for user:", userId);
       
-      if (!auth.currentUser?.uid) {
-        console.error("No authenticated user found");
-        throw new Error("User must be authenticated to fetch websites");
+      if (!userId) {
+        console.log("No authenticated user found");
+        return [];
       }
 
       const websitesRef = collection(db, "websites");
       const q = query(
         websitesRef,
-        where("userId", "==", auth.currentUser.uid)
+        where("userId", "==", userId)
       );
       
       console.log("Executing Firestore query");
@@ -44,7 +55,7 @@ export const WebsitesList = () => {
       console.log("Fetched websites:", websites);
       return websites;
     },
-    enabled: !!auth.currentUser
+    enabled: !!userId
   });
 
   const handleUpdateRequest = () => {
@@ -66,6 +77,15 @@ export const WebsitesList = () => {
     console.log("Submitting update request for website:", selectedWebsite?.id);
     console.log("Update request content:", updateRequest);
 
+    // Optimistically update the UI
+    queryClient.setQueryData(['websites', userId], (oldData: any) => {
+      return oldData.map((site: any) => 
+        site.id === selectedWebsite.id 
+          ? { ...site, status: "pending" }
+          : site
+      );
+    });
+
     try {
       await submitUpdateRequest({
         businessName: selectedWebsite.businessName,
@@ -81,6 +101,8 @@ export const WebsitesList = () => {
       setUpdateRequest("");
     } catch (error) {
       console.error('Error sending update request:', error);
+      // Revert optimistic update on error
+      queryClient.invalidateQueries({ queryKey: ['websites', userId] });
       toast({
         title: "Error",
         description: "Failed to send update request. Please try again.",
