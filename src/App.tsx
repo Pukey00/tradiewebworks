@@ -12,6 +12,7 @@ import LandscapeDesign from "./pages/LandscapeDesign";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AuthenticatedHome from "./pages/AuthenticatedHome";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/dashboard" element={<AuthenticatedHome />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </TooltipProvider>
     </BrowserRouter>

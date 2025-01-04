@@ -4,7 +4,7 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useToast } from "./ui/use-toast";
 import { useEffect, useState } from "react";
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, Shield } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 interface HeaderProps {
@@ -46,6 +46,8 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
     }
   };
 
+  const isAdmin = currentUser === "lhollins0@gmail.com";
+
   const NavItems = () => (
     <>
       <button 
@@ -57,6 +59,16 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
       {currentUser ? (
         <>
           <span className="text-white">{currentUser}</span>
+          {isAdmin && (
+            <Button 
+              variant="outline" 
+              className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange flex items-center gap-2"
+              onClick={() => navigate('/admin')}
+            >
+              <Shield className="h-4 w-4" />
+              Admin
+            </Button>
+          )}
           <Button 
             variant="outline" 
             className="text-red-500 hover:text-red-600 border-red-500 hover:border-red-600 flex items-center gap-2"
