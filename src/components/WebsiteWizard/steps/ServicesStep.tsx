@@ -129,11 +129,11 @@ export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProp
 
   const handleNext = () => {
     if (data.services.length > 0) {
-      // Include selected sub-services in the data
-      setData(prev => ({
-        ...prev,
+      const updatedData: WizardData = {
+        ...data,
         selectedSubServices
-      }));
+      };
+      setData(updatedData);
       onNext();
     }
   };
