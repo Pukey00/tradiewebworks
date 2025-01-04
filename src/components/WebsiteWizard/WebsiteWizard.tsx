@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BusinessDetailsStep } from "./steps/BusinessDetailsStep";
 import { ServicesStep } from "./steps/ServicesStep";
 import { StyleContentStep } from "./steps/StyleContentStep";
+import { PlanSelectionStep } from "./steps/PlanSelectionStep";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 
@@ -128,6 +129,14 @@ export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenCha
           )}
           {step === 3 && (
             <StyleContentStep
+              data={data}
+              setData={setData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {step === 4 && (
+            <PlanSelectionStep
               data={data}
               setData={setData}
               onNext={handleNext}
