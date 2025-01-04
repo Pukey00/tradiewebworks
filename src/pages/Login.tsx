@@ -61,13 +61,26 @@ const Login = () => {
               </div>
             </div>
 
-            <div>
+            <div className="space-y-4">
               <Button
                 type="submit"
                 className="w-full bg-tradie-orange hover:bg-orange-600 text-white"
               >
                 Sign in
               </Button>
+              
+              <div className="text-center">
+                <p className="text-tradie-gray">
+                  Don't have an account?{" "}
+                  <Button 
+                    variant="link" 
+                    className="text-tradie-orange hover:text-orange-600 p-0"
+                    onClick={() => navigate('/')}
+                  >
+                    Get started
+                  </Button>
+                </p>
+              </div>
             </div>
           </form>
         </div>
