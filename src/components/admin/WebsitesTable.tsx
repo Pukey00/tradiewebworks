@@ -1,7 +1,5 @@
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
-import { useState } from "react";
 import { WebsiteTableRow } from "./WebsiteTableRow";
-import { useWebsiteMutations } from "./websiteMutations";
 
 interface Website {
   id: string;
@@ -13,33 +11,6 @@ interface Website {
 }
 
 export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [editingUrl, setEditingUrl] = useState<{ id: string; url: string } | null>(null);
-  const { updateStatusMutation, updateUrlMutation } = useWebsiteMutations();
-
-  const handleStatusUpdate = async (websiteId: string, currentStatus: string) => {
-    setUpdatingId(websiteId);
-    const newStatus = currentStatus === 'pending' ? 'approved' : 'pending';
-    await updateStatusMutation.mutateAsync({ websiteId, newStatus });
-    setUpdatingId(null);
-  };
-
-  const handleUrlUpdate = (websiteId: string, currentUrl: string = '') => {
-    if (editingUrl?.id === websiteId) {
-      updateUrlMutation.mutate({ 
-        websiteId, 
-        newUrl: editingUrl.url 
-      });
-      setEditingUrl(null);
-    } else {
-      setEditingUrl({ id: websiteId, url: currentUrl });
-    }
-  };
-
-  const handleUrlChange = (id: string, url: string) => {
-    setEditingUrl({ id, url });
-  };
-
   console.log("Rendering WebsitesTable with websites:", websites);
 
   return (
@@ -49,8 +20,8 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
           <TableHead>Business Name</TableHead>
           <TableHead>User Email</TableHead>
           <TableHead>Status</TableHead>
-          <TableHead>Created At</TableHead>
           <TableHead>Website URL</TableHead>
+          <TableHead>Created At</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
@@ -63,11 +34,6 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
                 ...website,
                 websiteUrl: website.websiteUrl || ''
               }}
-              updatingId={updatingId}
-              editingUrl={editingUrl}
-              onStatusUpdate={handleStatusUpdate}
-              onUrlUpdate={handleUrlUpdate}
-              onUrlChange={handleUrlChange}
             />
           ))
         ) : (

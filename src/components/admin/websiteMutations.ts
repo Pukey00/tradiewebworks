@@ -12,6 +12,40 @@ interface Website {
   websiteUrl?: string;
 }
 
+export const useDeleteWebsite = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (websiteId: string) => {
+      console.log(`Deleting website ${websiteId}`);
+      const websiteRef = doc(db, "websites", websiteId);
+      await deleteDoc(websiteRef);
+      return websiteId;
+    },
+    onSuccess: (websiteId) => {
+      console.log(`Successfully deleted website ${websiteId}`);
+      queryClient.setQueryData(['admin-websites'], (oldData: Website[] | undefined) => {
+        if (!oldData) return oldData;
+        return oldData.filter(website => website.id !== websiteId);
+      });
+
+      toast({
+        title: "Website Deleted",
+        description: "Website has been successfully deleted",
+      });
+    },
+    onError: (error) => {
+      console.error("Error deleting website:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete website",
+      });
+    }
+  });
+};
+
 export const useWebsiteMutations = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -86,38 +120,8 @@ export const useWebsiteMutations = () => {
     }
   });
 
-  const deleteWebsiteMutation = useMutation({
-    mutationFn: async (websiteId: string) => {
-      console.log(`Deleting website ${websiteId}`);
-      const websiteRef = doc(db, "websites", websiteId);
-      await deleteDoc(websiteRef);
-      return websiteId;
-    },
-    onSuccess: (websiteId) => {
-      console.log(`Successfully deleted website ${websiteId}`);
-      queryClient.setQueryData(['admin-websites'], (oldData: Website[] | undefined) => {
-        if (!oldData) return oldData;
-        return oldData.filter(website => website.id !== websiteId);
-      });
-
-      toast({
-        title: "Website Deleted",
-        description: "Website has been successfully deleted",
-      });
-    },
-    onError: (error) => {
-      console.error("Error deleting website:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to delete website",
-      });
-    }
-  });
-
   return {
     updateStatusMutation,
-    updateUrlMutation,
-    deleteWebsiteMutation
+    updateUrlMutation
   };
 };
