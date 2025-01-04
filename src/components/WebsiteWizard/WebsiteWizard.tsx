@@ -59,7 +59,7 @@ const initialData: WizardData = {
   industry: "",
   location: "",
   services: [],
-  customServices: [],
+  customServices: [], // Added this missing field
   testimonials: [],
   gallery: [],
   colorScheme: "default",
