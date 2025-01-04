@@ -62,12 +62,22 @@ export const WebsiteDetailsDialog = ({
               </div>
             )}
 
-            <div className="pt-4">
+            <div className="flex flex-col gap-2 pt-4">
               <Button 
                 onClick={onRequestUpdate}
                 className="w-full bg-tradie-orange hover:bg-orange-600"
               >
                 Request Website Update
+              </Button>
+              <Button 
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  console.log("Manage subscription clicked for website:", website.id);
+                  // TODO: Implement subscription management functionality
+                }}
+              >
+                Manage Subscription
               </Button>
             </div>
           </div>
