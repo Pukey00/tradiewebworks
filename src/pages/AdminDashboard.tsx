@@ -18,6 +18,7 @@ interface Website {
   status: string;
   userEmail: string;
   createdAt: Date;
+  websiteUrl?: string;
 }
 
 const ADMIN_EMAIL = "lhollins0@gmail.com";
@@ -74,7 +75,8 @@ const AdminDashboard = () => {
             businessName: data.businessName || 'Unnamed Business',
             status: data.status || 'pending',
             userEmail: data.userEmail || 'No email',
-            createdAt: data.createdAt?.toDate() || new Date()
+            createdAt: data.createdAt?.toDate() || new Date(),
+            websiteUrl: data.websiteUrl || ''
           };
         });
         

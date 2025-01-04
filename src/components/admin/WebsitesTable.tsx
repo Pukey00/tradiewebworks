@@ -59,7 +59,10 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
           websites.map((website) => (
             <WebsiteTableRow
               key={website.id}
-              website={website}
+              website={{
+                ...website,
+                websiteUrl: website.websiteUrl || ''
+              }}
               updatingId={updatingId}
               editingUrl={editingUrl}
               onStatusUpdate={handleStatusUpdate}
