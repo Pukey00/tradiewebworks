@@ -3,9 +3,21 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, DocumentData } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
+
+// Define types for our data structures
+interface Website extends DocumentData {
+  id: string;
+  businessName: string;
+  userId?: string;
+  status?: string;
+}
+
+interface WebsiteWithUser extends Website {
+  userEmail: string;
+}
 
 const AdminDashboard = () => {
   const { data: websitesWithUsers, isLoading } = useQuery({
@@ -17,26 +29,27 @@ const AdminDashboard = () => {
       
       // Map through websites and fetch user data for each
       const websitesData = await Promise.all(
-        querySnapshot.docs.map(async (doc) => {
+        querySnapshot.docs.map(async (websiteDoc) => {
           const websiteData = {
-            id: doc.id,
-            ...doc.data()
-          };
+            id: websiteDoc.id,
+            ...websiteDoc.data()
+          } as Website;
           
           // Fetch user data if userId exists
           if (websiteData.userId) {
-            const userDoc = await getDoc(doc(db, "users", websiteData.userId));
+            const userDocRef = doc(db, "users", websiteData.userId);
+            const userDoc = await getDoc(userDocRef);
             const userData = userDoc.data();
             return {
               ...websiteData,
               userEmail: userData?.email || 'No email found'
-            };
+            } as WebsiteWithUser;
           }
           
           return {
             ...websiteData,
             userEmail: 'No user associated'
-          };
+          } as WebsiteWithUser;
         })
       );
       
@@ -91,7 +104,7 @@ const AdminDashboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {websitesWithUsers?.map((website: any) => (
+                  {websitesWithUsers?.map((website: WebsiteWithUser) => (
                     <TableRow key={website.id}>
                       <TableCell className="font-medium">{website.businessName}</TableCell>
                       <TableCell>{website.userEmail}</TableCell>
