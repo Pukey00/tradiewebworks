@@ -2,7 +2,12 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tooltip } from "@/components/ui/tooltip";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
 
 interface WebsiteCardProps {
   website: any;
@@ -35,16 +40,23 @@ export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Website:</span>
           {websiteUrl ? (
-            <Tooltip content="Open website">
-              <a
-                href={websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center gap-1"
-              >
-                Visit site <ExternalLink className="h-3 w-3" />
-              </a>
-            </Tooltip>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a
+                    href={websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 hover:text-blue-800 underline flex items-center gap-1"
+                  >
+                    Visit site <ExternalLink className="h-3 w-3" />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Open website</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           ) : (
             <span className="text-sm text-gray-500 italic">Not available yet</span>
           )}
