@@ -65,37 +65,35 @@ export const StyleContentStep = ({ data, setData, onNext, onBack }: StepProps) =
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="space-y-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-tradie-navy">Step 3 of 4 - Website Style & Content</h2>
         <p className="text-gray-600">Choose a style for your website and provide any additional content you want to showcase.</p>
       </div>
 
-      <ScrollArea className="flex-1 pr-4">
-        <div className="space-y-6">
-          <StyleSelector 
-            value={data.websiteStyle || "modern"}
-            onChange={handleStyleChange}
-            websiteStyles={websiteStyles}
+      <div className="space-y-6">
+        <StyleSelector 
+          value={data.websiteStyle || "modern"}
+          onChange={handleStyleChange}
+          websiteStyles={websiteStyles}
+        />
+
+        <HomePageContent data={data} setData={setData} />
+
+        <div>
+          <Label htmlFor="businessHours">Business Hours</Label>
+          <Input
+            id="businessHours"
+            value={data.businessHours || ""}
+            onChange={(e) => setData({ ...data, businessHours: e.target.value })}
+            placeholder="e.g., Monday to Friday, 9 AM to 5 PM"
           />
-
-          <HomePageContent data={data} setData={setData} />
-
-          <div>
-            <Label htmlFor="businessHours">Business Hours</Label>
-            <Input
-              id="businessHours"
-              value={data.businessHours || ""}
-              onChange={(e) => setData({ ...data, businessHours: e.target.value })}
-              placeholder="e.g., Monday to Friday, 9 AM to 5 PM"
-            />
-          </div>
-
-          <SocialMediaLinks data={data} setData={setData} />
-          
-          <PhotoUpload data={data} setData={setData} />
         </div>
-      </ScrollArea>
+
+        <SocialMediaLinks data={data} setData={setData} />
+        
+        <PhotoUpload data={data} setData={setData} />
+      </div>
 
       <div className="flex justify-between pt-6 mt-6 border-t">
         <Button
