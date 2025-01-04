@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -56,8 +56,7 @@ const AdminDashboard = () => {
       console.log("Starting to fetch websites from Firestore");
       try {
         const websitesRef = collection(db, "websites");
-        const websitesQuery = query(websitesRef);
-        const querySnapshot = await getDocs(websitesQuery);
+        const querySnapshot = await getDocs(websitesRef);
         
         console.log(`Found ${querySnapshot.size} websites in Firestore`);
         
@@ -132,7 +131,7 @@ const AdminDashboard = () => {
       <Header />
       <main className="flex-1 p-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-tradie-navy mb-8">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
           
           {websites && <DashboardStats websites={websites} />}
 
