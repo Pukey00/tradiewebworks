@@ -9,9 +9,9 @@ import { HowItWorksSection } from "@/components/HowItWorksSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-y-auto">
       <Header />
-      <main>
+      <main className="flex-grow">
         <HeroSection />
         <HowItWorksSection />
         <WhyChooseUs />
