@@ -60,7 +60,7 @@ export const ServicesSection = () => {
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service) => (
-            <Card key={service.title} className="border-2 hover:border-tradie-orange transition-colors">
+            <Card key={service.title} className="border-2 hover:border-tradie-orange transition-colors flex flex-col">
               <CardHeader>
                 <service.icon className="h-12 w-12 mb-4 text-tradie-orange mx-auto" />
                 <CardTitle className="text-2xl font-bold text-center">{service.title}</CardTitle>
@@ -76,7 +76,7 @@ export const ServicesSection = () => {
                   <p className="text-3xl font-bold text-tradie-navy">{service.monthlyFee}</p>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <ul className="space-y-3">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center">
@@ -86,7 +86,7 @@ export const ServicesSection = () => {
                   ))}
                 </ul>
               </CardContent>
-              <CardFooter className="pt-6">
+              <CardFooter className="mt-auto pt-6">
                 <Button 
                   className="w-full bg-tradie-orange hover:bg-tradie-orange/90" 
                   onClick={() => navigate('/build')}
