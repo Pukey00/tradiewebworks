@@ -34,10 +34,13 @@ const AuthenticatedHome = () => {
           <div className="bg-white shadow rounded-lg p-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+              <button 
+                onClick={() => setIsWizardOpen(true)}
+                className="p-4 border rounded-lg hover:shadow-md transition-shadow text-left"
+              >
                 <h3 className="font-medium text-lg mb-2">Create Website</h3>
                 <p className="text-gray-600">Start building your professional website</p>
-              </div>
+              </button>
               <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-medium text-lg mb-2">View Analytics</h3>
                 <p className="text-gray-600">Check your website performance</p>
