@@ -4,6 +4,7 @@ import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useToast } from "./ui/use-toast";
 import { useEffect, useState } from "react";
+import { LogOut } from "lucide-react";
 
 interface HeaderProps {
   userEmail?: string;
@@ -63,9 +64,10 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
               <span className="text-white">{currentUser}</span>
               <Button 
                 variant="outline" 
-                className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange"
+                className="text-red-500 hover:text-red-600 border-red-500 hover:border-red-600 flex items-center gap-2"
                 onClick={handleSignOut}
               >
+                <LogOut className="h-4 w-4" />
                 Sign Out
               </Button>
             </>
