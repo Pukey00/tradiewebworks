@@ -11,7 +11,7 @@ interface DashboardStatsProps {
 
 export const DashboardStats = ({ websites }: DashboardStatsProps) => {
   const pendingWebsites = websites?.filter(w => w.status === 'pending') || [];
-  const completedWebsites = websites?.filter(w => w.status === 'completed') || [];
+  const approvedWebsites = websites?.filter(w => w.status === 'approved') || [];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -35,10 +35,10 @@ export const DashboardStats = ({ websites }: DashboardStatsProps) => {
       
       <Card>
         <CardHeader>
-          <CardTitle>Completed Websites</CardTitle>
+          <CardTitle>Approved Websites</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-4xl font-bold">{completedWebsites.length}</p>
+          <p className="text-4xl font-bold">{approvedWebsites.length}</p>
         </CardContent>
       </Card>
     </div>
