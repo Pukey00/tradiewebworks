@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   Tooltip,
@@ -16,6 +16,8 @@ interface WebsiteCardProps {
 
 export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
   const websiteUrl = website.websiteUrl || website.url;
+  // Generate a random number between 100 and 1000 for demo purposes
+  const trafficCount = Math.floor(Math.random() * 900) + 100;
 
   return (
     <Card className="p-6">
@@ -60,6 +62,10 @@ export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
           ) : (
             <span className="text-sm text-gray-500 italic">Not available yet</span>
           )}
+        </div>
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Users className="h-4 w-4" />
+          <span>{trafficCount} visitors this month</span>
         </div>
       </div>
 

@@ -42,10 +42,6 @@ const AuthenticatedHome = () => {
                 <p className="text-gray-600">Start building your professional website</p>
               </button>
               <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                <h3 className="font-medium text-lg mb-2">View Analytics</h3>
-                <p className="text-gray-600">Check your website performance</p>
-              </div>
-              <div className="p-4 border rounded-lg hover:shadow-md transition-shadow">
                 <h3 className="font-medium text-lg mb-2">Edit Profile</h3>
                 <p className="text-gray-600">Update your business information</p>
               </div>
