@@ -4,12 +4,47 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 
 export type WizardData = {
+  // Business Details
   businessName: string;
   phoneNumber: string;
   email: string;
   serviceArea: string;
   logo: File | null;
   tagline: string;
+  
+  // Industry & Location
+  industry: string;
+  location: string;
+  
+  // Services
+  services: string[];
+  
+  // Testimonials
+  testimonials: Array<{
+    name: string;
+    business: string;
+    quote: string;
+  }>;
+  
+  // Gallery
+  gallery: File[];
+  
+  // Design
+  colorScheme: string;
+  customColors?: {
+    primary: string;
+    accent: string;
+  };
+  
+  // Contact
+  contactName: string;
+  contactEmail: string;
+  
+  // Plan
+  selectedPlan: string;
+  
+  // Additional
+  specialNotes?: string;
 };
 
 const initialData: WizardData = {
@@ -19,6 +54,15 @@ const initialData: WizardData = {
   serviceArea: "",
   logo: null,
   tagline: "",
+  industry: "",
+  location: "",
+  services: [],
+  testimonials: [],
+  gallery: [],
+  colorScheme: "default",
+  contactName: "",
+  contactEmail: "",
+  selectedPlan: "",
 };
 
 export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
