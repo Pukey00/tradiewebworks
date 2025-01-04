@@ -40,6 +40,8 @@ export const WebsitesTable = ({ websites }: { websites: Website[] }) => {
     setEditingUrl({ id, url });
   };
 
+  console.log("Rendering WebsitesTable with websites:", websites);
+
   return (
     <Table>
       <TableHeader>
