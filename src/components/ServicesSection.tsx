@@ -5,29 +5,37 @@ export const ServicesSection = () => {
   const services = [
     {
       title: "Basic Plan",
-      price: "$15/month",
-      features: ["Hosting only", "No updates or support"],
+      setupPrice: "$200",
+      monthlyFee: "$30/month",
+      features: [
+        "One-page website",
+        "Custom domain setup",
+        "Basic SEO",
+      ],
       icon: Server,
     },
     {
       title: "Standard Plan",
-      price: "$30/month",
+      setupPrice: "$300",
+      monthlyFee: "$50/month",
       features: [
-        "Hosting",
-        "1 content update/month",
-        "Basic SEO optimization",
-        "Email support"
+        "Multi-page website (up to 3 pages)",
+        "Custom domain setup",
+        "SEO optimization",
+        "Contact form integration"
       ],
       icon: Globe,
     },
     {
       title: "Premium Plan",
-      price: "$50/month",
+      setupPrice: "$500",
+      monthlyFee: "$75/month",
       features: [
-        "Hosting",
-        "Unlimited content updates",
-        "Advanced SEO optimization",
-        "Priority email support"
+        "Multi-page website (up to 5 pages)",
+        "Custom domain setup",
+        "Advanced SEO",
+        "Blog integration",
+        "Ongoing maintenance"
       ],
       icon: Rocket,
     },
@@ -50,7 +58,14 @@ export const ServicesSection = () => {
               <CardHeader>
                 <service.icon className="h-12 w-12 mb-4 text-tradie-orange mx-auto" />
                 <CardTitle className="text-2xl font-bold text-center">{service.title}</CardTitle>
-                <p className="text-3xl font-bold text-center text-tradie-navy">{service.price}</p>
+                <div className="space-y-2 text-center">
+                  <p className="text-lg font-semibold">{service.setupPrice} setup</p>
+                  <p>
+                    <span className="text-tradie-orange font-bold text-base">FREE SETUP</span>
+                    <span className="block text-gray-500">if you subscribe to the monthly plan now!</span>
+                  </p>
+                  <p className="text-3xl font-bold text-tradie-navy">{service.monthlyFee}</p>
+                </div>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
