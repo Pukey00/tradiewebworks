@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BusinessDetailsStep } from "./steps/BusinessDetailsStep";
 import { ServicesStep } from "./steps/ServicesStep";
 import { StyleContentStep } from "./steps/StyleContentStep";
-import { PlanSelectionStep } from "./steps/PlanSelectionStep";
+import { PlanSelectionStep } from "./steps/PlanSelectionStep/PlanSelectionStep";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 
