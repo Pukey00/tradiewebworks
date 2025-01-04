@@ -17,7 +17,7 @@ export const Header = () => {
           </button>
           <Button 
             variant="outline" 
-            className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange"
+            className="text-tradie-navy hover:text-tradie-orange border-white hover:border-tradie-orange"
             onClick={() => console.log('Login clicked - TODO: Implement login functionality')}
           >
             Log In
