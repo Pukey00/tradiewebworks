@@ -9,15 +9,17 @@ import { HowItWorksSection } from "@/components/HowItWorksSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-y-auto">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow">
-        <HeroSection />
-        <HowItWorksSection />
-        <WhyChooseUs />
-        <ServicesSection />
-        <TestimonialsSection />
-        <ContactForm />
+      <main className="flex-1 overflow-y-auto">
+        <div className="flex flex-col">
+          <HeroSection />
+          <HowItWorksSection />
+          <WhyChooseUs />
+          <ServicesSection />
+          <TestimonialsSection />
+          <ContactForm />
+        </div>
       </main>
       <Footer />
     </div>
