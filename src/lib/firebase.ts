@@ -3,12 +3,13 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyB_6x4PUi-ZmtmDskY3CHiQeTuVyIQMxXY",
+  authDomain: "tradie-web-works.firebaseapp.com",
+  projectId: "tradie-web-works",
+  storageBucket: "tradie-web-works.firebasestorage.app",
+  messagingSenderId: "224053217847",
+  appId: "1:224053217847:web:285d97ab411089455a8db2",
+  measurementId: "G-SRTNJZ85ZZ"
 };
 
 // Initialize Firebase
