@@ -58,7 +58,13 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
       </button>
       {currentUser ? (
         <>
-          <span className="text-white">{currentUser}</span>
+          <Button
+            variant="ghost"
+            className="text-white hover:text-tradie-orange transition-colors p-0"
+            onClick={() => navigate('/dashboard')}
+          >
+            {currentUser}
+          </Button>
           {isAdmin && (
             <Button 
               variant="outline" 

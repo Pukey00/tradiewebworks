@@ -27,7 +27,7 @@ const Login = () => {
         description: "Successfully logged in!",
       });
       
-      navigate("/"); // Redirect to home page after successful login
+      navigate("/dashboard"); // Changed from "/" to "/dashboard"
     } catch (error: any) {
       console.error("Login error:", error);
       
