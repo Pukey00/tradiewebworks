@@ -48,7 +48,7 @@ export const HeroSection = () => {
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 w-full"
+                className="border-2 border-white text-tradie-navy hover:bg-white/10 hover:text-white w-full"
               >
                 View Examples
               </Button>
