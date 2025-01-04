@@ -117,6 +117,7 @@ export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenCha
               data={data} 
               setData={setData}
               onNext={handleNext}
+              onBack={handleBack}
             />
           )}
           {step === 2 && (
@@ -141,6 +142,7 @@ export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenCha
               setData={setData}
               onNext={handleNext}
               onBack={handleBack}
+              onOpenChange={onOpenChange}
             />
           )}
         </div>
