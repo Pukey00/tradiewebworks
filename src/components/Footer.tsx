@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ExternalLink, Mail, Phone, MapPin } from "lucide-react";
+import { ExternalLink, Mail, MapPin } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -35,12 +35,6 @@ export const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-2">
-              <li className="flex items-center">
-                <Phone className="w-4 h-4 mr-2" />
-                <a href="tel:1300123456" className="hover:text-tradie-orange transition-colors">
-                  1300 123 456
-                </a>
-              </li>
               <li className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
                 <a href="mailto:info@tradiewebworks.com" className="hover:text-tradie-orange transition-colors">
