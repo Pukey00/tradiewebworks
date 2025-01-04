@@ -3,7 +3,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, Loader2, X } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +19,7 @@ export const WebsitesList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<any>(null);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [updateRequest, setUpdateRequest] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const { data: websites, isLoading } = useQuery({
@@ -48,15 +49,52 @@ export const WebsitesList = () => {
     setShowUpdateForm(true);
   };
 
-  const handleSubmitRequest = () => {
+  const handleSubmitRequest = async () => {
+    if (!updateRequest.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter your update request details",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
     console.log("Submitting update request for website:", selectedWebsite?.id);
     console.log("Update request content:", updateRequest);
-    toast({
-      title: "Update Request Sent",
-      description: "We've received your website update request. Our team will contact you soon.",
-    });
-    setShowUpdateForm(false);
-    setUpdateRequest("");
+
+    try {
+      const response = await fetch('/api/submit-update-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          businessName: selectedWebsite.businessName,
+          updateRequest: updateRequest,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send update request');
+      }
+
+      toast({
+        title: "Update Request Sent",
+        description: "We've received your website update request. Our team will contact you soon.",
+      });
+      setShowUpdateForm(false);
+      setUpdateRequest("");
+    } catch (error) {
+      console.error('Error sending update request:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send update request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) {
@@ -203,14 +241,23 @@ export const WebsitesList = () => {
                     setShowUpdateForm(false);
                     setUpdateRequest("");
                   }}
+                  disabled={isSubmitting}
                 >
                   Cancel
                 </Button>
                 <Button 
                   onClick={handleSubmitRequest}
                   className="bg-tradie-orange hover:bg-orange-600"
+                  disabled={isSubmitting}
                 >
-                  Submit Request
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Submit Request'
+                  )}
                 </Button>
               </div>
             </div>
