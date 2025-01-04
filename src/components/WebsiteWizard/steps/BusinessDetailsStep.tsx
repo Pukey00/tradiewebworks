@@ -27,11 +27,11 @@ export const BusinessDetailsStep = ({ data, setData, onNext }: StepProps) => {
   const isValid = data.businessName && data.phoneNumber && data.email;
 
   return (
-    <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+    <div className="overflow-y-auto max-h-[calc(80vh-100px)]">
       <div className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold">Step 1 of 4 - Business Details</h2>
-          <p className="text-gray-600 mt-2">
+        <div className="text-center mb-6">
+          <h2 className="text-xl font-bold">Step 1 of 4 - Business Details</h2>
+          <p className="text-gray-600 mt-1 text-sm">
             Tell us a bit about your business to get started. We'll use this information to create your website.
           </p>
         </div>
@@ -109,7 +109,7 @@ export const BusinessDetailsStep = ({ data, setData, onNext }: StepProps) => {
           </div>
         </div>
 
-        <div className="flex justify-between pt-6">
+        <div className="flex justify-between pt-4">
           <Button variant="outline" disabled>
             Back
           </Button>
