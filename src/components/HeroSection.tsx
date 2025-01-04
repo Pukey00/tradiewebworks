@@ -1,8 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { WebsiteWizard } from "./WebsiteWizard/WebsiteWizard";
 
 export const HeroSection = () => {
+  const [showWizard, setShowWizard] = useState(false);
+
   return (
     <div className="relative bg-tradie-navy text-white py-20 px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -15,14 +19,15 @@ export const HeroSection = () => {
             Simple, effective websites that work as hard as you do. Get more jobs and look professional online.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="w-full sm:w-48">
+            <div className="w-full sm:w-48">
               <Button 
                 size="lg"
                 className="bg-tradie-orange hover:bg-orange-600 text-white w-full"
+                onClick={() => setShowWizard(true)}
               >
                 Get Started <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </Link>
+            </div>
             <Link to="/examples" className="w-full sm:w-48">
               <Button 
                 size="lg"
@@ -35,6 +40,7 @@ export const HeroSection = () => {
           </div>
         </div>
       </div>
+      <WebsiteWizard open={showWizard} onOpenChange={setShowWizard} />
     </div>
   );
 };
