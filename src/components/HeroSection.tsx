@@ -26,6 +26,9 @@ export const HeroSection = () => {
           <p className="mt-6 text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
             Simple, effective websites that work as hard as you do. Get more jobs and look professional online.
           </p>
+          <p className="mt-2 text-lg text-gray-400">
+            Cancel your subscription anytime - no lock-in contracts
+          </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <div className="w-full sm:w-48">
               <Button 
