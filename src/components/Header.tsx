@@ -24,6 +24,12 @@ export const Header = () => {
           >
             Log In
           </Button>
+          <Button 
+            className="bg-tradie-orange hover:bg-orange-600 text-white"
+            onClick={() => navigate('/signup')}
+          >
+            Sign Up
+          </Button>
         </nav>
       </div>
     </header>
