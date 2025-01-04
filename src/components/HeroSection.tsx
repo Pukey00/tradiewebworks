@@ -12,8 +12,8 @@ export const HeroSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-8">
           <div className="bg-gradient-to-r from-tradie-orange/20 to-tradie-orange/10 border-2 border-tradie-orange rounded-lg py-3 px-6 w-full md:max-w-fit mx-auto transform hover:scale-105 transition-all duration-300 animate-[pulse_6s_cubic-bezier(0.4,0,0.6,1)_infinite]">
-            <div className="flex flex-col md:flex-row items-center gap-2 justify-center">
-              <p className="text-tradie-orange font-bold text-lg flex items-center gap-2">
+            <div className="flex flex-col md:flex-row items-center gap-2 justify-center text-center md:text-left">
+              <p className="text-tradie-orange font-bold text-lg flex items-center gap-2 justify-center md:justify-start">
                 <span className="animate-bounce">🎉</span>
                 Limited Time Offer: Free Setup
               </p>
