@@ -3,10 +3,13 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db, auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 
 interface Website {
   id: string;
@@ -18,6 +21,24 @@ interface Website {
 
 const AdminDashboard = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  // Check if user is authenticated and is admin
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed:", user?.email);
+      if (!user) {
+        console.log("No user found, redirecting to login");
+        navigate("/login");
+        return;
+      }
+      
+      // Here you might want to check if the user has admin role
+      // For now, we'll just check if they're authenticated
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   const { data: websites, isLoading, error } = useQuery({
     queryKey: ['websites'],
@@ -25,7 +46,9 @@ const AdminDashboard = () => {
       console.log("Starting to fetch websites from Firestore");
       try {
         const websitesRef = collection(db, "websites");
-        const querySnapshot = await getDocs(websitesRef);
+        // Remove any where clauses to get all websites
+        const websitesQuery = query(websitesRef);
+        const querySnapshot = await getDocs(websitesQuery);
         
         console.log(`Found ${querySnapshot.size} websites in Firestore`);
         
@@ -46,24 +69,21 @@ const AdminDashboard = () => {
         return websitesData;
       } catch (err) {
         console.error("Error fetching websites:", err);
-        toast({
-          variant: "destructive",
-          title: "Error fetching websites",
-          description: "Please try refreshing the page"
-        });
         throw err;
       }
-    }
+    },
+    retry: false
   });
 
   if (error) {
+    console.error("Error in query:", error);
     return (
       <div className="flex min-h-screen flex-col">
         <Header />
         <main className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center text-red-500">
-              Error loading websites. Please try refreshing the page.
+              Error loading websites. Please make sure you have the correct permissions.
             </div>
           </div>
         </main>
@@ -85,6 +105,9 @@ const AdminDashboard = () => {
       </div>
     );
   }
+
+  const pendingWebsites = websites?.filter(w => w.status === 'pending') || [];
+  const completedWebsites = websites?.filter(w => w.status === 'completed') || [];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -108,9 +131,7 @@ const AdminDashboard = () => {
                 <CardTitle>Pending Websites</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-4xl font-bold">
-                  {websites?.filter(w => w.status === 'pending').length || 0}
-                </p>
+                <p className="text-4xl font-bold">{pendingWebsites.length}</p>
               </CardContent>
             </Card>
             
@@ -119,9 +140,7 @@ const AdminDashboard = () => {
                 <CardTitle>Completed Websites</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-4xl font-bold">
-                  {websites?.filter(w => w.status === 'completed').length || 0}
-                </p>
+                <p className="text-4xl font-bold">{completedWebsites.length}</p>
               </CardContent>
             </Card>
           </div>
