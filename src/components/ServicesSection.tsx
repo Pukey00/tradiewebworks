@@ -1,7 +1,10 @@
 import { Server, Globe, Rocket } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export const ServicesSection = () => {
+  const navigate = useNavigate();
   const services = [
     {
       title: "Basic Plan",
@@ -83,6 +86,14 @@ export const ServicesSection = () => {
                   ))}
                 </ul>
               </CardContent>
+              <CardFooter className="pt-6">
+                <Button 
+                  className="w-full bg-tradie-orange hover:bg-tradie-orange/90" 
+                  onClick={() => navigate('/build')}
+                >
+                  Get Started
+                </Button>
+              </CardFooter>
             </Card>
           ))}
         </div>
