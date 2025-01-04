@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 interface UpdateRequestDialogProps {
@@ -36,6 +37,9 @@ export const UpdateRequestDialog = ({
           <DialogTitle className="text-xl font-semibold">
             Request Website Update
           </DialogTitle>
+          <DialogDescription>
+            Your request will be reviewed by our team and we'll get back to you soon.
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">

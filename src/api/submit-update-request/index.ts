@@ -1,6 +1,21 @@
 import emailjs from '@emailjs/browser';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
-export const submitUpdateRequest = async (data: { businessName: string; updateRequest: string }) => {
+export const submitUpdateRequest = async (data: { 
+  businessName: string; 
+  updateRequest: string;
+  websiteId: string; 
+}) => {
+  console.log("Submitting update request for website:", data.websiteId);
+  console.log("Update request content:", data.updateRequest);
+
+  // Update website status to pending
+  const websiteRef = doc(db, "websites", data.websiteId);
+  await updateDoc(websiteRef, {
+    status: "pending"
+  });
+
   const emailContent = {
     to_email: "your-email@example.com", // Replace with your email
     subject: `Website Update Request - ${data.businessName}`,
