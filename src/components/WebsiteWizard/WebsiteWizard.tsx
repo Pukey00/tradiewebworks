@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BusinessDetailsStep } from "./steps/BusinessDetailsStep";
 import { ServicesStep } from "./steps/ServicesStep";
+import { StyleContentStep } from "./steps/StyleContentStep";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 
@@ -21,6 +22,16 @@ export type WizardData = {
   services: string[];
   customServices: string[];
   selectedSubServices?: string[];
+  
+  // Website Style & Content
+  websiteStyle?: "modern" | "classic" | "bold";
+  homePageText?: string;
+  businessHours?: string;
+  socialMedia?: {
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+  };
   
   // Testimonials
   testimonials: Array<{
@@ -68,6 +79,12 @@ const initialData: WizardData = {
   contactName: "",
   contactEmail: "",
   selectedPlan: "",
+  websiteStyle: "modern",
+  socialMedia: {
+    facebook: "",
+    instagram: "",
+    linkedin: "",
+  },
 };
 
 export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
@@ -97,6 +114,14 @@ export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenCha
           )}
           {step === 2 && (
             <ServicesStep
+              data={data}
+              setData={setData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {step === 3 && (
+            <StyleContentStep
               data={data}
               setData={setData}
               onNext={handleNext}
