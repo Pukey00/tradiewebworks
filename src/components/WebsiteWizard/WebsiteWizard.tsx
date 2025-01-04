@@ -25,6 +25,7 @@ export type WizardData = {
   
   // Website Style & Content
   websiteStyle?: "modern" | "classic" | "bold";
+  generateHeadline?: boolean;
   homePageText?: {
     headline?: string;
     description?: string;
@@ -77,6 +78,7 @@ const initialData: WizardData = {
   services: [],
   customServices: [],
   selectedSubServices: [],
+  generateHeadline: false,
   testimonials: [],
   gallery: [],
   colorScheme: "default",
