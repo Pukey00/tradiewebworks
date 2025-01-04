@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WizardData } from "../../WebsiteWizard";
-import { Check, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
@@ -30,10 +29,15 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
     try {
       const user = auth.currentUser;
       if (!user) {
-        throw new Error("User not authenticated");
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to submit your website request.",
+          variant: "destructive",
+        });
+        return;
       }
 
-      console.log("Saving website data for user:", user.uid);
+      console.log("Attempting to save website data for user:", user.uid);
 
       // Save to Firestore with status and timestamp
       const websiteData = {
@@ -44,8 +48,13 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         createdAt: serverTimestamp(),
       };
 
+      // Add validation for required fields
+      if (!websiteData.businessName || !websiteData.industry) {
+        throw new Error("Missing required business information");
+      }
+
       const docRef = await addDoc(collection(db, "websites"), websiteData);
-      console.log("Website data saved with ID:", docRef.id);
+      console.log("Website data saved successfully with ID:", docRef.id);
 
       toast({
         title: "Success!",
@@ -58,9 +67,20 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
 
     } catch (error) {
       console.error("Error submitting website request:", error);
+      
+      // More specific error messages based on error type
+      let errorMessage = "Failed to submit your website request. Please try again.";
+      if (error instanceof Error) {
+        if (error.message.includes("permission-denied")) {
+          errorMessage = "You don't have permission to submit website requests. Please contact support.";
+        } else if (error.message.includes("Missing required")) {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "Error",
-        description: "Failed to submit your website request. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
