@@ -12,6 +12,7 @@ interface Website {
   businessName: string;
   status: string;
   userEmail: string;
+  createdAt: Date;
 }
 
 const AdminDashboard = () => {
@@ -22,12 +23,21 @@ const AdminDashboard = () => {
       const websitesRef = collection(db, "websites");
       const querySnapshot = await getDocs(websitesRef);
       
-      const websitesData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Website[];
+      console.log("Raw querySnapshot:", querySnapshot.size, "documents found");
       
-      console.log("Fetched websites:", websitesData);
+      const websitesData = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        console.log("Document data:", data);
+        return {
+          id: doc.id,
+          businessName: data.businessName || 'Unnamed Business',
+          status: data.status || 'pending',
+          userEmail: data.userEmail || 'No email',
+          createdAt: data.createdAt?.toDate() || new Date()
+        };
+      });
+      
+      console.log("Processed websites data:", websitesData);
       return websitesData;
     }
   });
