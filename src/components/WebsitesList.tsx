@@ -8,6 +8,7 @@ import { submitUpdateRequest } from "@/api/submit-update-request";
 import { WebsiteCard } from "./WebsiteCard";
 import { WebsiteDetailsDialog } from "./WebsiteDetailsDialog";
 import { UpdateRequestDialog } from "./UpdateRequestDialog";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 export const WebsitesList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<any>(null);
@@ -16,16 +17,24 @@ export const WebsitesList = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const { data: websites, isLoading } = useQuery({
+  const { data: websites, isLoading, error } = useQuery({
     queryKey: ['websites'],
     queryFn: async () => {
-      console.log("Fetching websites for user:", auth.currentUser?.uid);
+      console.log("Starting to fetch websites");
+      console.log("Current user ID:", auth.currentUser?.uid);
+      
+      if (!auth.currentUser?.uid) {
+        console.error("No authenticated user found");
+        throw new Error("User must be authenticated to fetch websites");
+      }
+
       const websitesRef = collection(db, "websites");
       const q = query(
         websitesRef,
-        where("userId", "==", auth.currentUser?.uid)
+        where("userId", "==", auth.currentUser.uid)
       );
       
+      console.log("Executing Firestore query");
       const querySnapshot = await getDocs(q);
       const websites = querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -81,6 +90,18 @@ export const WebsitesList = () => {
     }
   };
 
+  if (error) {
+    console.error("Error fetching websites:", error);
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Failed to load your websites. Please try refreshing the page.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -90,6 +111,7 @@ export const WebsitesList = () => {
   }
 
   if (!websites?.length) {
+    console.log("No websites found for user");
     return (
       <div className="bg-white shadow rounded-lg p-8 text-center">
         <h3 className="text-xl font-semibold text-gray-800 mb-4">
