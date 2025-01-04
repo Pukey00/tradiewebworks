@@ -20,6 +20,7 @@ export type WizardData = {
   // Services
   services: string[];
   customServices: string[];
+  selectedSubServices?: string[];
   
   // Testimonials
   testimonials: Array<{
@@ -59,7 +60,8 @@ const initialData: WizardData = {
   industry: "",
   location: "",
   services: [],
-  customServices: [], // Added this missing field
+  customServices: [],
+  selectedSubServices: [],
   testimonials: [],
   gallery: [],
   colorScheme: "default",

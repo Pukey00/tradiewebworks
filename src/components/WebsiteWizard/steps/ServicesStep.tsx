@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { WizardData } from "../WebsiteWizard";
 import { Plus, X } from "lucide-react";
+import { ServiceItem } from "./components/ServiceItem";
 
 interface ServicesStepProps {
   data: WizardData;
@@ -79,6 +79,7 @@ const suggestedSubServices: Record<string, string[]> = {
 export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProps) => {
   const [newService, setNewService] = useState("");
   const [showCustomField, setShowCustomField] = useState(false);
+  const [selectedSubServices, setSelectedSubServices] = useState<string[]>([]);
 
   const toggleService = (service: string) => {
     const updatedServices = data.services.includes(service)
@@ -89,7 +90,24 @@ export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProp
       setShowCustomField(!data.services.includes("Other"));
     }
 
+    // Clear sub-services when unselecting a service
+    if (data.services.includes(service)) {
+      const subServicesToRemove = suggestedSubServices[service] || [];
+      setSelectedSubServices(prev => 
+        prev.filter(s => !subServicesToRemove.includes(s))
+      );
+    }
+
     setData({ ...data, services: updatedServices });
+  };
+
+  const handleSubServiceChange = (subService: string, checked: boolean) => {
+    setSelectedSubServices(prev => {
+      if (checked && !prev.includes(subService)) {
+        return [...prev, subService];
+      }
+      return prev.filter(s => s !== subService);
+    });
   };
 
   const addCustomService = () => {
@@ -111,6 +129,11 @@ export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProp
 
   const handleNext = () => {
     if (data.services.length > 0) {
+      // Include selected sub-services in the data
+      setData(prev => ({
+        ...prev,
+        selectedSubServices
+      }));
       onNext();
     }
   };
@@ -128,30 +151,15 @@ export const ServicesStep = ({ data, setData, onNext, onBack }: ServicesStepProp
         <div className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             {predefinedServices.map((service) => (
-              <div key={service} className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={service}
-                    checked={data.services.includes(service)}
-                    onCheckedChange={() => toggleService(service)}
-                  />
-                  <Label htmlFor={service} className="cursor-pointer">
-                    {service}
-                  </Label>
-                </div>
-                {data.services.includes(service) && suggestedSubServices[service] && (
-                  <div className="ml-6 pl-2 border-l-2 border-gray-200">
-                    <p className="text-sm text-gray-600 mb-2">Suggested services:</p>
-                    <ul className="text-sm space-y-1">
-                      {suggestedSubServices[service].map((subService) => (
-                        <li key={subService} className="text-gray-700">
-                          • {subService}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
+              <ServiceItem
+                key={service}
+                service={service}
+                isSelected={data.services.includes(service)}
+                onToggle={toggleService}
+                suggestedSubServices={suggestedSubServices[service]}
+                selectedSubServices={selectedSubServices}
+                onSubServiceChange={handleSubServiceChange}
+              />
             ))}
           </div>
 
