@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BusinessDetailsStep } from "./steps/BusinessDetailsStep";
+import { ServicesStep } from "./steps/ServicesStep";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 
@@ -18,6 +19,7 @@ export type WizardData = {
   
   // Services
   services: string[];
+  customServices: string[];
   
   // Testimonials
   testimonials: Array<{
@@ -57,6 +59,7 @@ const initialData: WizardData = {
   industry: "",
   location: "",
   services: [],
+  customServices: [],
   testimonials: [],
   gallery: [],
   colorScheme: "default",
@@ -70,16 +73,34 @@ export const WebsiteWizard = ({ open, onOpenChange }: { open: boolean; onOpenCha
   const [step, setStep] = useState(1);
   const totalSteps = 4;
 
+  const handleNext = () => {
+    setStep(step + 1);
+  };
+
+  const handleBack = () => {
+    setStep(step - 1);
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-8">
         <div className="space-y-6">
           <Progress value={(step / totalSteps) * 100} className="mb-6" />
-          <BusinessDetailsStep 
-            data={data} 
-            setData={setData}
-            onNext={() => setStep(step + 1)}
-          />
+          {step === 1 && (
+            <BusinessDetailsStep 
+              data={data} 
+              setData={setData}
+              onNext={handleNext}
+            />
+          )}
+          {step === 2 && (
+            <ServicesStep
+              data={data}
+              setData={setData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>
