@@ -1,7 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 
-export const Header = () => {
+interface HeaderProps {
+  userEmail?: string;
+  isLoggedIn?: boolean;
+  onSignOut?: () => void;
+}
+
+export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
@@ -17,19 +23,34 @@ export const Header = () => {
           >
             Contact Us
           </button>
-          <Button 
-            variant="outline" 
-            className="text-tradie-navy hover:text-tradie-orange border-white hover:border-tradie-orange"
-            onClick={() => navigate('/login')}
-          >
-            Log In
-          </Button>
-          <Button 
-            className="bg-tradie-orange hover:bg-orange-600 text-white"
-            onClick={() => navigate('/signup')}
-          >
-            Sign Up
-          </Button>
+          {isLoggedIn ? (
+            <>
+              <span className="text-white">{userEmail}</span>
+              <Button 
+                variant="outline" 
+                className="text-white hover:text-tradie-orange border-white hover:border-tradie-orange"
+                onClick={onSignOut}
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button 
+                variant="outline" 
+                className="text-tradie-navy hover:text-tradie-orange border-white hover:border-tradie-orange"
+                onClick={() => navigate('/login')}
+              >
+                Log In
+              </Button>
+              <Button 
+                className="bg-tradie-orange hover:bg-orange-600 text-white"
+                onClick={() => navigate('/signup')}
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
         </nav>
       </div>
     </header>
