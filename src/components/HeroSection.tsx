@@ -10,9 +10,11 @@ export const HeroSection = () => {
   return (
     <div className="relative bg-tradie-navy text-white py-20 px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8 bg-tradie-orange/10 border border-tradie-orange rounded-lg py-2 px-4 max-w-fit mx-auto">
-          <p className="text-tradie-orange font-semibold">
-            🎉 Limited Time Offer: Free Setup (Ends 01/05/2025)
+        <div className="mb-8 bg-gradient-to-r from-tradie-orange/20 to-tradie-orange/10 border-2 border-tradie-orange rounded-lg py-3 px-6 max-w-fit mx-auto transform hover:scale-105 transition-all duration-300 animate-pulse">
+          <p className="text-tradie-orange font-bold text-lg flex items-center gap-2">
+            <span className="animate-bounce">🎉</span>
+            Limited Time Offer: Free Setup
+            <span className="text-sm font-normal opacity-75">(Ends 01/05/2025)</span>
           </p>
         </div>
         <div className="text-center">
