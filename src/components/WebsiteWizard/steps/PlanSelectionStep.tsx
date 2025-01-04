@@ -2,16 +2,73 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WizardData } from "../WebsiteWizard";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { db, auth } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { POST } from "@/api/submit-website-request";
 
 interface StepProps {
   data: WizardData;
   setData: (data: WizardData) => void;
   onNext: () => void;
   onBack: () => void;
+  onOpenChange: (open: boolean) => void;
 }
 
-export const PlanSelectionStep = ({ data, setData, onNext, onBack }: StepProps) => {
+export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      // Save to Firestore
+      const websiteData = {
+        ...data,
+        userId: user.uid,
+        status: "pending",
+        createdAt: new Date(),
+        userEmail: user.email,
+      };
+
+      await addDoc(collection(db, "websites"), websiteData);
+
+      // Send email notification
+      await POST(new Request("", { 
+        method: "POST",
+        body: JSON.stringify(data)
+      }));
+
+      toast({
+        title: "Success!",
+        description: "Your website request has been submitted successfully.",
+      });
+
+      // Close the wizard and navigate back to dashboard
+      onOpenChange(false);
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Error submitting website request:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit your website request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const plans = [
     {
       id: "basic",
@@ -109,8 +166,21 @@ export const PlanSelectionStep = ({ data, setData, onNext, onBack }: StepProps) 
             <p className="text-gray-600 mb-4">
               Get a free demo of your website based on the details you've entered so far. No commitment required!
             </p>
-            <Button variant="secondary" size="lg" className="w-full md:w-auto">
-              Request Free Demo
+            <Button 
+              variant="secondary" 
+              size="lg" 
+              className="w-full md:w-auto"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating Your Website...
+                </>
+              ) : (
+                "Request Free Demo"
+              )}
             </Button>
           </div>
 
@@ -118,8 +188,18 @@ export const PlanSelectionStep = ({ data, setData, onNext, onBack }: StepProps) 
             <Button variant="outline" onClick={onBack}>
               Back
             </Button>
-            <Button onClick={onNext} disabled={!data.selectedPlan}>
-              Next
+            <Button 
+              onClick={handleSubmit} 
+              disabled={!data.selectedPlan || isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
           </div>
         </div>
