@@ -56,6 +56,9 @@ export const PlanSelectionStep = ({ data, setData, onNext, onBack }: StepProps) 
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-tradie-navy">Step 4 of 4 - Select Your Plan</h2>
         <p className="text-gray-600">Choose the plan that best fits your business needs. You can always upgrade or change your plan later.</p>
+        <p className="mt-2 text-tradie-orange font-semibold">
+          Limited Time Offer - Free Setup (Ends 01/05/2025)
+        </p>
       </div>
 
       <ScrollArea className="flex-1">
@@ -72,10 +75,13 @@ export const PlanSelectionStep = ({ data, setData, onNext, onBack }: StepProps) 
                   <h3 className="text-xl font-bold mb-2">{plan.title}</h3>
                   <div className="space-y-2 mb-4">
                     <p className="text-lg font-semibold">{plan.setupPrice} setup</p>
-                    <p className="text-sm">
-                      <span className="text-tradie-orange font-bold text-base">FREE SETUP</span>
-                      <span className="block text-gray-500">if you subscribe to the monthly plan now!</span>
-                    </p>
+                    <div className="bg-tradie-orange/10 p-3 rounded-lg">
+                      <p>
+                        <span className="text-tradie-orange font-bold text-lg">FREE SETUP</span>
+                        <span className="block text-gray-500">if you subscribe to the monthly plan now!</span>
+                        <span className="text-xs text-gray-500 mt-1 block">Offer ends 01/05/2025</span>
+                      </p>
+                    </div>
                     <p className="text-xl font-bold text-tradie-navy">{plan.monthlyFee}</p>
                   </div>
                   <div className="space-y-2 mb-6">

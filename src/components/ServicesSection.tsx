@@ -51,6 +51,9 @@ export const ServicesSection = () => {
           <p className="mt-4 text-xl text-gray-600">
             Choose the plan that fits your needs
           </p>
+          <p className="mt-2 text-tradie-orange font-semibold">
+            Limited Time Offer - Free Setup (Ends 01/05/2025)
+          </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service) => (
@@ -60,10 +63,13 @@ export const ServicesSection = () => {
                 <CardTitle className="text-2xl font-bold text-center">{service.title}</CardTitle>
                 <div className="space-y-2 text-center">
                   <p className="text-lg font-semibold">{service.setupPrice} setup</p>
-                  <p>
-                    <span className="text-tradie-orange font-bold text-base">FREE SETUP</span>
-                    <span className="block text-gray-500">if you subscribe to the monthly plan now!</span>
-                  </p>
+                  <div className="bg-tradie-orange/10 p-3 rounded-lg">
+                    <p>
+                      <span className="text-tradie-orange font-bold text-lg">FREE SETUP</span>
+                      <span className="block text-gray-500">if you subscribe to the monthly plan now!</span>
+                      <span className="text-xs text-gray-500 mt-1 block">Offer ends 01/05/2025</span>
+                    </p>
+                  </div>
                   <p className="text-3xl font-bold text-tradie-navy">{service.monthlyFee}</p>
                 </div>
               </CardHeader>
