@@ -97,14 +97,18 @@ export const StyleContentStep = ({ data, setData, onNext, onBack }: StepProps) =
         </div>
       </ScrollArea>
 
-      <div className="flex justify-between pt-6">
+      <div className="flex justify-between pt-6 border-t">
         <Button
           variant="outline"
           onClick={onBack}
+          className="px-8"
         >
           Back
         </Button>
-        <Button onClick={handleNext}>
+        <Button 
+          onClick={handleNext}
+          className="px-8"
+        >
           Next
         </Button>
       </div>
