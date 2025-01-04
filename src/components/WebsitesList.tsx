@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ExternalLink, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +17,8 @@ import { useState } from "react";
 
 export const WebsitesList = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<any>(null);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [updateRequest, setUpdateRequest] = useState("");
   const { toast } = useToast();
 
   const { data: websites, isLoading } = useQuery({
@@ -41,11 +44,19 @@ export const WebsitesList = () => {
   });
 
   const handleUpdateRequest = () => {
-    console.log("Update requested for website:", selectedWebsite?.id);
+    console.log("Opening update request form for website:", selectedWebsite?.id);
+    setShowUpdateForm(true);
+  };
+
+  const handleSubmitRequest = () => {
+    console.log("Submitting update request for website:", selectedWebsite?.id);
+    console.log("Update request content:", updateRequest);
     toast({
       title: "Update Request Sent",
       description: "We've received your website update request. Our team will contact you soon.",
     });
+    setShowUpdateForm(false);
+    setUpdateRequest("");
   };
 
   if (isLoading) {
@@ -154,6 +165,53 @@ export const WebsitesList = () => {
                     Request Website Update
                   </Button>
                 </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showUpdateForm} onOpenChange={setShowUpdateForm}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Request Website Update
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedWebsite && (
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-sm font-medium text-gray-500">Business Name</h4>
+                <p className="mt-1 text-lg font-medium">{selectedWebsite.businessName}</p>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-gray-500 mb-2">Update Details</h4>
+                <Textarea
+                  placeholder="Please describe the updates you'd like to make to your website..."
+                  value={updateRequest}
+                  onChange={(e) => setUpdateRequest(e.target.value)}
+                  className="min-h-[150px]"
+                />
+              </div>
+
+              <div className="flex gap-3 justify-end pt-4">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowUpdateForm(false);
+                    setUpdateRequest("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSubmitRequest}
+                  className="bg-tradie-orange hover:bg-orange-600"
+                >
+                  Submit Request
+                </Button>
               </div>
             </div>
           )}
