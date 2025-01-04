@@ -10,6 +10,7 @@ import ElectricSolutions from "./pages/ElectricSolutions";
 import BuildersPortfolio from "./pages/BuildersPortfolio";
 import LandscapeDesign from "./pages/LandscapeDesign";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/builders-portfolio" element={<BuildersPortfolio />} />
           <Route path="/landscape-design" element={<LandscapeDesign />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </TooltipProvider>
     </BrowserRouter>
