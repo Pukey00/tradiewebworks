@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -83,13 +83,15 @@ const AdminDashboard = () => {
     },
     retry: 1,
     enabled: auth.currentUser?.email === ADMIN_EMAIL,
-    onError: (error) => {
-      console.error("Query error:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load websites. Please try again."
-      });
+    meta: {
+      onError: (error: Error) => {
+        console.error("Query error:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load websites. Please try again."
+        });
+      }
     }
   });
 
