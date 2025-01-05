@@ -12,7 +12,7 @@ interface PlanCardProps {
     setupPrice: string;
     monthlyFee: string;
     features: string[];
-    priceId?: string; // Add this for Stripe integration
+    priceId: string;
   };
   selectedPlan: string;
   onSelect: (planId: string) => void;

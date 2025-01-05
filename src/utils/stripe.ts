@@ -18,7 +18,6 @@ export const createCheckoutSession = async (priceId: string) => {
     const { id: sessionId } = await response.json();
     console.log('Checkout session created:', sessionId);
 
-    // Redirect to Stripe Checkout
     const stripe = await loadStripe(process.env.STRIPE_PUBLIC_KEY || '');
     if (!stripe) {
       throw new Error('Stripe failed to load');
