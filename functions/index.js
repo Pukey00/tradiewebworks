@@ -7,13 +7,28 @@ const app = express();
 
 // Configure CORS middleware with specific options
 app.use(cors({
-  origin: [
-    'http://localhost:5173',  // Local development
-    'https://tradie-web-works.web.app', // Production domain
-    'https://tradie-web-works.firebaseapp.com', // Alternative production domain
-    'https://ebcb6224-fa09-408c-ad12-72937f4b503e.lovableproject.com', // Lovable preview domain
-    /\.lovableproject\.com$/ // Allow all Lovable preview domains
-  ],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:5173',  // Local development
+      'https://tradie-web-works.web.app', // Production domain
+      'https://tradie-web-works.firebaseapp.com', // Alternative production domain
+    ];
+    
+    // Allow all Lovable preview domains
+    if (origin.endsWith('.lovableproject.com')) {
+      return callback(null, true);
+    }
+    
+    // Check if the origin is in our allowed list
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
