@@ -22,17 +22,32 @@ export const WebsitesList = () => {
 
   // Listen for auth state changes
   useEffect(() => {
+    console.log("Setting up auth state listener");
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Auth state changed:", user?.uid);
-      setUserId(user?.uid || null);
-      
-      // Invalidate and refetch websites when auth state changes
-      if (user?.uid) {
+      console.log("Auth state changed. User:", user?.email);
+      if (user) {
+        console.log("Setting userId:", user.uid);
+        setUserId(user.uid);
+        // Invalidate and refetch websites when auth state changes
         queryClient.invalidateQueries({ queryKey: ['websites', user.uid] });
+      } else {
+        console.log("No user found, clearing userId");
+        setUserId(null);
       }
+    }, (error) => {
+      console.error("Auth state change error:", error);
+      toast({
+        variant: "destructive",
+        title: "Authentication Error",
+        description: "Please try refreshing the page"
+      });
     });
-    return () => unsubscribe();
-  }, [queryClient]);
+
+    return () => {
+      console.log("Cleaning up auth state listener");
+      unsubscribe();
+    };
+  }, [queryClient, toast]);
 
   const { data: websites, isLoading, error } = useQuery({
     queryKey: ['websites', userId],
@@ -44,25 +59,31 @@ export const WebsitesList = () => {
         return [];
       }
 
-      const websitesRef = collection(db, "websites");
-      const q = query(
-        websitesRef,
-        where("userId", "==", userId)
-      );
-      
-      console.log("Executing Firestore query");
-      const querySnapshot = await getDocs(q);
-      const websites = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      
-      console.log("Fetched websites:", websites);
-      return websites;
+      try {
+        const websitesRef = collection(db, "websites");
+        const q = query(
+          websitesRef,
+          where("userId", "==", userId)
+        );
+        
+        console.log("Executing Firestore query");
+        const querySnapshot = await getDocs(q);
+        const websites = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        
+        console.log("Fetched websites:", websites);
+        return websites;
+      } catch (error) {
+        console.error("Error fetching websites:", error);
+        throw error;
+      }
     },
     enabled: !!userId,
     refetchOnMount: true,
-    refetchOnWindowFocus: true
+    refetchOnWindowFocus: true,
+    retry: 3
   });
 
   const handleUpdateRequest = () => {
