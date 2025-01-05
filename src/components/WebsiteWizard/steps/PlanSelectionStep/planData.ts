@@ -4,7 +4,7 @@ export const plans = [
     title: "Basic Plan",
     setupPrice: "$200",
     monthlyFee: "$30/month",
-    priceId: "price_basic", // Replace with your actual Stripe price ID
+    priceId: "prod_RWkUkGYBHdBufC", // Basic plan Stripe product ID
     features: [
       "One-page website",
       "Custom domain setup",
@@ -16,7 +16,7 @@ export const plans = [
     title: "Standard Plan",
     setupPrice: "$300",
     monthlyFee: "$50/month",
-    priceId: "price_standard", // Replace with your actual Stripe price ID
+    priceId: "prod_RWr0XP2UHk6qIL", // Standard plan Stripe product ID
     features: [
       "Multi-page website (up to 3 pages)",
       "Custom domain setup",
@@ -29,7 +29,7 @@ export const plans = [
     title: "Premium Plan",
     setupPrice: "$500",
     monthlyFee: "$75/month",
-    priceId: "price_premium", // Replace with your actual Stripe price ID
+    priceId: "prod_RWr1LbluWTSdUd", // Premium plan Stripe product ID
     features: [
       "Multi-page website (up to 5 pages)",
       "Custom domain setup",
