@@ -1,5 +1,8 @@
 import { loadStripe } from "@stripe/stripe-js";
 
+// Initialize Stripe with the public key
+const stripePromise = loadStripe("pk_test_51QdgrPFdZNXzEX7kRFfhkVxUbh6Ki7tNeXKOd6h097SuAouwYUZukGZOCt4lEnOYK1rnFMT1Rz5SYVoqT2eBhI1u00pqynt5ta");
+
 export const createCheckoutSession = async (priceId: string) => {
   try {
     console.log('Creating checkout session for price:', priceId);
@@ -21,7 +24,7 @@ export const createCheckoutSession = async (priceId: string) => {
     const { id: sessionId } = await response.json();
     console.log('Checkout session created:', sessionId);
 
-    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+    const stripe = await stripePromise;
     if (!stripe) {
       throw new Error('Stripe failed to load');
     }
