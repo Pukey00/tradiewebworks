@@ -69,4 +69,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
   });
+} else {
+  // In production, we don't need to call app.listen() as Firebase Functions handles this
+  console.log('Running in production mode');
 }
