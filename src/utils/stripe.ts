@@ -12,7 +12,10 @@ export const createCheckoutSession = async (priceId: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ priceId }),
+      body: JSON.stringify({ 
+        priceId,
+        returnUrl: `${window.location.origin}/dashboard`
+      }),
     });
 
     if (!response.ok) {
