@@ -2,7 +2,12 @@ const { onRequest } = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const functions = require("firebase-functions");
 const stripe = require("stripe")(functions.config().stripe.secret);
-const cors = require('cors')({ origin: true });
+const cors = require('cors')({ 
+  origin: [
+    'https://ebcb6224-fa09-408c-ad12-72937f4b503e.lovableproject.com',
+    'https://tradiewebworks.com.au'
+  ]
+});
 
 exports.createCheckoutSession = onRequest(async (req, res) => {
   // Wrap the function in cors middleware
