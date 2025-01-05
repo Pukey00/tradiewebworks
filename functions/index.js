@@ -8,8 +8,13 @@ const app = express();
 // Configure CORS middleware with specific options
 app.use(cors({
   origin: function(origin, callback) {
+    console.log('Incoming request from origin:', origin);
+    
     // Allow requests with no origin (like mobile apps, curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('Allowing request with no origin');
+      return callback(null, true);
+    }
     
     const allowedOrigins = [
       'http://localhost:5173',  // Local development
@@ -19,14 +24,17 @@ app.use(cors({
     
     // Allow all Lovable preview domains
     if (origin.endsWith('.lovableproject.com')) {
+      console.log('Allowing Lovable preview domain:', origin);
       return callback(null, true);
     }
     
     // Check if the origin is in our allowed list
     if (allowedOrigins.indexOf(origin) !== -1) {
+      console.log('Allowing whitelisted origin:', origin);
       return callback(null, true);
     }
     
+    console.log('Blocking request from non-allowed origin:', origin);
     callback(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST'],
@@ -36,6 +44,12 @@ app.use(cors({
 
 // Parse JSON bodies
 app.use(express.json());
+
+// Health check endpoint - this is crucial for Cloud Run
+app.get('/', (req, res) => {
+  console.log('Health check request received');
+  res.status(200).send('OK');
+});
 
 // Create a checkout session endpoint
 app.post('/create-checkout-session', async (req, res) => {
@@ -68,11 +82,6 @@ app.post('/create-checkout-session', async (req, res) => {
     console.error('Error creating checkout session:', error);
     res.status(500).json({ error: error.message });
   }
-});
-
-// Health check endpoint
-app.get('/', (req, res) => {
-  res.status(200).send('OK');
 });
 
 // Export the Express app as a Cloud Function
