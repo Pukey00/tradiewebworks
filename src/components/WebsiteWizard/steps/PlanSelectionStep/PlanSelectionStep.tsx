@@ -11,6 +11,7 @@ import { PlanCard } from "./components/PlanCard";
 import { plans } from "./constants/planData";
 import { handleStripeCheckout } from "./utils/stripeCheckout";
 import { saveWebsiteData } from "./utils/firebaseOperations";
+import { PlanId } from "./types";
 
 interface StepProps {
   data: WizardData;
@@ -26,6 +27,8 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    if (!data.selectedPlan) return;
+
     setIsSubmitting(true);
     try {
       const user = auth.currentUser;
@@ -35,7 +38,6 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
 
       await saveWebsiteData(data, user.uid, user.email || '');
 
-      // Send email notification
       await POST(new Request("", { 
         method: "POST",
         body: JSON.stringify(data)
@@ -46,10 +48,8 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         description: "Your website request has been submitted successfully.",
       });
 
-      // Redirect to Stripe checkout based on selected plan
-      handleStripeCheckout(data.selectedPlan as keyof typeof STRIPE_URLS);
+      handleStripeCheckout(data.selectedPlan as PlanId);
 
-      // Close the wizard and navigate back to dashboard
       onOpenChange(false);
       navigate("/dashboard");
 
