@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WizardData } from "../../WebsiteWizard";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "@/lib/firebase";
@@ -26,6 +26,53 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Check if this is a redirect back from Stripe payment
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isSuccess = urlParams.get('success');
+    
+    const handleSuccessfulPayment = async () => {
+      console.log("Processing successful premium plan payment...");
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          console.error("No authenticated user found after payment");
+          return;
+        }
+
+        const websiteData = {
+          ...data,
+          userId: user.uid,
+          status: "pending",
+          selectedPlan: "premium",
+          createdAt: new Date(),
+          userEmail: user.email,
+        };
+
+        await addDoc(collection(db, "websites"), websiteData);
+        console.log("Website data saved after successful payment");
+
+        toast({
+          title: "Success!",
+          description: "Your premium website request has been submitted successfully.",
+        });
+
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Error processing successful payment:", error);
+        toast({
+          title: "Error",
+          description: "There was a problem processing your payment. Please contact support.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    if (isSuccess === 'true') {
+      handleSuccessfulPayment();
+    }
+  }, [data, toast, navigate]);
 
   const handleSubmit = async () => {
     console.log("Validating required fields before submission...");

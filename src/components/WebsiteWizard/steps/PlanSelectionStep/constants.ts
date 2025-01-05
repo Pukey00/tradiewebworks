@@ -1,4 +1,4 @@
-export const PREMIUM_PAYMENT_LINK = 'https://buy.stripe.com/test_aEUdRb5qufBsfGo9AA';
+export const PREMIUM_PAYMENT_LINK = `https://buy.stripe.com/test_aEUdRb5qufBsfGo9AA?success_url=${encodeURIComponent(window.location.origin + '/dashboard')}`;
 
 export const plans = [
   {
