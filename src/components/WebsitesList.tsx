@@ -25,9 +25,14 @@ export const WebsitesList = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("Auth state changed:", user?.uid);
       setUserId(user?.uid || null);
+      
+      // Invalidate and refetch websites when auth state changes
+      if (user?.uid) {
+        queryClient.invalidateQueries({ queryKey: ['websites', user.uid] });
+      }
     });
     return () => unsubscribe();
-  }, []);
+  }, [queryClient]);
 
   const { data: websites, isLoading, error } = useQuery({
     queryKey: ['websites', userId],
@@ -55,7 +60,9 @@ export const WebsitesList = () => {
       console.log("Fetched websites:", websites);
       return websites;
     },
-    enabled: !!userId
+    enabled: !!userId,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   });
 
   const handleUpdateRequest = () => {
