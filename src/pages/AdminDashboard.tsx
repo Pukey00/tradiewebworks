@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { WebsitesTable } from "@/components/admin/WebsitesTable";
 import { DashboardStats } from "@/components/admin/DashboardStats";
+import { StripeKeyManager } from "@/components/StripeKeyManager";
 
 interface Website {
   id: string;
@@ -137,9 +138,18 @@ const AdminDashboard = () => {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 p-6">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+        <div className="max-w-7xl mx-auto space-y-8">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           
+          <Card>
+            <CardHeader>
+              <CardTitle>Stripe Configuration</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <StripeKeyManager />
+            </CardContent>
+          </Card>
+
           {websites && <DashboardStats websites={websites} />}
 
           <Card>
