@@ -2,17 +2,15 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WizardData } from "../../WebsiteWizard";
 import { Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { POST } from "@/api/submit-website-request";
-import { validateRequiredFields } from "./validation";
+import { usePaymentSuccessHandler } from "./PaymentSuccessHandler";
 import { PlanCards } from "./PlanCards";
 import { DemoRequestSection } from "./DemoRequestSection";
-import { createCheckoutSession } from "@/utils/stripe";
-import { plans, PREMIUM_PAYMENT_LINK } from "./constants";
 
 interface StepProps {
   data: WizardData;
@@ -27,67 +25,10 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Check if this is a redirect back from Stripe payment
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const isSuccess = urlParams.get('success');
-    
-    const handleSuccessfulPayment = async () => {
-      console.log("Processing successful premium plan payment...");
-      try {
-        const user = auth.currentUser;
-        if (!user) {
-          console.error("No authenticated user found after payment");
-          return;
-        }
-
-        const websiteData = {
-          ...data,
-          userId: user.uid,
-          status: "pending",
-          selectedPlan: "premium",
-          createdAt: new Date(),
-          userEmail: user.email,
-        };
-
-        await addDoc(collection(db, "websites"), websiteData);
-        console.log("Website data saved after successful payment");
-
-        toast({
-          title: "Success!",
-          description: "Your premium website request has been submitted successfully.",
-        });
-
-        navigate("/dashboard");
-      } catch (error) {
-        console.error("Error processing successful payment:", error);
-        toast({
-          title: "Error",
-          description: "There was a problem processing your payment. Please contact support.",
-          variant: "destructive",
-        });
-      }
-    };
-
-    if (isSuccess === 'true') {
-      handleSuccessfulPayment();
-    }
-  }, [data, toast, navigate]);
+  // Handle payment success
+  usePaymentSuccessHandler(data);
 
   const handleSubmit = async () => {
-    console.log("Validating required fields before submission...");
-    const missingFields = validateRequiredFields(data);
-    
-    if (missingFields.length > 0) {
-      console.log("Missing required fields:", missingFields);
-      toast({
-        title: "Missing Required Information",
-        description: `Please fill in the following required fields: ${missingFields.join(", ")}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const user = auth.currentUser;
@@ -95,32 +36,21 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         throw new Error("User not authenticated");
       }
 
-      // If premium plan is selected, redirect to payment link
-      if (data.selectedPlan === 'premium') {
-        console.log('Redirecting to premium plan payment link...');
-        window.location.href = PREMIUM_PAYMENT_LINK;
-        return;
+      // Save to Firestore for non-premium plans
+      if (data.selectedPlan !== 'premium') {
+        console.log("Saving website data for non-premium plan");
+        const websiteData = {
+          ...data,
+          userId: user.uid,
+          status: "pending",
+          createdAt: new Date(),
+          userEmail: user.email,
+        };
+
+        await addDoc(collection(db, "websites"), websiteData);
       }
 
-      // Find the selected plan's price ID for non-premium plans
-      const selectedPlanData = plans.find(plan => plan.id === data.selectedPlan);
-      if (!selectedPlanData?.priceId) {
-        throw new Error("Selected plan price ID not found");
-      }
-
-      console.log("Creating Stripe checkout session...");
-      await createCheckoutSession(selectedPlanData.priceId);
-
-      console.log("Saving website data for user:", user.uid);
-      const websiteData = {
-        ...data,
-        userId: user.uid,
-        status: "pending",
-        createdAt: new Date(),
-        userEmail: user.email,
-      };
-
-      await addDoc(collection(db, "websites"), websiteData);
+      // Send email notification
       await POST(new Request("", { 
         method: "POST",
         body: JSON.stringify(data)
@@ -131,14 +61,15 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         description: "Your website request has been submitted successfully.",
       });
 
+      // Close the wizard and navigate back to dashboard
       onOpenChange(false);
       navigate("/dashboard");
 
     } catch (error) {
-      console.error("Error during submission:", error);
+      console.error("Error submitting website request:", error);
       toast({
         title: "Error",
-        description: "Failed to process your request. Please try again.",
+        description: "Failed to submit your website request. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -172,10 +103,10 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Processing Payment...
+                  Processing...
                 </>
               ) : (
-                "Subscribe & Submit"
+                "Submit"
               )}
             </Button>
           </div>
