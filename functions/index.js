@@ -23,7 +23,7 @@ app.use(cors({
     ];
     
     // Allow all Lovable preview domains
-    if (origin.endsWith('.lovableproject.com')) {
+    if (origin && origin.endsWith('.lovableproject.com')) {
       console.log('Allowing Lovable preview domain:', origin);
       return callback(null, true);
     }
