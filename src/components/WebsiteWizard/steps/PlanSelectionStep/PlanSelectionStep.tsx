@@ -58,6 +58,8 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         window.open('https://buy.stripe.com/test_aEUdRb5qufBsfGo9AA', '_blank');
       } else if (data.selectedPlan === 'standard') {
         window.open('https://buy.stripe.com/test_aEUbJ306ablc0Lu145', '_blank');
+      } else if (data.selectedPlan === 'basic') {
+        window.open('https://buy.stripe.com/test_bIYbJ3bOS1KCgKseUW', '_blank');
       }
 
       // Close the wizard and navigate back to dashboard
