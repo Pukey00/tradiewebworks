@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { createCheckoutSession } from "@/utils/stripe";
+import { useToast } from "@/hooks/use-toast";
 
 interface PlanCardProps {
   plan: {
@@ -9,12 +12,41 @@ interface PlanCardProps {
     setupPrice: string;
     monthlyFee: string;
     features: string[];
+    priceId?: string; // Add this for Stripe integration
   };
   selectedPlan: string;
   onSelect: (planId: string) => void;
 }
 
 export const PlanCard = ({ plan, selectedPlan, onSelect }: PlanCardProps) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubscribe = async () => {
+    if (!plan.priceId) {
+      toast({
+        title: "Configuration Error",
+        description: "This plan is not properly configured for payments.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await createCheckoutSession(plan.priceId);
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: "Payment Error",
+        description: "Failed to initiate payment. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <Card 
       className={`border-2 transition-colors ${
@@ -43,11 +75,19 @@ export const PlanCard = ({ plan, selectedPlan, onSelect }: PlanCardProps) => {
           ))}
         </div>
         <Button
-          onClick={() => onSelect(plan.id)}
+          onClick={handleSubscribe}
           variant={selectedPlan === plan.id ? "default" : "outline"}
           className="w-full"
+          disabled={isProcessing}
         >
-          Select {plan.title}
+          {isProcessing ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            `Subscribe to ${plan.title}`
+          )}
         </Button>
       </CardContent>
     </Card>
