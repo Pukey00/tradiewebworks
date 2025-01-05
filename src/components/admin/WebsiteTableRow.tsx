@@ -13,7 +13,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { BarChart2, Trash2 } from "lucide-react";
-import { useDeleteWebsite } from "./websiteMutations";
+import { useDeleteWebsite, useWebsiteMutations } from "./websiteMutations";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface WebsiteTableRowProps {
   website: {
@@ -28,17 +35,40 @@ interface WebsiteTableRowProps {
 
 export const WebsiteTableRow = ({ website }: WebsiteTableRowProps) => {
   const deleteMutation = useDeleteWebsite();
+  const { updateStatusMutation } = useWebsiteMutations();
 
   const handleDelete = () => {
     console.log("Deleting website:", website.id);
     deleteMutation.mutate(website.id);
   };
 
+  const handleStatusChange = (newStatus: string) => {
+    console.log(`Updating status for website ${website.id} to ${newStatus}`);
+    updateStatusMutation.mutate({ 
+      websiteId: website.id, 
+      newStatus 
+    });
+  };
+
   return (
     <TableRow>
       <TableCell>{website.businessName}</TableCell>
       <TableCell>{website.userEmail}</TableCell>
-      <TableCell>{website.status}</TableCell>
+      <TableCell>
+        <Select
+          defaultValue={website.status}
+          onValueChange={handleStatusChange}
+        >
+          <SelectTrigger className="w-[130px]">
+            <SelectValue placeholder="Select status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="approved">Approved</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+          </SelectContent>
+        </Select>
+      </TableCell>
       <TableCell>
         {website.websiteUrl ? (
           <a
