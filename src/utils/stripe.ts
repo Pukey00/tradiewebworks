@@ -4,8 +4,8 @@ export const createCheckoutSession = async (priceId: string) => {
   try {
     console.log('Creating checkout session for price:', priceId);
     
-    // Update the URL to point to the Firebase Functions endpoint
-    const response = await fetch('http://localhost:5001/your-project/us-central1/createCheckoutSession', {
+    // The URL should use your Firebase project ID
+    const response = await fetch('http://localhost:5001/tradie-landing-spark/us-central1/createCheckoutSession', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
