@@ -8,19 +8,31 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface WebsiteCardProps {
   website: any;
   onViewDetails: (website: any) => void;
 }
 
+const getPlanBadgeColor = (planType: string) => {
+  const colors = {
+    basic: "bg-[#9b87f5] hover:bg-[#9b87f5]/90",
+    standard: "bg-[#8B5CF6] hover:bg-[#8B5CF6]/90",
+    premium: "bg-[#D946EF] hover:bg-[#D946EF]/90"
+  };
+  return colors[planType.toLowerCase() as keyof typeof colors] || colors.basic;
+};
+
 export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
   const websiteUrl = website.websiteUrl || website.url;
+  const planType = website.selectedPlan || "basic";
+  const planTypeCapitalized = planType.charAt(0).toUpperCase() + planType.slice(1);
 
   return (
-    <Card className="p-6">
+    <Card className="p-6 bg-[#F1F0FB]">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-medium text-lg">{website.businessName || "Untitled Website"}</h3>
+        <h3 className="font-medium text-lg text-[#1A1F2C]">{website.businessName || "Untitled Website"}</h3>
         <Badge 
           variant={website.status === "pending" ? "pending" : "default"}
           className="uppercase"
@@ -31,14 +43,24 @@ export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
       
       <div className="space-y-2 mb-4">
         {website.industry && (
-          <p className="text-sm text-gray-600">Industry: {website.industry}</p>
+          <p className="text-sm text-[#403E43]">Industry: {website.industry}</p>
         )}
         {website.location && (
-          <p className="text-sm text-gray-600">Service Area: {website.location}</p>
+          <p className="text-sm text-[#403E43]">Service Area: {website.location}</p>
         )}
-        <p className="text-sm text-gray-600">Plan: {website.selectedPlan || "Not selected"}</p>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Website:</span>
+          <span className="text-sm text-[#403E43]">Plan:</span>
+          <Badge 
+            className={cn(
+              "px-3 py-1 text-white font-semibold",
+              getPlanBadgeColor(planType)
+            )}
+          >
+            {planTypeCapitalized}
+          </Badge>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-[#403E43]">Website:</span>
           {websiteUrl ? (
             <TooltipProvider>
               <Tooltip>
@@ -61,7 +83,7 @@ export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
             <span className="text-sm text-gray-500 italic">Not available yet</span>
           )}
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-[#403E43]">
           <Users className="h-4 w-4" />
           <span className="italic">Traffic Analytics - Coming Soon</span>
         </div>
