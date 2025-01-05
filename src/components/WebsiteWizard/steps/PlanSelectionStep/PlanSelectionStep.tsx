@@ -23,6 +23,37 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const handleStripeCheckout = (plan: string) => {
+    console.log('Redirecting to Stripe checkout for plan:', plan);
+    let checkoutUrl = '';
+    
+    switch(plan) {
+      case 'premium':
+        checkoutUrl = 'https://buy.stripe.com/test_aEUdRb5qufBsfGo9AA';
+        break;
+      case 'standard':
+        checkoutUrl = 'https://buy.stripe.com/test_aEUbJ306ablc0Lu145';
+        break;
+      case 'basic':
+        checkoutUrl = 'https://buy.stripe.com/test_bIYbJ3bOS1KCgKseUW';
+        break;
+      default:
+        console.error('Invalid plan selected');
+        return;
+    }
+
+    try {
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error('Error redirecting to Stripe:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to redirect to payment page. Please try again.",
+      });
+    }
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -40,6 +71,7 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         userEmail: user.email,
       };
 
+      console.log('Saving website data:', websiteData);
       await addDoc(collection(db, "websites"), websiteData);
 
       // Send email notification
@@ -53,14 +85,8 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         description: "Your website request has been submitted successfully.",
       });
 
-      // Redirect to appropriate Stripe checkout based on selected plan
-      if (data.selectedPlan === 'premium') {
-        window.open('https://buy.stripe.com/test_aEUdRb5qufBsfGo9AA', '_blank');
-      } else if (data.selectedPlan === 'standard') {
-        window.open('https://buy.stripe.com/test_aEUbJ306ablc0Lu145', '_blank');
-      } else if (data.selectedPlan === 'basic') {
-        window.open('https://buy.stripe.com/test_bIYbJ3bOS1KCgKseUW', '_blank');
-      }
+      // Redirect to Stripe checkout based on selected plan
+      handleStripeCheckout(data.selectedPlan);
 
       // Close the wizard and navigate back to dashboard
       onOpenChange(false);
