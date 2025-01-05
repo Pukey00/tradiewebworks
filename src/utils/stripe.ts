@@ -1,3 +1,5 @@
+import { loadStripe } from "@stripe/stripe-js";
+
 export const createCheckoutSession = async (priceId: string) => {
   try {
     console.log('Creating checkout session for price:', priceId);
