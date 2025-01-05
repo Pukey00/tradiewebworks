@@ -10,7 +10,9 @@ app.use(cors({
   origin: [
     'http://localhost:5173',  // Local development
     'https://tradie-web-works.web.app', // Production domain
-    'https://tradie-web-works.firebaseapp.com' // Alternative production domain
+    'https://tradie-web-works.firebaseapp.com', // Alternative production domain
+    'https://ebcb6224-fa09-408c-ad12-72937f4b503e.lovableproject.com', // Lovable preview domain
+    /\.lovableproject\.com$/ // Allow all Lovable preview domains
   ],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
