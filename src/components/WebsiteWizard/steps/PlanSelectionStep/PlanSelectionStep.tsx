@@ -53,9 +53,11 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         description: "Your website request has been submitted successfully.",
       });
 
-      // If premium plan is selected, redirect to Stripe
+      // Redirect to appropriate Stripe checkout based on selected plan
       if (data.selectedPlan === 'premium') {
         window.open('https://buy.stripe.com/test_aEUdRb5qufBsfGo9AA', '_blank');
+      } else if (data.selectedPlan === 'standard') {
+        window.open('https://buy.stripe.com/test_aEUbJ306ablc0Lu145', '_blank');
       }
 
       // Close the wizard and navigate back to dashboard
