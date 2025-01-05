@@ -1,7 +1,18 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-// Initialize Stripe with your publishable key
-export const stripePromise = loadStripe('pk_test_YOUR_PUBLISHABLE_KEY');
+// Function to get the Stripe publishable key
+const getPublishableKey = () => {
+  return localStorage.getItem('stripe_publishable_key') || 'pk_test_YOUR_PUBLISHABLE_KEY';
+};
+
+// Initialize Stripe with the publishable key
+export const stripePromise = loadStripe(getPublishableKey());
+
+// Function to set the publishable key
+export const setStripePublishableKey = (key: string) => {
+  localStorage.setItem('stripe_publishable_key', key);
+  window.location.reload(); // Reload to reinitialize Stripe with new key
+};
 
 export const createSubscriptionCheckout = async (priceId: string, userId: string) => {
   try {
