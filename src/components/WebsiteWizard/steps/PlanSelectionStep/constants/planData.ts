@@ -1,4 +1,6 @@
-export const plans = [
+import { Plan } from "../types";
+
+export const plans: Plan[] = [
   {
     id: "basic",
     title: "Basic Plan",
