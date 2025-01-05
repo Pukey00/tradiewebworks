@@ -3,7 +3,9 @@ import { loadStripe } from "@stripe/stripe-js";
 export const createCheckoutSession = async (priceId: string) => {
   try {
     console.log('Creating checkout session for price:', priceId);
-    const response = await fetch('/createCheckoutSession', {
+    
+    // Update the URL to point to the Firebase Functions endpoint
+    const response = await fetch('http://localhost:5001/your-project/us-central1/createCheckoutSession', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,13 +14,15 @@ export const createCheckoutSession = async (priceId: string) => {
     });
 
     if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Checkout session creation failed:', errorData);
       throw new Error('Failed to create checkout session');
     }
 
     const { id: sessionId } = await response.json();
     console.log('Checkout session created:', sessionId);
 
-    const stripe = await loadStripe(process.env.STRIPE_PUBLIC_KEY || '');
+    const stripe = await loadStripe(process.env.VITE_STRIPE_PUBLIC_KEY || '');
     if (!stripe) {
       throw new Error('Stripe failed to load');
     }
