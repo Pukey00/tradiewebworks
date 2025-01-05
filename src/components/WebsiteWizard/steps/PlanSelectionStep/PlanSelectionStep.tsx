@@ -11,6 +11,8 @@ import { POST } from "@/api/submit-website-request";
 import { validateRequiredFields } from "./validation";
 import { PlanCards } from "./PlanCards";
 import { DemoRequestSection } from "./DemoRequestSection";
+import { createCheckoutSession } from "@/utils/stripe";
+import { plans } from "./planData";
 
 interface StepProps {
   data: WizardData;
@@ -46,6 +48,15 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         throw new Error("User not authenticated");
       }
 
+      // Find the selected plan's price ID
+      const selectedPlanData = plans.find(plan => plan.id === data.selectedPlan);
+      if (!selectedPlanData?.priceId) {
+        throw new Error("Selected plan price ID not found");
+      }
+
+      console.log("Creating Stripe checkout session...");
+      await createCheckoutSession(selectedPlanData.priceId);
+
       console.log("Saving website data for user:", user.uid);
       const websiteData = {
         ...data,
@@ -71,10 +82,10 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
       navigate("/dashboard");
 
     } catch (error) {
-      console.error("Error submitting website request:", error);
+      console.error("Error during submission:", error);
       toast({
         title: "Error",
-        description: "Failed to submit your website request. Please try again.",
+        description: "Failed to process your request. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -108,10 +119,10 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating...
+                  Processing Payment...
                 </>
               ) : (
-                "Submit"
+                "Subscribe & Submit"
               )}
             </Button>
           </div>
