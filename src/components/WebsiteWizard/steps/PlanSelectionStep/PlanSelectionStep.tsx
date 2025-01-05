@@ -12,7 +12,7 @@ import { validateRequiredFields } from "./validation";
 import { PlanCards } from "./PlanCards";
 import { DemoRequestSection } from "./DemoRequestSection";
 import { createCheckoutSession } from "@/utils/stripe";
-import { plans } from "./planData";
+import { plans, PREMIUM_PAYMENT_LINK } from "./constants";
 
 interface StepProps {
   data: WizardData;
@@ -48,7 +48,14 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
         throw new Error("User not authenticated");
       }
 
-      // Find the selected plan's price ID
+      // If premium plan is selected, redirect to payment link
+      if (data.selectedPlan === 'premium') {
+        console.log('Redirecting to premium plan payment link...');
+        window.location.href = PREMIUM_PAYMENT_LINK;
+        return;
+      }
+
+      // Find the selected plan's price ID for non-premium plans
       const selectedPlanData = plans.find(plan => plan.id === data.selectedPlan);
       if (!selectedPlanData?.priceId) {
         throw new Error("Selected plan price ID not found");
@@ -67,7 +74,6 @@ export const PlanSelectionStep = ({ data, setData, onBack, onOpenChange }: StepP
       };
 
       await addDoc(collection(db, "websites"), websiteData);
-
       await POST(new Request("", { 
         method: "POST",
         body: JSON.stringify(data)
