@@ -21,13 +21,14 @@ export const createCheckoutSession = async (priceId: string) => {
     const { id: sessionId } = await response.json();
     console.log('Checkout session created:', sessionId);
 
-    const stripe = await loadStripe(process.env.VITE_STRIPE_PUBLIC_KEY || '');
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
     if (!stripe) {
       throw new Error('Stripe failed to load');
     }
 
     const { error } = await stripe.redirectToCheckout({ sessionId });
     if (error) {
+      console.error('Stripe redirect error:', error);
       throw error;
     }
   } catch (error) {

@@ -34,6 +34,7 @@ export const PlanCard = ({ plan, selectedPlan, onSelect }: PlanCardProps) => {
 
     setIsProcessing(true);
     try {
+      console.log('Starting checkout process for plan:', plan.id);
       await createCheckoutSession(plan.priceId);
     } catch (error) {
       console.error('Payment error:', error);
