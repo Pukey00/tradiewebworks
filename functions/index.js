@@ -5,8 +5,19 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
-// Middleware
-app.use(cors({ origin: true }));
+// Configure CORS middleware with specific options
+app.use(cors({
+  origin: [
+    'http://localhost:5173',  // Local development
+    'https://tradie-web-works.web.app', // Production domain
+    'https://tradie-web-works.firebaseapp.com' // Alternative production domain
+  ],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
+// Parse JSON bodies
 app.use(express.json());
 
 // Create a checkout session endpoint
