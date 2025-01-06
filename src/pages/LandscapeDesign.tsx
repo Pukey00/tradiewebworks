@@ -63,7 +63,7 @@ const LandscapeDesign = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-2 border-white text-white hover:bg-white/10"
+              className="border-2 border-white text-green-500 hover:bg-white/10"
             >
               View Our Work
             </Button>
