@@ -6,6 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useState } from "react";
+import { SubscriptionDialog } from "./SubscriptionDialog";
 
 interface WebsiteDetailsDialogProps {
   website: any;
@@ -20,69 +22,76 @@ export const WebsiteDetailsDialog = ({
   onOpenChange,
   onRequestUpdate 
 }: WebsiteDetailsDialogProps) => {
+  const [showSubscriptionDialog, setShowSubscriptionDialog] = useState(false);
+
   if (!website) return null;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
-            Website Details
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-medium">{website.businessName}</h3>
-            <Badge variant={website.status === "pending" ? "pending" : "default"}>
-              {website.status === "pending" ? "PENDING" : website.status || "PENDING"}
-            </Badge>
-          </div>
-
-          <div className="space-y-3">
-            <div>
-              <h4 className="text-sm font-medium text-gray-500">Business Information</h4>
-              <div className="mt-1 space-y-2">
-                <p className="text-sm">Industry: {website.industry || "Not specified"}</p>
-                <p className="text-sm">Service Area: {website.location || "Not specified"}</p>
-                <p className="text-sm">Email: {website.email || "Not specified"}</p>
-                <p className="text-sm">Phone: {website.phoneNumber || "Not specified"}</p>
-              </div>
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Website Details
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-medium">{website.businessName}</h3>
+              <Badge variant={website.status === "pending" ? "pending" : "default"}>
+                {website.status === "pending" ? "PENDING" : website.status || "PENDING"}
+              </Badge>
             </div>
 
-            <div>
-              <h4 className="text-sm font-medium text-gray-500">Website Plan</h4>
-              <p className="mt-1 text-sm">{website.selectedPlan || "Not selected"}</p>
-            </div>
-
-            {website.tagline && (
+            <div className="space-y-3">
               <div>
-                <h4 className="text-sm font-medium text-gray-500">Business Tagline</h4>
-                <p className="mt-1 text-sm">{website.tagline}</p>
+                <h4 className="text-sm font-medium text-gray-500">Business Information</h4>
+                <div className="mt-1 space-y-2">
+                  <p className="text-sm">Industry: {website.industry || "Not specified"}</p>
+                  <p className="text-sm">Service Area: {website.location || "Not specified"}</p>
+                  <p className="text-sm">Email: {website.email || "Not specified"}</p>
+                  <p className="text-sm">Phone: {website.phoneNumber || "Not specified"}</p>
+                </div>
               </div>
-            )}
 
-            <div className="flex flex-col gap-2 pt-4">
-              <Button 
-                onClick={onRequestUpdate}
-                className="w-full bg-tradie-orange hover:bg-orange-600"
-              >
-                Request Website Update
-              </Button>
-              <Button 
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  console.log("Manage subscription clicked for website:", website.id);
-                  // TODO: Implement subscription management functionality
-                }}
-              >
-                Manage Subscription
-              </Button>
+              <div>
+                <h4 className="text-sm font-medium text-gray-500">Website Plan</h4>
+                <p className="mt-1 text-sm">{website.selectedPlan || "Not selected"}</p>
+              </div>
+
+              {website.tagline && (
+                <div>
+                  <h4 className="text-sm font-medium text-gray-500">Business Tagline</h4>
+                  <p className="mt-1 text-sm">{website.tagline}</p>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-2 pt-4">
+                <Button 
+                  onClick={onRequestUpdate}
+                  className="w-full bg-tradie-orange hover:bg-orange-600"
+                >
+                  Request Website Update
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => setShowSubscriptionDialog(true)}
+                >
+                  Manage Subscription
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+
+      <SubscriptionDialog
+        open={showSubscriptionDialog}
+        onOpenChange={setShowSubscriptionDialog}
+        currentPlan={website.selectedPlan}
+      />
+    </>
   );
 };
