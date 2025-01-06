@@ -3,8 +3,14 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ContactForm } from "@/components/ContactForm";
 
 const PlumbingPro = () => {
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    contactSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Back to Examples Header */}
@@ -25,8 +31,11 @@ const PlumbingPro = () => {
       <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
-          <Button className="bg-[#F97316] hover:bg-orange-600 text-white">
-            Call Now
+          <Button 
+            className="bg-[#F97316] hover:bg-orange-600 text-white"
+            onClick={scrollToContact}
+          >
+            Contact Now
           </Button>
         </div>
       </header>
@@ -41,8 +50,12 @@ const PlumbingPro = () => {
             Available 24/7 for all your plumbing emergencies
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-[#F97316] hover:bg-orange-600 text-white">
-              Call Now <Phone className="ml-2" />
+            <Button 
+              size="lg" 
+              className="bg-[#F97316] hover:bg-orange-600 text-white"
+              onClick={scrollToContact}
+            >
+              Contact Now <Phone className="ml-2" />
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-white hover:bg-white/10">
               Book Online
@@ -97,11 +110,18 @@ const PlumbingPro = () => {
           <p className="text-xl mb-8 text-gray-600">
             Contact us now for a free quote
           </p>
-          <Button size="lg" className="bg-[#F97316] hover:bg-orange-600 text-white">
-            Get Free Quote
+          <Button 
+            size="lg" 
+            className="bg-[#F97316] hover:bg-orange-600 text-white"
+            onClick={scrollToContact}
+          >
+            Contact Now
           </Button>
         </div>
       </section>
+
+      {/* Contact Form Section */}
+      <ContactForm />
 
       {/* Footer */}
       <Footer />
