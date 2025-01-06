@@ -7,18 +7,8 @@ import { Footer } from "@/components/Footer";
 const PlumbingPro = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Mock Business Header */}
-      <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
-          <Button className="bg-[#F97316] hover:bg-orange-600 text-white">
-            Call Now
-          </Button>
-        </div>
-      </header>
-
       {/* Overlay Back Button */}
-      <div className="fixed top-4 left-4 z-50">
+      <div className="absolute top-2 left-4 z-50">
         <Link to="/examples">
           <Button 
             variant="ghost" 
@@ -28,6 +18,16 @@ const PlumbingPro = () => {
           </Button>
         </Link>
       </div>
+
+      {/* Mock Business Header */}
+      <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg mt-12">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
+          <Button className="bg-[#F97316] hover:bg-orange-600 text-white">
+            Call Now
+          </Button>
+        </div>
+      </header>
 
       {/* Hero Section */}
       <section className="bg-[#0FA0CE] text-white py-20 px-6">
