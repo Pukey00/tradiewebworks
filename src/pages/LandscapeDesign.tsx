@@ -1,7 +1,10 @@
-import { ArrowLeft, Leaf, Sun, Cloud, Phone, Trees, Flower2, Shovel, Droplets } from "lucide-react";
+import { ArrowLeft, Trees, Flower2, Shovel, Sun, Cloud, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
+import { Footer } from "@/components/Footer";
+import { WaterAnimation } from "@/components/landscape/WaterAnimation";
+import { HeroSection } from "@/components/landscape/HeroSection";
 
 const LandscapeDesign = () => {
   const scrollToContact = () => {
@@ -25,11 +28,11 @@ const LandscapeDesign = () => {
       </div>
 
       {/* Mock Business Header */}
-      <header className="bg-gradient-to-b from-green-800 via-green-700 to-green-600 py-4 px-6 shadow-lg">
+      <header className="bg-gradient-to-b from-green-800 via-green-700 to-green-600 py-4 px-6 shadow-lg relative z-20">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="bg-green-500 p-2 rounded-full">
-              <Leaf className="h-6 w-6 text-white" />
+              <Trees className="h-6 w-6 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white">GREEN HORIZONS</h1>
           </div>
@@ -42,50 +45,11 @@ const LandscapeDesign = () => {
         </div>
       </header>
 
-      {/* Dynamic Water Animation Section */}
-      <div className="relative h-16 bg-gradient-to-r from-green-800 to-green-600 overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-around">
-          {[...Array(5)].map((_, index) => (
-            <div key={index} className="relative">
-              <Droplets className="w-6 h-6 text-blue-200 animate-droplet-fall" style={{ animationDelay: `${index * 0.3}s` }} />
-            </div>
-          ))}
-        </div>
-        <div className="absolute inset-0">
-          <div className="h-full w-1/4 bg-gradient-to-r from-transparent via-blue-200/20 to-transparent animate-water-flow" />
-        </div>
-      </div>
+      <WaterAnimation />
+      
+      <HeroSection onGetQuote={scrollToContact} />
 
-      {/* Hero Section */}
-      <section className="relative bg-[url('/lovable-uploads/384e0977-be75-43b6-a65c-a2356336b86a.png')] bg-cover bg-center py-32 px-6">
-        <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 to-green-800/70" />
-        <div className="max-w-7xl mx-auto relative text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Create Your Dream Garden
-          </h1>
-          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
-            Professional landscape design and maintenance services to transform your outdoor space into a natural paradise
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              onClick={scrollToContact}
-              className="bg-green-500 hover:bg-green-600 text-white"
-            >
-              Get Free Quote <Leaf className="ml-2" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-2 border-white text-green-500 hover:bg-white/10"
-            >
-              View Our Work
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
+      {/* Services Section */}
       <section className="py-20 px-6 bg-gradient-to-b from-white to-green-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-green-800">
@@ -194,6 +158,8 @@ const LandscapeDesign = () => {
           <ContactForm />
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
