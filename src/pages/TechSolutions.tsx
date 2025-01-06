@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CircuitBoard, Code, Database, Laptop, Server } from "lucide-react";
+import { ArrowLeft, CircuitBoard, Code, Database, Laptop, Server, Globe, Rocket, Shield, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ContactForm } from "@/components/ContactForm";
 
 const TechSolutions = () => {
   return (
@@ -103,6 +104,117 @@ const TechSolutions = () => {
                 alt="Tech workspace"
                 className="relative rounded-lg shadow-2xl border border-white/10 backdrop-blur-sm"
               />
+            </div>
+          </div>
+        </section>
+
+        {/* Services Grid */}
+        <section className="py-20 px-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A] via-[#1E293B] to-[#0F172A] opacity-90"></div>
+          <div className="max-w-7xl mx-auto relative">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-4">Our Solutions</h2>
+              <p className="text-gray-300 text-lg">Comprehensive tech services for modern businesses</p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: Globe,
+                  title: "Web Development",
+                  description: "Custom websites and web applications built with cutting-edge technologies"
+                },
+                {
+                  icon: Database,
+                  title: "Cloud Solutions",
+                  description: "Scalable cloud infrastructure and migration services"
+                },
+                {
+                  icon: Shield,
+                  title: "Cybersecurity",
+                  description: "Advanced security measures to protect your digital assets"
+                },
+                {
+                  icon: Cpu,
+                  title: "AI Integration",
+                  description: "Smart solutions powered by artificial intelligence"
+                },
+                {
+                  icon: Rocket,
+                  title: "Digital Transformation",
+                  description: "Modernize your business with digital solutions"
+                },
+                {
+                  icon: Server,
+                  title: "DevOps Services",
+                  description: "Streamline development and operations"
+                }
+              ].map((service, index) => (
+                <div
+                  key={index}
+                  className="group relative bg-gradient-to-br from-black/50 to-black/30 backdrop-blur-sm p-8 rounded-xl border border-[#0EA5E9]/20 hover:border-[#0EA5E9]/50 transition-all duration-300"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0EA5E9]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                  <service.icon className="w-12 h-12 text-[#0EA5E9] mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
+                  <p className="text-gray-300">{service.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-16 px-6 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-4 gap-8">
+              {[
+                { number: "100+", label: "Clients Served" },
+                { number: "500+", label: "Projects Completed" },
+                { number: "99.9%", label: "Uptime Guaranteed" },
+                { number: "24/7", label: "Support Available" }
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-4xl font-bold text-[#0EA5E9] mb-2">{stat.number}</div>
+                  <div className="text-gray-300">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Technologies Section */}
+        <section className="py-20 px-6 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-4">Technologies We Use</h2>
+              <p className="text-gray-300 text-lg">Built with the latest and most reliable technologies</p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                "React", "Node.js", "AWS", "Docker",
+                "Python", "Kubernetes", "MongoDB", "TensorFlow"
+              ].map((tech, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-br from-black/50 to-black/30 backdrop-blur-sm p-6 rounded-xl border border-[#0EA5E9]/20 text-center hover:border-[#0EA5E9]/50 transition-all duration-300"
+                >
+                  <span className="text-white font-semibold">{tech}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section className="py-20 px-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1E293B] to-[#0F172A] opacity-90"></div>
+          <div className="max-w-3xl mx-auto relative">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-white mb-4">Get In Touch</h2>
+              <p className="text-gray-300 text-lg">Let's discuss how we can help transform your business</p>
+            </div>
+            <div className="bg-gradient-to-br from-black/50 to-black/30 backdrop-blur-sm p-8 rounded-xl border border-[#0EA5E9]/20">
+              <ContactForm />
             </div>
           </div>
         </section>
