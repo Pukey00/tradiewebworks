@@ -8,21 +8,26 @@ const PlumbingPro = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Mock Business Header */}
-      <header className="bg-[#0FA0CE] py-4 px-6 shadow-lg">
+      <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div>
-            <Link to="/examples">
-              <Button variant="ghost" className="text-white hover:text-opacity-80">
-                <ArrowLeft className="mr-2" /> Back to Examples
-              </Button>
-            </Link>
-          </div>
-          <h1 className="text-2xl font-bold text-white">Melbourne Master Plumbers</h1>
+          <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
           <Button className="bg-[#F97316] hover:bg-orange-600 text-white">
             Call Now
           </Button>
         </div>
       </header>
+
+      {/* Overlay Back Button */}
+      <div className="fixed top-4 left-4 z-50">
+        <Link to="/examples">
+          <Button 
+            variant="ghost" 
+            className="bg-[#0000001a] backdrop-blur-sm text-white hover:bg-[#00000033] transition-colors"
+          >
+            <ArrowLeft className="mr-2" /> Back to Examples
+          </Button>
+        </Link>
+      </div>
 
       {/* Hero Section */}
       <section className="bg-[#0FA0CE] text-white py-20 px-6">
