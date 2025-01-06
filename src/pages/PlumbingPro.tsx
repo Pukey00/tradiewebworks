@@ -35,7 +35,12 @@ const PlumbingPro = () => {
       {/* Mock Business Header */}
       <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
+          <div className="flex items-center gap-2">
+            <div className="bg-[#F97316] p-2 rounded-full">
+              <Wrench className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
+          </div>
           <Button 
             className="bg-[#F97316] hover:bg-orange-600 text-white"
             onClick={scrollToContact}
