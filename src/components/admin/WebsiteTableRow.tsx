@@ -58,6 +58,8 @@ export const WebsiteTableRow = ({ website }: WebsiteTableRowProps) => {
         return 'text-green-600 bg-green-50';
       case 'rejected':
         return 'text-red-600 bg-red-50';
+      case 'pending cancellation':
+        return 'text-red-600 bg-red-50';
       default:
         return '';
     }
@@ -72,13 +74,14 @@ export const WebsiteTableRow = ({ website }: WebsiteTableRowProps) => {
           defaultValue={website.status}
           onValueChange={handleStatusChange}
         >
-          <SelectTrigger className={`w-[130px] ${getStatusColor(website.status)}`}>
+          <SelectTrigger className={`w-[180px] ${getStatusColor(website.status)}`}>
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="pending" className="text-tradie-orange">Pending</SelectItem>
             <SelectItem value="approved" className="text-green-600">Approved</SelectItem>
             <SelectItem value="rejected" className="text-red-600">Rejected</SelectItem>
+            <SelectItem value="pending cancellation" className="text-red-600">Pending Cancellation</SelectItem>
           </SelectContent>
         </Select>
       </TableCell>
