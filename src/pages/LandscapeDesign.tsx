@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { WaterAnimation } from "@/components/landscape/WaterAnimation";
 import { HeroSection } from "@/components/landscape/HeroSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { LandscapeHeader } from "@/components/landscape/LandscapeHeader";
 
 const LandscapeDesign = () => {
   const scrollToContact = () => {
@@ -28,6 +29,10 @@ const LandscapeDesign = () => {
         </div>
       </div>
 
+      {/* Main Site Header */}
+      <LandscapeHeader />
+
+      {/* Rest of the components */}
       {/* Hero Section with Diagonal Split */}
       <div className="relative h-screen overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-green-800 to-green-600 transform -skew-y-6 origin-top-left" />
