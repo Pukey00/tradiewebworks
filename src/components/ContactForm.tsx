@@ -35,10 +35,10 @@ export const ContactForm = () => {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-tradie-navy">
-            Get Your Website Started
+            Contact Us Directly
           </h2>
           <p className="mt-4 text-xl text-gray-600">
-            Fill out the form below and we'll get back to you within 24 hours
+            Your message will be sent directly to our team's inbox for a quick response
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
