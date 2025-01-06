@@ -62,7 +62,7 @@ const ElectricSolutions = () => {
                 <Button 
                   size="lg" 
                   variant="outline" 
-                  className="border-2 border-white text-white hover:bg-white/10"
+                  className="border-2 border-white text-[#333333] bg-white hover:bg-white/90"
                 >
                   View Services
                 </Button>
