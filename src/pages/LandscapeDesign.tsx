@@ -42,6 +42,20 @@ const LandscapeDesign = () => {
         </div>
       </header>
 
+      {/* Dynamic Water Animation Section */}
+      <div className="relative h-16 bg-gradient-to-r from-green-800 to-green-600 overflow-hidden">
+        <div className="absolute inset-0 flex items-center justify-around">
+          {[...Array(5)].map((_, index) => (
+            <div key={index} className="relative">
+              <Droplets className="w-6 h-6 text-blue-200 animate-droplet-fall" style={{ animationDelay: `${index * 0.3}s` }} />
+            </div>
+          ))}
+        </div>
+        <div className="absolute inset-0">
+          <div className="h-full w-1/4 bg-gradient-to-r from-transparent via-blue-200/20 to-transparent animate-water-flow" />
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className="relative bg-[url('/lovable-uploads/384e0977-be75-43b6-a65c-a2356336b86a.png')] bg-cover bg-center py-32 px-6">
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 to-green-800/70" />
