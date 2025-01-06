@@ -50,6 +50,32 @@ const PlumbingPro = () => {
         </div>
       </header>
 
+      {/* Dynamic Water Animation */}
+      <div className="relative bg-[#0FA0CE] pb-2 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center px-6">
+            {[1, 2, 3].map((index) => (
+              <div key={index} className="flex items-center space-x-4">
+                <div className="relative">
+                  <Droplet 
+                    className="h-8 w-8 text-white/80 animate-droplet-fall"
+                    style={{ animationDelay: `${index * 0.3}s` }}
+                  />
+                </div>
+                <div 
+                  className="h-1 w-32 bg-white/30 rounded-full relative overflow-hidden"
+                >
+                  <div 
+                    className="h-full w-16 bg-white/80 rounded-full animate-water-flow"
+                    style={{ animationDelay: `${index * 0.5}s` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className="relative text-white py-20 px-6">
         <div 

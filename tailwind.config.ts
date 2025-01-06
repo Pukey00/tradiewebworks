@@ -95,11 +95,39 @@ export default {
           '75%': {
             'clip-path': 'inset(0 0 0 98%)'
           }
+        },
+        'water-flow': {
+          '0%': {
+            transform: 'translateX(-100%) translateY(0)',
+            opacity: '0'
+          },
+          '50%': {
+            opacity: '1'
+          },
+          '100%': {
+            transform: 'translateX(100%) translateY(-20px)',
+            opacity: '0'
+          }
+        },
+        'droplet-fall': {
+          '0%': {
+            transform: 'translateY(-100%)',
+            opacity: '0'
+          },
+          '50%': {
+            opacity: '1'
+          },
+          '100%': {
+            transform: 'translateY(100%)',
+            opacity: '0'
+          }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        'water-flow': 'water-flow 3s infinite',
+        'droplet-fall': 'droplet-fall 2s infinite'
       }
     }
   },
