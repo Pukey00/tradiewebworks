@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { SubscriptionPlans } from "./SubscriptionPlans";
 import { ConfirmSubscriptionDialog } from "./ConfirmSubscriptionDialog";
-import { sendSubscriptionUpdateEmail } from "@/utils/emailService";
+import { sendSubscriptionUpdateEmail } from "@/api/send-subscription-update-email";
 
 interface SubscriptionManagerProps {
   currentPlan?: string;
@@ -28,6 +28,36 @@ export const SubscriptionManager = ({
     setShowConfirmation(true);
   };
 
+  const handleCancelSubscription = async () => {
+    setIsLoading(true);
+    try {
+      // Send email notification about subscription cancellation
+      await sendSubscriptionUpdateEmail({
+        businessName,
+        previousPlan: currentPlan || null,
+        newPlan: null,
+        status: 'cancelled'
+      });
+
+      toast({
+        title: "Success",
+        description: "Your subscription has been cancelled.",
+      });
+
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error cancelling subscription:', error);
+      toast({
+        title: "Error",
+        description: "Failed to cancel subscription. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+      setShowConfirmation(false);
+    }
+  };
+
   const handleConfirmPlanChange = async () => {
     if (!selectedPlanId || !websiteId) {
       console.error('Missing required data:', { selectedPlanId, websiteId });
@@ -40,7 +70,8 @@ export const SubscriptionManager = ({
       await sendSubscriptionUpdateEmail({
         businessName,
         newPlan: selectedPlanId,
-        previousPlan: currentPlan || 'No previous plan'
+        previousPlan: currentPlan || null,
+        status: 'updated'
       });
 
       toast({
@@ -67,6 +98,7 @@ export const SubscriptionManager = ({
       <SubscriptionPlans
         currentPlan={currentPlan}
         onSelectPlan={handlePlanSelect}
+        onCancelSubscription={handleCancelSubscription}
         isLoading={isLoading}
       />
 

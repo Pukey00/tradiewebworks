@@ -27,7 +27,7 @@ Thank you!
     `
   };
 
-  // Send email using EmailJS with your credentials
+  // Send email using EmailJS with the same credentials from PreviewStep
   await emailjs.send(
     'service_f4ryypt',
     'template_o4sramq',
