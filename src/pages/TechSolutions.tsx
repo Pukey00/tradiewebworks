@@ -1,9 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Computer } from "lucide-react";
+import { ArrowLeft, Computer } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TechSolutions = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-900">
+      {/* Back to Examples Header */}
+      <div className="bg-white/10 backdrop-blur-sm py-2 px-6 border-b border-white/20">
+        <div className="max-w-7xl mx-auto flex justify-center">
+          <Link to="/examples">
+            <Button 
+              variant="ghost" 
+              className="bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors"
+            >
+              <ArrowLeft className="mr-2" /> Back to Examples
+            </Button>
+          </Link>
+        </div>
+      </div>
+
       <header className="bg-black/20 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
