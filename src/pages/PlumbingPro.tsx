@@ -86,7 +86,7 @@ const PlumbingPro = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-2 border-white hover:bg-white/10"
+                className="border-2 border-white text-[#1A1F2C] bg-white hover:bg-white/90"
                 onClick={scrollToServices}
               >
                 View Services
