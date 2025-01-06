@@ -56,7 +56,7 @@ const LandscapeDesign = () => {
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="border-2 border-white text-white hover:bg-white/10"
+                  className="border-2 border-green-800 text-green-800 hover:bg-green-800/10"
                 >
                   View Portfolio
                 </Button>
