@@ -28,7 +28,7 @@ const LandscapeDesign = () => {
       </div>
 
       {/* Mock Business Header */}
-      <header className="bg-gradient-to-b from-green-800 via-green-700 to-green-600 py-4 px-6 shadow-lg relative z-20">
+      <header className="bg-gradient-to-b from-green-800 to-green-700 py-4 px-6 shadow-lg relative z-20">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="bg-green-500 p-2 rounded-full">
@@ -45,9 +45,10 @@ const LandscapeDesign = () => {
         </div>
       </header>
 
-      <WaterAnimation />
-      
-      <HeroSection onGetQuote={scrollToContact} />
+      <div className="relative">
+        <WaterAnimation />
+        <HeroSection onGetQuote={scrollToContact} />
+      </div>
 
       {/* Services Section */}
       <section className="py-20 px-6 bg-gradient-to-b from-white to-green-50">
