@@ -39,6 +39,26 @@ const ElectricSolutions = () => {
         </div>
       </header>
 
+      {/* Dynamic Circuit Border */}
+      <div className="relative bg-[#333333] py-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center px-6">
+            {[1, 2, 3].map((index) => (
+              <div 
+                key={index}
+                className="relative group"
+              >
+                <div className="w-16 h-16 bg-[#0EA5E9]/10 rounded-full flex items-center justify-center group-hover:bg-[#0EA5E9]/20 transition-colors">
+                  <Zap className="w-8 h-8 text-[#0EA5E9] animate-pulse" />
+                </div>
+                <div className="absolute inset-0 border-2 border-[#0EA5E9] rounded-full animate-[border-dance_4s_linear_infinite] group-hover:border-[#F97316] transition-colors"></div>
+              </div>
+            ))}
+            <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#0EA5E9] to-transparent transform -translate-y-1/2"></div>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className="bg-[#333333] text-white py-20 px-6">
         <div className="max-w-7xl mx-auto">
