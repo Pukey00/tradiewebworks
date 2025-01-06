@@ -38,7 +38,7 @@ export const ContactForm = () => {
             Contact Us Directly
           </h2>
           <p className="mt-4 text-xl text-gray-600">
-            Your message will be sent directly to our team's inbox for a quick response
+            Your message will be sent directly to the business's nominated email address
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
