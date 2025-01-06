@@ -40,7 +40,7 @@ const ElectricSolutions = () => {
       </header>
 
       {/* Dynamic Circuit Border */}
-      <div className="relative bg-[#333333] py-4">
+      <div className="relative bg-[#333333] pb-2">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center px-6">
             {[1, 2, 3].map((index) => (
