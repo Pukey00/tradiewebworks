@@ -13,7 +13,7 @@ const ExampleWebsite = ({ title, description, imageUrl, link }: {
   <Link to={link || "#"}>
     <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow transform hover:-translate-y-1 duration-300">
       <div className="relative h-48">
-        <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+        <img src={imageUrl} alt={title} className="w-full h-full object-cover object-top" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30"></div>
       </div>
       <div className="p-6 bg-white">
