@@ -48,12 +48,11 @@ const ElectricSolutions = () => {
               </div>
             </div>
             <div className="relative">
-              {/* Placeholder for the hero image you'll provide */}
-              <div className="aspect-video bg-gray-800 rounded-lg">
-                <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-                  Image placeholder
-                </div>
-              </div>
+              <img
+                src="/lovable-uploads/3864948c-37c6-4fb9-a2df-91f07ad91a11.png"
+                alt="Professional electrician working on electrical panel"
+                className="rounded-lg shadow-xl w-full h-auto object-cover"
+              />
             </div>
           </div>
         </div>
