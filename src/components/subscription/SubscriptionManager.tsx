@@ -3,6 +3,8 @@ import { useToast } from "@/hooks/use-toast";
 import { SubscriptionPlans } from "./SubscriptionPlans";
 import { ConfirmSubscriptionDialog } from "./ConfirmSubscriptionDialog";
 import { sendSubscriptionUpdateEmail } from "@/api/send-subscription-update-email";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 interface SubscriptionManagerProps {
   currentPlan?: string;
@@ -29,8 +31,19 @@ export const SubscriptionManager = ({
   };
 
   const handleCancelSubscription = async () => {
+    if (!websiteId) {
+      console.error('Missing websiteId');
+      return;
+    }
+
     setIsLoading(true);
     try {
+      // Update website status in Firestore
+      const websiteRef = doc(db, "websites", websiteId);
+      await updateDoc(websiteRef, {
+        status: "pending cancellation"
+      });
+
       // Send email notification about subscription cancellation
       await sendSubscriptionUpdateEmail({
         businessName,
