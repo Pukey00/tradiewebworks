@@ -1,4 +1,4 @@
-import { ArrowLeft, Trees, Flower2, Shovel, Sun, Cloud, Phone } from "lucide-react";
+import { ArrowLeft, Trees, Flower2, Shovel, Sun, Cloud, Phone, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
