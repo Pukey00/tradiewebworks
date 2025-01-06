@@ -7,11 +7,10 @@ import { Footer } from "@/components/Footer";
 const PlumbingPro = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Mock Business Header */}
-      <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
-          <Link to="/examples" className="absolute left-1/2 -translate-x-1/2">
+      {/* Back to Examples Header */}
+      <div className="bg-white py-2 px-6 border-b">
+        <div className="max-w-7xl mx-auto flex justify-center">
+          <Link to="/examples">
             <Button 
               variant="ghost" 
               className="bg-[#0000001a] backdrop-blur-sm text-black hover:bg-[#00000033] transition-colors"
@@ -19,6 +18,13 @@ const PlumbingPro = () => {
               <ArrowLeft className="mr-2" /> Back to Examples
             </Button>
           </Link>
+        </div>
+      </div>
+
+      {/* Mock Business Header */}
+      <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-[#F1F1F1]">Melbourne Master Plumbers</h1>
           <Button className="bg-[#F97316] hover:bg-orange-600 text-white">
             Call Now
           </Button>
