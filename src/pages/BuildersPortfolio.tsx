@@ -9,8 +9,8 @@ const BuildersPortfolio = () => {
       <header className="bg-gradient-to-b from-tradie-navy via-[#2A2F3F] to-[#403E43] py-4 px-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/examples">
-            <Button variant="ghost" className="text-white hover:text-opacity-80">
-              <ArrowLeft className="mr-2" /> Back to Examples
+            <Button variant="ghost" className="text-white hover:text-opacity-80 group">
+              <ArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Examples
             </Button>
           </Link>
           <h1 className="text-2xl font-bold text-white">Builder's Portfolio</h1>
