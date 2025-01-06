@@ -29,8 +29,10 @@ export const ConfirmSubscriptionDialog = ({
   if (!selectedPlanId) return null;
 
   const selectedPlan = plans.find(plan => plan.id === selectedPlanId);
-  
-  if (!selectedPlan) return null;
+  if (!selectedPlan) {
+    console.error('Selected plan not found:', selectedPlanId);
+    return null;
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
