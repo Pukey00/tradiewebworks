@@ -51,7 +51,7 @@ const PlumbingPro = () => {
       </header>
 
       {/* Dynamic Water Animation */}
-      <div className="relative bg-[#0FA0CE] pb-2 overflow-hidden">
+      <div className="relative bg-gradient-to-b from-[#0FA0CE] to-[#0c7da0] pb-2 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center px-6">
             {[1, 2, 3].map((index) => (
@@ -89,7 +89,7 @@ const PlumbingPro = () => {
         <div 
           className="absolute inset-0 z-0"
           style={{
-            backgroundColor: '#0FA0CE',
+            background: 'linear-gradient(180deg, #0c7da0 0%, #0FA0CE 100%)',
             opacity: 0.85,
           }}
         />
