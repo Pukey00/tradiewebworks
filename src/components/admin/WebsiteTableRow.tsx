@@ -50,6 +50,19 @@ export const WebsiteTableRow = ({ website }: WebsiteTableRowProps) => {
     });
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return 'text-tradie-orange bg-orange-50';
+      case 'approved':
+        return 'text-green-600 bg-green-50';
+      case 'rejected':
+        return 'text-red-600 bg-red-50';
+      default:
+        return '';
+    }
+  };
+
   return (
     <TableRow>
       <TableCell>{website.businessName}</TableCell>
@@ -59,13 +72,13 @@ export const WebsiteTableRow = ({ website }: WebsiteTableRowProps) => {
           defaultValue={website.status}
           onValueChange={handleStatusChange}
         >
-          <SelectTrigger className="w-[130px]">
+          <SelectTrigger className={`w-[130px] ${getStatusColor(website.status)}`}>
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="approved">Approved</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
+            <SelectItem value="pending" className="text-tradie-orange">Pending</SelectItem>
+            <SelectItem value="approved" className="text-green-600">Approved</SelectItem>
+            <SelectItem value="rejected" className="text-red-600">Rejected</SelectItem>
           </SelectContent>
         </Select>
       </TableCell>
