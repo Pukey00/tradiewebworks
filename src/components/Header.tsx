@@ -6,6 +6,12 @@ import { useToast } from "./ui/use-toast";
 import { useEffect, useState } from "react";
 import { LogOut, Menu, Shield } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface HeaderProps {
   userEmail?: string;
@@ -58,13 +64,22 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
       </button>
       {currentUser ? (
         <>
-          <Button
-            variant="ghost"
-            className="text-white hover:text-tradie-orange transition-colors p-0"
-            onClick={() => navigate('/dashboard')}
-          >
-            {currentUser}
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-white hover:text-tradie-orange transition-colors p-0"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  {currentUser}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="px-4">
+                Click to view dashboard
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           {isAdmin && (
             <Button 
               variant="outline" 
