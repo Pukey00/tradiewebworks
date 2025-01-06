@@ -6,15 +6,36 @@ import { ContactForm } from "@/components/ContactForm";
 const ElectricSolutions = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-[#333333] py-4 px-6 shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+      {/* Back to Examples Header */}
+      <div className="bg-white py-2 px-6 border-b">
+        <div className="max-w-7xl mx-auto flex justify-center">
           <Link to="/examples">
-            <Button variant="ghost" className="text-white hover:text-[#0EA5E9]">
+            <Button 
+              variant="ghost" 
+              className="bg-[#0000001a] backdrop-blur-sm text-black hover:bg-[#00000033] transition-colors"
+            >
               <ArrowLeft className="mr-2" /> Back to Examples
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold text-white">Electric Solutions</h1>
+        </div>
+      </div>
+
+      {/* Business Header */}
+      <header className="bg-[#333333] py-4 px-6 shadow-lg">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="bg-[#F97316] p-2 rounded-full">
+              <Zap className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-white">VoltTech Solutions</h1>
+          </div>
+          <div className="hidden md:flex items-center gap-6 text-white">
+            <a href="#services" className="hover:text-[#0EA5E9] transition-colors">Services</a>
+            <a href="#contact" className="hover:text-[#0EA5E9] transition-colors">Contact</a>
+            <Button className="bg-[#F97316] hover:bg-[#F97316]/90">
+              Emergency Call
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -59,7 +80,7 @@ const ElectricSolutions = () => {
       </section>
 
       {/* Services */}
-      <section className="py-16 px-6 bg-white">
+      <section id="services" className="py-16 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-[#333333]">
             Our Services
@@ -96,7 +117,7 @@ const ElectricSolutions = () => {
       </section>
 
       {/* Contact Form Section */}
-      <section className="bg-gray-50 py-16 px-6" id="contact">
+      <section id="contact" className="bg-gray-50 py-16 px-6">
         <div className="max-w-3xl mx-auto">
           <ContactForm />
         </div>
