@@ -46,34 +46,51 @@ const PlumbingPro = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-[#0FA0CE] text-white py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Professional Plumbing Services
-          </h1>
-          <p className="text-xl mb-8">
-            Available 24/7 for all your plumbing emergencies
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              className="bg-[#F97316] hover:bg-orange-600 text-white"
-              onClick={scrollToContact}
-            >
-              Contact Now <Phone className="ml-2" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-2 border-white hover:bg-white/10"
-              onClick={scrollToServices}
-            >
-              View Services
-            </Button>
+      <section className="relative text-white py-20 px-6">
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/lovable-uploads/ad075642-99b2-4e53-8384-51cbbae9f0b6.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundColor: '#0FA0CE',
+            opacity: 0.85,
+          }}
+        />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              Professional Plumbing Services
+            </h1>
+            <p className="text-xl mb-8">
+              Available 24/7 for all your plumbing emergencies
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="bg-[#F97316] hover:bg-orange-600 text-white"
+                onClick={scrollToContact}
+              >
+                Contact Now <Phone className="ml-2" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-2 border-white hover:bg-white/10"
+                onClick={scrollToServices}
+              >
+                View Services
+              </Button>
+            </div>
+            <p className="mt-6 text-xl font-semibold">
+              Call us: 1300 123 456
+            </p>
           </div>
-          <p className="mt-6 text-xl font-semibold">
-            Call us: 1300 123 456
-          </p>
         </div>
       </section>
 
