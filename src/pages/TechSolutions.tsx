@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
 import { Footer } from "@/components/Footer";
+import { TechHeader } from "@/components/tech/TechHeader";
 
 const TechSolutions = () => {
   return (
@@ -20,6 +21,8 @@ const TechSolutions = () => {
           </Link>
         </div>
       </div>
+
+      <TechHeader />
 
       {/* Hero Section with Animated Gradient */}
       <section className="relative py-20 overflow-hidden">
@@ -62,7 +65,6 @@ const TechSolutions = () => {
           </div>
         </div>
       </section>
-
       {/* Services Grid */}
       <section className="py-20 px-6 bg-[#0A0F1C]">
         <div className="max-w-7xl mx-auto">
@@ -112,7 +114,6 @@ const TechSolutions = () => {
           </div>
         </div>
       </section>
-
       {/* Stats Section */}
       <section className="py-20 px-6 bg-[#1A1F2C]">
         <div className="max-w-7xl mx-auto">
@@ -131,7 +132,6 @@ const TechSolutions = () => {
           </div>
         </div>
       </section>
-
       {/* Technologies Section */}
       <section className="py-20 px-6 bg-[#0A0F1C]">
         <div className="max-w-7xl mx-auto">
@@ -151,7 +151,6 @@ const TechSolutions = () => {
           </div>
         </div>
       </section>
-
       {/* Contact Form Section */}
       <section id="contact" className="py-20 px-6 bg-[#1A1F2C]">
         <div className="max-w-3xl mx-auto">
@@ -159,7 +158,6 @@ const TechSolutions = () => {
           <ContactForm />
         </div>
       </section>
-
       <Footer />
     </div>
   );
