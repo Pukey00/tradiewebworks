@@ -1,4 +1,4 @@
-import { ArrowLeft, Zap, Shield, Phone, Wrench, ArrowRight } from "lucide-react";
+import { ArrowLeft, Zap, Shield, Phone, Wrench, ArrowRight, Power, Lightbulb, CircuitBoard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
@@ -89,8 +89,8 @@ const ElectricSolutions = () => {
             {[
               {
                 icon: Zap,
-                title: "Electrical Repairs",
-                description: "Fast and reliable electrical repair services for any issue",
+                title: "Emergency Repairs",
+                description: "24/7 emergency electrical repair services for homes and businesses",
               },
               {
                 icon: Shield,
@@ -101,6 +101,21 @@ const ElectricSolutions = () => {
                 icon: Wrench,
                 title: "Installations",
                 description: "Professional installation of electrical systems and fixtures",
+              },
+              {
+                icon: Power,
+                title: "Panel Upgrades",
+                description: "Electrical panel replacements and circuit breaker installations",
+              },
+              {
+                icon: Lightbulb,
+                title: "Lighting Solutions",
+                description: "Indoor and outdoor lighting installation and maintenance",
+              },
+              {
+                icon: CircuitBoard,
+                title: "Smart Home Systems",
+                description: "Installation and setup of smart home electrical components",
               },
             ].map((service, index) => (
               <div
