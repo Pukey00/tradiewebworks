@@ -29,15 +29,37 @@ export const WebsiteCard = ({ website, onViewDetails }: WebsiteCardProps) => {
   const planType = website.selectedPlan || "basic";
   const planTypeCapitalized = planType.charAt(0).toUpperCase() + planType.slice(1);
 
+  const getBadgeVariant = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return 'pending';
+      case 'pending cancellation':
+        return 'destructive';
+      default:
+        return 'default';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return 'PENDING';
+      case 'pending cancellation':
+        return 'PENDING CANCELLATION';
+      default:
+        return status?.toUpperCase() || 'PENDING';
+    }
+  };
+
   return (
     <Card className="p-6 bg-[#F1F0FB]">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-medium text-lg text-[#1A1F2C]">{website.businessName || "Untitled Website"}</h3>
         <Badge 
-          variant={website.status === "pending" ? "pending" : "default"}
+          variant={getBadgeVariant(website.status)}
           className="uppercase"
         >
-          {website.status === "pending" ? "PENDING" : website.status || "PENDING"}
+          {getStatusText(website.status)}
         </Badge>
       </div>
       
