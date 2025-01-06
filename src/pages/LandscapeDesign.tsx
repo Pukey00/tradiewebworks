@@ -10,18 +10,39 @@ const LandscapeDesign = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-green-600 to-green-700 py-4 px-6 shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+      {/* Back to Examples Header */}
+      <div className="bg-white py-2 px-6 border-b">
+        <div className="max-w-7xl mx-auto flex justify-center">
           <Link to="/examples">
-            <Button variant="ghost" className="text-white hover:text-opacity-80">
+            <Button 
+              variant="ghost" 
+              className="bg-[#0000001a] backdrop-blur-sm text-black hover:bg-[#00000033] transition-colors"
+            >
               <ArrowLeft className="mr-2" /> Back to Examples
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold text-white">Green Horizons</h1>
+        </div>
+      </div>
+
+      {/* Mock Business Header */}
+      <header className="bg-gradient-to-b from-green-800 via-green-700 to-green-600 py-4 px-6 shadow-lg">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="bg-green-500 p-2 rounded-full">
+              <Leaf className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-white">GREEN HORIZONS</h1>
+          </div>
+          <Button 
+            className="bg-green-500 hover:bg-green-600 text-white"
+            onClick={scrollToContact}
+          >
+            Contact Now
+          </Button>
         </div>
       </header>
 
+      {/* Rest of the existing components */}
       {/* Hero Section */}
       <section className="relative bg-[url('https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07')] bg-cover bg-center py-32 px-6">
         <div className="absolute inset-0 bg-black/40" />
