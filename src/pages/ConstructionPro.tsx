@@ -1,60 +1,79 @@
 import { Button } from "@/components/ui/button";
-import { Building } from "lucide-react";
+import { Building, ArrowRight } from "lucide-react";
+import { ContactForm } from "@/components/ContactForm";
+import { Footer } from "@/components/Footer";
+import { BuildersHeader } from "@/components/builders/BuildersHeader";
+import { BuildersHero } from "@/components/builders/BuildersHero";
+import { BuildersServices } from "@/components/builders/BuildersServices";
 
 const ConstructionPro = () => {
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    contactSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      <header className="bg-yellow-500">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Building className="h-8 w-8 text-gray-900" />
-            <span className="text-2xl font-bold text-gray-900">BuildMaster</span>
-          </div>
-          <nav className="hidden md:flex space-x-6">
-            {["Projects", "Services", "About", "Contact"].map((item) => (
-              <a key={item} href="#" className="text-gray-900 hover:text-gray-700 transition-colors font-medium">
-                {item}
-              </a>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <BuildersHeader />
+      <BuildersHero scrollToContact={scrollToContact} />
+      <BuildersServices />
 
-      <main>
-        <section className="relative">
-          <div className="absolute inset-0 bg-black/60 z-10"></div>
-          <img 
-            src="https://images.unsplash.com/photo-1431576901776-e539bd916ba2"
-            alt="Construction site"
-            className="w-full h-[600px] object-cover"
-          />
-          <div className="absolute inset-0 z-20 flex items-center">
-            <div className="container mx-auto px-4">
-              <div className="max-w-2xl space-y-6">
-                <div className="bg-yellow-500 text-gray-900 px-4 py-1 rounded-full inline-block font-medium">
-                  Professional Construction Services
-                </div>
-                <h1 className="text-5xl font-bold text-white leading-tight">
-                  Building Tomorrow's
-                  <span className="text-yellow-500"> Landmarks Today</span>
-                </h1>
-                <p className="text-gray-200 text-lg">
-                  With over 25 years of experience in commercial and residential construction,
-                  we bring your vision to life with precision and excellence.
-                </p>
-                <div className="flex gap-4">
-                  <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-gray-900">
-                    Start Your Project
-                  </Button>
-                  <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
-                    View Portfolio
-                  </Button>
+      {/* Projects Showcase */}
+      <section className="py-16 px-6 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Featured Projects</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="group relative overflow-hidden rounded-lg">
+                <img
+                  src={`https://images.unsplash.com/photo-149630734${item}3780-42ee777d4833`}
+                  alt={`Project ${item}`}
+                  className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                  <div className="p-6 text-white">
+                    <h3 className="text-xl font-bold mb-2">Project {item}</h3>
+                    <p className="text-gray-200">Commercial Construction</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        </section>
-      </main>
+          <div className="text-center mt-8">
+            <Button 
+              className="bg-orange-500 hover:bg-orange-600"
+              size="lg"
+            >
+              View All Projects <ArrowRight className="ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-16 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { title: "25+ Years Experience", description: "Decades of construction excellence" },
+              { title: "Licensed & Insured", description: "Full coverage for your peace of mind" },
+              { title: "Quality Guaranteed", description: "Superior workmanship on every project" },
+              { title: "On-Time Delivery", description: "We respect your timeline and budget" },
+            ].map((item, index) => (
+              <div key={index} className="text-center p-6 rounded-lg border hover:shadow-lg transition-shadow">
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <ContactForm />
+
+      <Footer />
     </div>
   );
 };
