@@ -40,8 +40,8 @@ export const SubscriptionManager = ({
       });
 
       toast({
-        title: "Success",
-        description: "Your subscription has been cancelled.",
+        title: "Subscription Cancelled",
+        description: "Your cancellation request will be processed within 24 hours. No further charges will be made to your account.",
       });
 
       onOpenChange(false);
@@ -76,7 +76,7 @@ export const SubscriptionManager = ({
 
       toast({
         title: "Success",
-        description: "Your subscription has been updated successfully.",
+        description: "Your subscription change request will be processed within 24 hours. Your billing will be adjusted accordingly.",
       });
 
       onOpenChange(false);
