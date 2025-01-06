@@ -75,7 +75,7 @@ export const Header = ({ userEmail, isLoggedIn, onSignOut }: HeaderProps) => {
                   {currentUser}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent className="px-8">
+              <TooltipContent className="px-4 py-2">
                 Click to view dashboard
               </TooltipContent>
             </Tooltip>
