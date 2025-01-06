@@ -1,4 +1,4 @@
-import { ArrowLeft, Wrench, Droplet, Phone, Clock } from "lucide-react";
+import { ArrowLeft, Wrench, Droplet, Phone, Clock, Hammer, Shield, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
@@ -9,6 +9,11 @@ const PlumbingPro = () => {
   const scrollToContact = () => {
     const contactSection = document.getElementById('contact');
     contactSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services');
+    servicesSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -57,15 +62,23 @@ const PlumbingPro = () => {
             >
               Contact Now <Phone className="ml-2" />
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white hover:bg-white/10">
-              Book Online
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-2 border-white hover:bg-white/10"
+              onClick={scrollToServices}
+            >
+              View Services
             </Button>
           </div>
+          <p className="mt-6 text-xl font-semibold">
+            Call us: 1300 123 456
+          </p>
         </div>
       </section>
 
       {/* Services */}
-      <section className="py-16 px-6 bg-white">
+      <section id="services" className="py-16 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-[#0FA0CE]">
             Our Services
@@ -86,6 +99,21 @@ const PlumbingPro = () => {
                 icon: Clock,
                 title: "Maintenance",
                 description: "Regular maintenance to prevent future problems",
+              },
+              {
+                icon: Hammer,
+                title: "Renovations",
+                description: "Complete bathroom and kitchen plumbing renovations",
+              },
+              {
+                icon: Shield,
+                title: "Gas Fitting",
+                description: "Licensed gas fitting and appliance installation",
+              },
+              {
+                icon: Home,
+                title: "Hot Water Systems",
+                description: "Installation and repair of all hot water systems",
               },
             ].map((service, index) => (
               <div
