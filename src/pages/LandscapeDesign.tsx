@@ -1,4 +1,4 @@
-import { ArrowLeft, Leaf, Sun, Cloud, Phone, Tree, Flower2, Shovel, Droplets } from "lucide-react";
+import { ArrowLeft, Leaf, Sun, Cloud, Phone, Trees, Flower2, Shovel, Droplets } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
@@ -60,7 +60,7 @@ const LandscapeDesign = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: Tree,
+                icon: Trees,
                 title: "Landscape Design",
                 description: "Custom garden layouts and expert plant selection",
               },
