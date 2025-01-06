@@ -1,7 +1,8 @@
-import { ArrowLeft, Building, Home, Wrench, Phone, Clock, Shield, Hammer, PaintBucket, Ruler } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Building } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactForm } from "@/components/ContactForm";
+import { BuilderHero } from "@/components/builders-portfolio/BuilderHero";
+import { BuilderServices } from "@/components/builders-portfolio/BuilderServices";
 
 const BuildersPortfolio = () => {
   const scrollToContact = () => {
@@ -11,36 +12,7 @@ const BuildersPortfolio = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Back to Examples Header */}
-      <div className="bg-white py-2 px-6 border-b">
-        <div className="max-w-7xl mx-auto flex justify-center">
-          <Link to="/examples">
-            <Button 
-              variant="ghost" 
-              className="bg-[#0000001a] backdrop-blur-sm text-black hover:bg-[#00000033] transition-colors"
-            >
-              <ArrowLeft className="mr-2" /> Back to Examples
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Mock Business Header */}
-      <header className="bg-gradient-to-b from-[#1A1F2C] via-[#2A2F3F] to-[#403E43] py-4 px-6 shadow-lg">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <div className="bg-[#F97316] p-2 rounded-full">
-              <Building className="h-6 w-6 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-[#F1F1F1]">APEX BUILDERS</h1>
-          </div>
-          <Button 
-            className="bg-[#F97316] hover:bg-orange-600 text-[#1A1F2C]"
-          >
-            Contact Now
-          </Button>
-        </div>
-      </header>
+      <BuilderHero onContactClick={scrollToContact} />
 
       {/* Dynamic Construction Animation */}
       <div className="relative bg-gradient-to-b from-[#403E43] to-[#555] h-32 overflow-hidden">
@@ -138,74 +110,7 @@ const BuildersPortfolio = () => {
         </div>
       </section>
 
-      {/* Services */}
-      <section className="py-16 px-6 bg-gradient-to-b from-[#777] to-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">
-            Our Expertise
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Home,
-                title: "Residential Construction",
-                description: "Custom homes and major renovations",
-              },
-              {
-                icon: Building,
-                title: "Commercial Projects",
-                description: "Office buildings and retail spaces",
-              },
-              {
-                icon: Wrench,
-                title: "Renovations",
-                description: "Complete property transformations",
-              },
-              {
-                icon: Hammer,
-                title: "Extensions",
-                description: "Home additions and expansions",
-              },
-              {
-                icon: PaintBucket,
-                title: "Interior Finishing",
-                description: "High-quality interior work",
-              },
-              {
-                icon: Shield,
-                title: "Project Management",
-                description: "End-to-end project coordination",
-              },
-              {
-                icon: Clock,
-                title: "Timely Delivery",
-                description: "On-time project completion",
-              },
-              {
-                icon: Ruler,
-                title: "Custom Design",
-                description: "Architectural design services",
-              },
-              {
-                icon: Building,
-                title: "Multi-Unit Development",
-                description: "Apartment and unit developments",
-              },
-            ].map((service, index) => (
-              <div
-                key={index}
-                className="p-6 rounded-lg bg-white/90 backdrop-blur-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200"
-              >
-                <div className="bg-gradient-to-br from-orange-100 to-yellow-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <service.icon className="w-8 h-8 text-orange-500" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-gray-800">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BuilderServices />
 
       {/* CTA Section */}
       <section className="bg-[#F1F1F1] py-16 px-6">
