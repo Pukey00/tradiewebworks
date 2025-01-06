@@ -5,13 +5,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Server, Globe, Rocket } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useQueryClient } from "@tanstack/react-query";
+import { PlanCard } from "./subscription/PlanCard";
+import { ConfirmSubscriptionDialog } from "./subscription/ConfirmSubscriptionDialog";
 
 interface SubscriptionDialogProps {
   open: boolean;
@@ -27,6 +28,8 @@ export const SubscriptionDialog = ({
   websiteId 
 }: SubscriptionDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -105,32 +108,29 @@ export const SubscriptionDialog = ({
     }
   };
 
-  const handleChangePlan = async (planId: string) => {
-    if (!websiteId) {
-      toast({
-        title: "Error",
-        description: "Website ID is missing",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const handlePlanSelection = (planId: string) => {
     if (planId === currentPlan) {
       toast({
         description: "You are already subscribed to this plan.",
       });
       return;
     }
+    setSelectedPlanId(planId);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmPlanChange = async () => {
+    if (!websiteId || !selectedPlanId) return;
 
     setIsLoading(true);
     try {
       const websiteRef = doc(db, "websites", websiteId);
       await updateDoc(websiteRef, {
-        selectedPlan: planId,
+        selectedPlan: selectedPlanId,
         status: "active"
       });
 
-      console.log("Plan updated for website:", websiteId, "New plan:", planId);
+      console.log("Plan updated for website:", websiteId, "New plan:", selectedPlanId);
       
       // Invalidate and refetch websites query
       await queryClient.invalidateQueries({ queryKey: ['websites'] });
@@ -139,6 +139,7 @@ export const SubscriptionDialog = ({
         title: "Plan Updated",
         description: "Your subscription has been updated successfully.",
       });
+      setShowConfirmation(false);
       onOpenChange(false);
     } catch (error) {
       console.error("Error changing plan:", error);
@@ -152,58 +153,50 @@ export const SubscriptionDialog = ({
     }
   };
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[800px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold">
-            Manage Subscription
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="grid md:grid-cols-3 gap-4 mt-4">
-          {plans.map((plan) => (
-            <Card 
-              key={plan.id}
-              className={`border-2 ${currentPlan === plan.id ? 'border-tradie-orange' : 'hover:border-tradie-orange'}`}
-            >
-              <CardHeader>
-                <plan.icon className="h-8 w-8 mb-2 text-tradie-orange" />
-                <CardTitle className="text-lg">{plan.title}</CardTitle>
-                <div className="text-xl font-bold text-tradie-navy">{plan.price}</div>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-center text-sm">
-                      <span className="text-green-500 mr-2">✓</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className="w-full mt-4 bg-tradie-orange hover:bg-tradie-orange/90"
-                  onClick={() => handleChangePlan(plan.id)}
-                  disabled={isLoading || currentPlan === plan.id}
-                >
-                  {currentPlan === plan.id ? 'Current Plan' : 'Switch to Plan'}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+  const selectedPlan = plans.find(plan => plan.id === selectedPlanId);
 
-        <div className="mt-6 border-t pt-6">
-          <Button
-            variant="destructive"
-            onClick={handleCancelSubscription}
-            disabled={isLoading}
-            className="w-full"
-          >
-            Cancel Subscription
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+  return (
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-semibold">
+              Manage Subscription
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid md:grid-cols-3 gap-4 mt-4">
+            {plans.map((plan) => (
+              <PlanCard
+                key={plan.id}
+                {...plan}
+                currentPlan={currentPlan}
+                onSelectPlan={handlePlanSelection}
+                isLoading={isLoading}
+              />
+            ))}
+          </div>
+
+          <div className="mt-6 border-t pt-6">
+            <Button
+              variant="destructive"
+              onClick={handleCancelSubscription}
+              disabled={isLoading}
+              className="w-full"
+            >
+              Cancel Subscription
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <ConfirmSubscriptionDialog
+        open={showConfirmation}
+        onOpenChange={setShowConfirmation}
+        onConfirm={handleConfirmPlanChange}
+        selectedPlan={selectedPlan || null}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
