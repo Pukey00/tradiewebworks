@@ -136,7 +136,7 @@ export const SubscriptionManager = ({
         open={showConfirmation}
         onOpenChange={setShowConfirmation}
         onConfirm={handleConfirmPlanChange}
-        selectedPlan={selectedPlanId}
+        selectedPlanId={selectedPlanId}
         isLoading={isLoading}
       />
     </>
