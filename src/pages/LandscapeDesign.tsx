@@ -43,7 +43,7 @@ const LandscapeDesign = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-[url('/lovable-uploads/ad075642-99b2-4e53-8384-51cbbae9f0b6.png')] bg-cover bg-center py-32 px-6">
+      <section className="relative bg-[url('/lovable-uploads/384e0977-be75-43b6-a65c-a2356336b86a.png')] bg-cover bg-center py-32 px-6">
         <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 to-green-800/70" />
         <div className="max-w-7xl mx-auto relative text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
