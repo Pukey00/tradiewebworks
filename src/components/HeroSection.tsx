@@ -8,8 +8,24 @@ export const HeroSection = () => {
   const [showWizard, setShowWizard] = useState(false);
 
   return (
-    <div className="relative bg-tradie-navy text-white py-20 px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="relative bg-tradie-navy text-white py-20 px-6 lg:px-8 overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-gradient-to-r from-tradie-navy via-blue-900 to-tradie-navy animate-gradient"
+        style={{
+          backgroundSize: '200% 100%',
+          animation: 'gradient 15s ease infinite',
+        }}
+      />
+      <style>
+        {`
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
+      <div className="max-w-7xl mx-auto relative">
         <div className="flex flex-col items-center mb-8">
           <div className="relative bg-gradient-to-r from-tradie-orange/20 to-tradie-orange/10 rounded-lg py-3 px-6 w-full md:max-w-fit mx-auto transform hover:scale-105 transition-all duration-300 before:absolute before:inset-0 before:rounded-lg before:border-2 before:border-tradie-orange before:animate-[border-dance_4s_linear_infinite]">
             <div className="flex flex-col md:flex-row items-center gap-2 justify-center text-center md:text-left">
@@ -48,7 +64,7 @@ export const HeroSection = () => {
               <Button 
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-tradie-navy hover:bg-white/10 hover:text-white w-full"
+                className="border-2 border-white text-white hover:bg-white/10 hover:text-white w-full"
               >
                 View Examples
               </Button>
