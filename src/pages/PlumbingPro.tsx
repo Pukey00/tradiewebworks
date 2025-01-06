@@ -33,7 +33,7 @@ const PlumbingPro = () => {
       </div>
 
       {/* Mock Business Header */}
-      <header className="bg-[#1A1F2C] py-4 px-6 shadow-lg">
+      <header className="bg-gradient-to-b from-[#1A1F2C] to-[#0FA0CE] py-4 px-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="bg-[#F97316] p-2 rounded-full">
