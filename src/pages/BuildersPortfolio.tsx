@@ -19,6 +19,20 @@ const BuildersPortfolio = () => {
 
       {/* Dynamic Construction Animation */}
       <div className="relative bg-gradient-to-b from-[#403E43] to-[#555] h-32 overflow-hidden">
+        {/* Logo and Business Name */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <div className="flex flex-col items-center space-y-2">
+            <div className="w-12 h-12 bg-gradient-to-br from-yellow-300 to-orange-400 rounded-lg transform rotate-45 flex items-center justify-center shadow-lg">
+              <div className="w-8 h-8 bg-white/90 rounded transform -rotate-45 flex items-center justify-center">
+                <Building className="w-6 h-6 text-orange-500" />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent drop-shadow-lg">
+              APEX BUILDERS
+            </h2>
+          </div>
+        </div>
+
         {/* Animated construction beams */}
         <div className="absolute inset-0 flex justify-around items-center">
           {[...Array(6)].map((_, i) => (
