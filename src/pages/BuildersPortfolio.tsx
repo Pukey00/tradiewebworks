@@ -1,8 +1,14 @@
-import { ArrowLeft, Building, Home, Wrench, Phone } from "lucide-react";
+import { ArrowLeft, Building, Home, Wrench, Phone, Clock, Shield, Hammer, PaintBucket, Ruler } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ContactForm";
 
 const BuildersPortfolio = () => {
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    contactSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Back to Examples Header */}
@@ -120,7 +126,12 @@ const BuildersPortfolio = () => {
             <Button size="lg" className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-[#1A1F2C] group">
               View Portfolio <Building className="ml-2 group-hover:rotate-12 transition-transform" />
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-white/80 hover:bg-white/10 text-[#1A1F2C]">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-2 border-white/80 hover:bg-white/10 text-[#1A1F2C]"
+              onClick={scrollToContact}
+            >
               Contact Us
             </Button>
           </div>
@@ -137,18 +148,48 @@ const BuildersPortfolio = () => {
             {[
               {
                 icon: Home,
-                title: "Residential",
-                description: "Custom homes and renovations",
+                title: "Residential Construction",
+                description: "Custom homes and major renovations",
               },
               {
                 icon: Building,
-                title: "Commercial",
+                title: "Commercial Projects",
                 description: "Office buildings and retail spaces",
               },
               {
                 icon: Wrench,
                 title: "Renovations",
                 description: "Complete property transformations",
+              },
+              {
+                icon: Hammer,
+                title: "Extensions",
+                description: "Home additions and expansions",
+              },
+              {
+                icon: PaintBucket,
+                title: "Interior Finishing",
+                description: "High-quality interior work",
+              },
+              {
+                icon: Shield,
+                title: "Project Management",
+                description: "End-to-end project coordination",
+              },
+              {
+                icon: Clock,
+                title: "Timely Delivery",
+                description: "On-time project completion",
+              },
+              {
+                icon: Ruler,
+                title: "Custom Design",
+                description: "Architectural design services",
+              },
+              {
+                icon: Building,
+                title: "Multi-Unit Development",
+                description: "Apartment and unit developments",
               },
             ].map((service, index) => (
               <div
@@ -165,6 +206,28 @@ const BuildersPortfolio = () => {
           </div>
         </div>
       </section>
+
+      {/* CTA Section */}
+      <section className="bg-[#F1F1F1] py-16 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6 text-[#1A1F2C]">
+            Ready to Start Your Construction Project?
+          </h2>
+          <p className="text-xl mb-8 text-gray-600">
+            Contact us now for a free consultation
+          </p>
+          <Button 
+            size="lg" 
+            className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-[#1A1F2C]"
+            onClick={scrollToContact}
+          >
+            Get Started
+          </Button>
+        </div>
+      </section>
+
+      {/* Contact Form */}
+      <ContactForm />
     </div>
   );
 };
