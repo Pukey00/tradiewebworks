@@ -9,14 +9,22 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Server, Globe, Rocket } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 interface SubscriptionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currentPlan?: string;
+  websiteId?: string;
 }
 
-export const SubscriptionDialog = ({ open, onOpenChange, currentPlan }: SubscriptionDialogProps) => {
+export const SubscriptionDialog = ({ 
+  open, 
+  onOpenChange, 
+  currentPlan,
+  websiteId 
+}: SubscriptionDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -56,10 +64,25 @@ export const SubscriptionDialog = ({ open, onOpenChange, currentPlan }: Subscrip
   ];
 
   const handleCancelSubscription = async () => {
+    if (!websiteId) {
+      toast({
+        title: "Error",
+        description: "Website ID is missing",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
-      // TODO: Implement subscription cancellation
-      console.log("Cancelling subscription...");
+      const websiteRef = doc(db, "websites", websiteId);
+      await updateDoc(websiteRef, {
+        selectedPlan: null,
+        status: "cancelled"
+      });
+
+      console.log("Subscription cancelled for website:", websiteId);
+      
       toast({
         title: "Subscription Cancelled",
         description: "Your subscription has been cancelled successfully.",
@@ -78,6 +101,15 @@ export const SubscriptionDialog = ({ open, onOpenChange, currentPlan }: Subscrip
   };
 
   const handleChangePlan = async (planId: string) => {
+    if (!websiteId) {
+      toast({
+        title: "Error",
+        description: "Website ID is missing",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (planId === currentPlan) {
       toast({
         description: "You are already subscribed to this plan.",
@@ -87,8 +119,14 @@ export const SubscriptionDialog = ({ open, onOpenChange, currentPlan }: Subscrip
 
     setIsLoading(true);
     try {
-      // TODO: Implement plan change
-      console.log("Changing plan to:", planId);
+      const websiteRef = doc(db, "websites", websiteId);
+      await updateDoc(websiteRef, {
+        selectedPlan: planId,
+        status: "active"
+      });
+
+      console.log("Plan updated for website:", websiteId, "New plan:", planId);
+      
       toast({
         title: "Plan Updated",
         description: "Your subscription has been updated successfully.",

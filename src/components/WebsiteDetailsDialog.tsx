@@ -91,6 +91,7 @@ export const WebsiteDetailsDialog = ({
         open={showSubscriptionDialog}
         onOpenChange={setShowSubscriptionDialog}
         currentPlan={website.selectedPlan}
+        websiteId={website.id}
       />
     </>
   );
