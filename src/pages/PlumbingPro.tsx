@@ -1,19 +1,26 @@
 import { ArrowLeft, Wrench, Droplet, Phone, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 const PlumbingPro = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
+      {/* Mock Business Header */}
       <header className="bg-[#0FA0CE] py-4 px-6 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link to="/examples">
-            <Button variant="ghost" className="text-white hover:text-opacity-80">
-              <ArrowLeft className="mr-2" /> Back to Examples
-            </Button>
-          </Link>
-          <h1 className="text-2xl font-bold text-white">Plumbing Pro</h1>
+          <div>
+            <Link to="/examples">
+              <Button variant="ghost" className="text-white hover:text-opacity-80">
+                <ArrowLeft className="mr-2" /> Back to Examples
+              </Button>
+            </Link>
+          </div>
+          <h1 className="text-2xl font-bold text-white">Melbourne Master Plumbers</h1>
+          <Button className="bg-[#F97316] hover:bg-orange-600 text-white">
+            Call Now
+          </Button>
         </div>
       </header>
 
@@ -88,6 +95,9 @@ const PlumbingPro = () => {
           </Button>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
