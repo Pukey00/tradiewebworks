@@ -49,6 +49,18 @@ const Examples = () => {
       description: "Beautiful, visual-focused website highlighting landscape transformation projects and garden designs.",
       imageUrl: "/lovable-uploads/3419f505-4a5d-428a-9a9f-a1ac6c8fb07a.png",
       link: "/landscape-design"
+    },
+    {
+      title: "Tech Solutions",
+      description: "Modern tech company website with a sleek design, featuring custom software development and digital transformation services.",
+      imageUrl: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+      link: "/tech-solutions"
+    },
+    {
+      title: "Construction Pro",
+      description: "Professional construction company website showcasing major projects and expertise in commercial and residential construction.",
+      imageUrl: "https://images.unsplash.com/photo-1431576901776-e539bd916ba2",
+      link: "/construction-pro"
     }
   ];
 

@@ -9,6 +9,8 @@ import PlumbingPro from "./pages/PlumbingPro";
 import ElectricSolutions from "./pages/ElectricSolutions";
 import BuildersPortfolio from "./pages/BuildersPortfolio";
 import LandscapeDesign from "./pages/LandscapeDesign";
+import TechSolutions from "./pages/TechSolutions";
+import ConstructionPro from "./pages/ConstructionPro";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AuthenticatedHome from "./pages/AuthenticatedHome";
@@ -33,6 +35,8 @@ const App = () => (
           <Route path="/electric-solutions" element={<ElectricSolutions />} />
           <Route path="/builders-portfolio" element={<BuildersPortfolio />} />
           <Route path="/landscape-design" element={<LandscapeDesign />} />
+          <Route path="/tech-solutions" element={<TechSolutions />} />
+          <Route path="/construction-pro" element={<ConstructionPro />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/dashboard" element={<AuthenticatedHome />} />
