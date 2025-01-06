@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface SubscriptionDialogProps {
   open: boolean;
@@ -27,6 +28,7 @@ export const SubscriptionDialog = ({
 }: SubscriptionDialogProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const plans = [
     {
@@ -83,6 +85,9 @@ export const SubscriptionDialog = ({
 
       console.log("Subscription cancelled for website:", websiteId);
       
+      // Invalidate and refetch websites query
+      await queryClient.invalidateQueries({ queryKey: ['websites'] });
+      
       toast({
         title: "Subscription Cancelled",
         description: "Your subscription has been cancelled successfully.",
@@ -126,6 +131,9 @@ export const SubscriptionDialog = ({
       });
 
       console.log("Plan updated for website:", websiteId, "New plan:", planId);
+      
+      // Invalidate and refetch websites query
+      await queryClient.invalidateQueries({ queryKey: ['websites'] });
       
       toast({
         title: "Plan Updated",
